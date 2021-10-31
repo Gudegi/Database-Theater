@@ -1,4 +1,4 @@
-from flask import Blueprint, url_for, render_template, Markup
+from flask import Blueprint, url_for, render_template
 from werkzeug.utils import redirect
 
 bp = Blueprint('main', __name__, url_prefix='/')
@@ -39,19 +39,25 @@ def movieInfo():
 
 @bp.route('/client_moviesList')
 def movieList():
-    return render_template('client/movies-list.html')
+    return render_template('client_templates/movies-list.html')
 
 
 @bp.route('/client_news')
 def newsBlock():
-    return render_template('client/news-blocks-sidebar-right.html')
+    return render_template('client_templates/news-blocks-sidebar-right.html')
 
 
 @bp.route('/client_underConstruction')
 def underConstruction():
-    return render_template('client/under-construction.html')
+    return render_template('client_templates/under-construction.html')
 #----->
+
 
 @bp.route('/')
 def index():
+    return render_template('client_templates/homepage-1.html')
+
+
+@bp.route('/ques')
+def index2():
     return redirect(url_for('question._list'))

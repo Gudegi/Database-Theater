@@ -164,6 +164,24 @@
 {% block content %}
 {% endblock %}
 <!-- 여기까지 페이지 별 내용 End -->
+<a class="scroll-top disabled" href="#"><i class="fas fa-angle-up" aria-hidden="true"></i></a>
+<!-- jQuery library -->
+<script src="{{ url_for('static', filename='client_static/js/jquery-3.3.1.js') }}"></script>
+<!-- Bootstrap -->
+<script src="{{url_for('static', filename='client_static/bootstrap/js/bootstrap.js') }}"></script>
+<!-- Paralax.js -->
+<script src="{{url_for('static', filename='client_static/parallax.js/parallax.js') }}"></script>
+<!-- Waypoints -->
+<script src="{{url_for('static', filename='client_static/waypoints/jquery.waypoints.min.js') }}"></script>
+<!-- Slick carousel -->
+<script src="{{url_for('static', filename='client_static/slick/slick.min.js') }}"></script>
+<!-- Magnific Popup -->
+<script src="{{url_for('static', filename='client_static/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
+<!-- Inits product scripts  구글 맵 api 사용 js 이거 쓰면 계속 refresh돼서 서버 터짐
+<script src="{{url_for('static', filename='client_static/js/script.js') }}"></script> -->
+<!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ4Qy67ZAILavdLyYV2ZwlShd0VAqzRXA&callback=initMap"></script> -->
+<script async defer src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/js/rating.js"></script>
+
 </body>
 <footer class="section-text-white footer footer-links bg-darken">
     <div class="footer-body container">
