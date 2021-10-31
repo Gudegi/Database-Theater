@@ -1,0 +1,51 @@
+{% extends 'client_base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+    <body class="body">
+        <section class="after-head d-flex section-text-white position-relative">
+            <div class="d-background" data-image-src="http://via.placeholder.com/1920x1080" data-parallax="scroll"></div>
+            <div class="d-background bg-black-80"></div>
+            <div class="top-block top-inner container">
+                <div class="top-block-content">
+                    <h1 class="section-title">Page not found</h1>
+                    <div class="page-breadcrumbs">
+                        <a class="content-link" href="#">Home</a>
+                        <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
+                        <span>Error</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section-long">
+            <div class="container">
+                <div class="status-entity">
+                    <div class="entity-icon">4<span class="text-theme">0</span>4</div>
+                    <h4 class="entity-title">Sorry!</h4>
+                    <p class="entity-text">It looks like this page no longer exists</p>
+                    <div class="entity-actions">
+                        <a class="btn btn-theme" href="{{ url_for('main.init')  }}">홈 화면으로</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <a class="scroll-top disabled" href="#"><i class="fas fa-angle-up" aria-hidden="true"></i></a>
+        <!-- jQuery library -->
+        <script src="./js/jquery-3.3.1.js"></script>
+        <!-- Bootstrap -->
+        <script src="./bootstrap/js/bootstrap.js"></script>
+        <!-- Paralax.js -->
+        <script src="./parallax.js/parallax.js"></script>
+        <!-- Waypoints -->
+        <script src="./waypoints/jquery.waypoints.min.js"></script>
+        <!-- Slick carousel -->
+        <script src="./slick/slick.min.js"></script>
+        <!-- Magnific Popup -->
+        <script src="./magnific-popup/jquery.magnific-popup.min.js"></script>
+        <!-- Inits product scripts -->
+        <script src="./js/script.js"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ4Qy67ZAILavdLyYV2ZwlShd0VAqzRXA&callback=initMap"></script>
+        <script async defer src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/js/rating.js"></script>
+    </body>
+</html>
+{% endblock %}
