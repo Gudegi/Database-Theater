@@ -5,8 +5,7 @@ from flex import db
 
 class Coupon(db.Model):
     code = db.Column(db.String(20), primary_key=True)
-    release_date = db.Column(db.DateTime, nullable=False)
-    expire_date = db.Column(db.DateTime, nullable=False)
+    expiredate = db.Column(db.DateTime, nullable=False)
 
 
 class Inquiry(db.Model):
@@ -23,6 +22,7 @@ class Movie(db.Model):
     genre = db.Column(db.String(20), nullable=False)
     age = db.Column(db.String(20), nullable=False)
     director = db.Column(db.String(20), nullable=False)
+    running_time = db.Column(db.Integer, nullable=False)
     information = db.Column(db.String(255), nullable=False)
 
 
@@ -46,7 +46,7 @@ class Membership(db.Model):
 class Member(db.Model):
     id = db.Column(db.String(20), primary_key=True)
     pw = db.Column(db.String(20), nullable=False)
-    resident_num = db.Column(db.String(20), nullable=False) # 언더바 추가
+    birth_date = db.Column(db.Date, nullable=False) # emplyoee와 통일성을 위한 언더바 추가
     phone = db.Column(db.String(11), nullable=False)
     email = db.Column(db.String(20), nullable=False)
     nickname = db.Column(db.String(20), nullable=False)
@@ -57,12 +57,6 @@ class IsUsed(db.Model):
     membership_id = db.Column(db.String(20), db.ForeignKey('membership.id'), primary_key=True)
     coupon_code = db.Column(db.String(20), db.ForeignKey('coupon.code'), primary_key=True) # 쿠폰이 삭제되면 같이 삭제?
     issued = db.Column(db.Integer, nullable=False)
-
-
-# coupon_code, application 둘다 PK가 맞는지?
-class Apply(db.Model):
-    coupon_code = db.Column(db.String(20), db.ForeignKey('coupon.code'), primary_key=True)
-    application = db.Column(db.String(20), primary_key=True)
 
 
 # coupon_code, benefit 둘다 PK가 맞는지?
@@ -80,26 +74,34 @@ class Discount(db.Model):
 
 class Pay(db.Model):
     number = db.Column(db.Integer, primary_key=True)
-    first_pay = db.Column(db.Integer, nullable=False) # _추가
-    discount_pay = db.Column(db.Integer, nullable=False) # _추가
-    last_pay = db.Column(db.Integer, nullable=False) # _추가
+    firstpay = db.Column(db.Integer, nullable=False) # _추가
+    discountpay = db.Column(db.Integer, nullable=False) # _추가
+    lastpay = db.Column(db.Integer, nullable=False) # _추가
     method = db.Column(db.String(20), nullable=False)
     reservation_id = db.Column(db.String(20), db.ForeignKey('reservation.id'))
 
 
 class Cancel(db.Model):
     number = db.Column(db.Integer, primary_key=True)
-    cancel_pay = db.Column(db.Integer, nullable=False) # _추가
-    using_coupon = db.Column(db.Integer, nullable=False) # _ 추가
+    cancelpay = db.Column(db.Integer, nullable=False) # _추가
+    usingcoupon = db.Column(db.Integer, nullable=False) # _ 추가
+    datetime = db.Column(db.DateTime, nullable=False)
     pay_number = db.Column(db.Integer, db.ForeignKey('pay.number'))
+
+
+class Nonmember(db.Model):
+    phone = db.Column(db.String(11),primary_key=True)
+    name = db.Column(db.String(20), nullable=False)
+    pw = db.Column(db.String(20), nullable=False)
+    birth_date = db.Column(db.DateTime, nullable=False) #통일성을 위한 언더바 추가
 
 
 class Reservation(db.Model):
     id = db.Column(db.String(20), primary_key=True)
     date = db.Column(db.DateTime, nullable=False)
     screen_schedule_id = db.Column(db.String(20), db.ForeignKey('screenschedule.id'))
-    member_id = db.Column(db.String(20))
-    nonmember_phone = db.Column(db.String(11))
+    member_id = db.Column(db.String(20), db.ForeignKey('member.id'))
+    nonmember_phone = db.Column(db.String(11), db.ForeignKey('nonmember.phone'))
     movie_id = db.Column(db.String(20), nullable=False)
     seat_number = db.Column(db.String(10), db.ForeignKey('seat.number'))
     seat_screen_number = db.Column(db.Integer, db.ForeignKey('seat.screen_number'))
@@ -108,8 +110,8 @@ class Reservation(db.Model):
 class Screenschedule(db.Model):
     id = db.Column(db.String(20), primary_key=True)
     session = db.Column(db.String(45), nullable=False)
-    start_time = db.Column(db.DateTime, nullable=False) #_추가
-    end_time = db.Column(db.DateTime, nullable=False) # _추가
+    starttime = db.Column(db.DateTime, nullable=False) #_추가
+    endtime = db.Column(db.DateTime, nullable=False) # _추가
     screen_number = db.Column(db.Integer, db.ForeignKey('screen.number'))
     movie_id = db.Column(db.String(20), db.ForeignKey('movie.id'))
     theater_id = db.Column(db.String(20), db.ForeignKey('theater.id'))
@@ -141,7 +143,7 @@ class Seat(db.Model):
     number = db.Column(db.String(10), primary_key=True)
     type = db.Column(db.String(20), nullable=False)
     available = db.Column(db.Integer, nullable=False)
-    seat_price = db.Column(db.Integer, nullable=False) # _추가
+    seatprice = db.Column(db.Integer, nullable=False) # _추가
     screen_number = db.Column(db.Integer, db.ForeignKey('screen.number'))
 
 
@@ -151,8 +153,8 @@ class Facility(db.Model):
     id = db.Column(db.String(20), primary_key=True)
     name = db.Column(db.String(20), nullable=False)
     place = db.Column(db.String(45), nullable=False)
-    install_date = db.Column(db.DateTime, nullable=False) # _추가
-    inspection_date = db.Column(db.DateTime, nullable=False) # _추가
+    installdate = db.Column(db.DateTime, nullable=False) # _추가
+    inspectiondate = db.Column(db.DateTime, nullable=False) # _추가
     theater_id = db.Column(db.String(20), db.ForeignKey('theater.id'))
 
 
@@ -172,8 +174,8 @@ class Subfacility(db.Model):
     theater_id = db.Column(db.String(20), db.ForeignKey('theater.id'))
 
 
-class Proudct(db.Model):
-    id = db.Column(db.Integer, primary_key=True) # 여기서는 id가 integer인 이유?
+class Product(db.Model):
+    id = db.Column(db.String(20), primary_key=True)
     name = db.Column(db.String(20), nullable=False)
     stock = db.Column(db.Integer, nullable=False)
     amount = db.Column(db.Integer, nullable=False)
@@ -192,7 +194,7 @@ class Employee(db.Model):
     name = db.Column(db.String(20), nullable=False)
     pw = db.Column(db.String(20), nullable=False)
     gender = db.Column(db.String(10), nullable=False)
-    birth_date = db.Column(db.DateTime, nullable=False)
+    birth_date = db.Column(db.Date, nullable=False)
     age = db.Column(db.Integer, nullable=False)
     phone = db.Column(db.String(11), nullable=False)
     email = db.Column(db.String(20), nullable=False)
@@ -206,7 +208,7 @@ class Employee(db.Model):
 
 class Evaluation(db.Model):
     id = db.Column(db.String(20), primary_key=True)
-    score = db.Column(db.String(45), nullable=False) # score가 VARCHAR?
+    score = db.Column(db.Integer(), nullable=False)
     comment = db.Column(db.String(45), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
     employee_id = db.Column(db.String(20), db.ForeignKey('employee.id'))
@@ -216,8 +218,8 @@ class Commute(db.Model):
     id = db.Column(db.String(20), primary_key=True)
     type = db.Column(db.String(20), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
-    start_time = db.Column(db.DateTime, nullable=False) # _추가
-    end_time = db.Column(db.DateTime, nullable=False) # _ 추가
+    starttime = db.Column(db.DateTime, nullable=False) # _추가
+    endtime = db.Column(db.DateTime, nullable=False) # _ 추가
     employee_id = db.Column(db.String(20), db.ForeignKey('employee.id'))
 
 
