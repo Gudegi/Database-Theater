@@ -1,5 +1,5 @@
 from flask import Blueprint, url_for, render_template, flash, request, session, g
-#pw 암호화 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import redirect
 
 from flex import db
@@ -16,8 +16,7 @@ def signup():
         member = Member.query.filter_by(id=form.id.data).first()
         if not member:
             member = Member(id=form.id.data,
-            #pw 암호화       pw=generate_password_hash(form.password1.data),
-                            pw=form.password1.data,
+                            pw=generate_password_hash(form.password1.data),
                             birth_date=form.birth_date.data,
                             phone=form.phone.data,
                             email=form.email.data,
@@ -37,7 +36,7 @@ def login():
         member = Member.query.filter_by(id=form.id.data).first()
         if not member:
             error = "존재하지 않는 사용자입니다."
-        elif not Member.query.filter_by(pw=form.password.data).first(): # check_password_hash(Member.pw, form.password.data):
+        elif not check_password_hash(member.pw, form.password.data):
             error = "비밀번호가 올바르지 않습니다."
         if error is None:
             session.clear()

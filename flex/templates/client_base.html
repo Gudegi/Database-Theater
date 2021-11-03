@@ -163,7 +163,23 @@
                         </li>
                     </ul>
                     <div class="navbar-extra">
-                        <a class="btn-theme btn" href="#"><i class="fas fa-ticket-alt"></i>&nbsp;&nbsp;Buy Ticket</a>
+                        <ul class="navbar-nav">
+                            {% if g.member %}
+                            <li class="nav-item ">
+                                <a class="nav-link" href="{{ url_for('auth.logout') }}">로그아웃</a>
+                             </li>
+                            {% else %}
+                            <li class="nav-item ">
+                                <a class="nav-link" href="{{ url_for('auth.login') }}">로그인</a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link" href="{{ url_for('auth.signup') }}">회원가입</a>
+                            </li>
+                            {% endif %}
+                            <li class="nav-item ">
+                                <a class="btn-theme btn" href="#"><i class="fas fa-ticket-alt"></i>&nbsp;&nbsp;빠른예매</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </nav>
