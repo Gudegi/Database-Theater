@@ -118,6 +118,14 @@
                                     <a class="nav-link" href="#" data-role="nav-toggler">User pages</a>
                                     <div class="nav-arrow"><i class="fas fa-chevron-down"></i></div>
                                     <ul class="collapse nav">
+                                        {% if g.member %}
+                                        <ul class="navbar-nav">
+                                            <li class="nav-item ">
+                                                <a class="nav-link" href="{{ url_for('auth.logout') }}">로그아웃</a>
+                                            </li>
+                                        </ul>
+                                    </ul>
+                                        {% else %}
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{ url_for('auth.login') }}">로그인</a>
                                         </li>
@@ -125,6 +133,7 @@
                                             <a class="nav-link" href="{{ url_for('auth.signup') }}">회원가입</a>
                                         </li>
                                     </ul>
+                                    {% endif %}
                                 </li>
                                 <li class="nav-item nav-item-arrow-down nav-hover-show-sub">
                                     <a class="nav-link" href="#" data-role="nav-toggler">Status pages</a>
