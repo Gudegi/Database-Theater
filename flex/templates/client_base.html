@@ -119,10 +119,10 @@
                                     <div class="nav-arrow"><i class="fas fa-chevron-down"></i></div>
                                     <ul class="collapse nav">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="sign-in.html">Sign in</a>
+                                            <a class="nav-link" href="{{ url_for('auth.login') }}">로그인</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="sign-up.html">Sign up</a>
+                                            <a class="nav-link" href="{{ url_for('auth.signup') }}">회원가입</a>
                                         </li>
                                     </ul>
                                 </li>
