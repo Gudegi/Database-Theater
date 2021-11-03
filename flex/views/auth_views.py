@@ -6,7 +6,7 @@ from flex import db
 from flex.forms import MemberCreateForm, MemberLoginForm
 from flex.models import Member
 
-bp = Blueprint('auth', __name__, url_prefix='/auth')
+bp = Blueprint('auth', __name__, url_prefix='/client_templates/auth')
 
 
 @bp.route('/signup/', methods=('GET', 'POST'))
@@ -26,7 +26,7 @@ def signup():
             return redirect(url_for('main.index'))
         else:
             flash('이미 존재하는 사용자입니다.')
-    return render_template('auth/signup.html', form=form)
+    return render_template('client_templates/auth/signup.html', form=form)
 
 @bp.route('/login/', methods=('GET', 'POST'))
 def login():
@@ -43,7 +43,7 @@ def login():
             session['member_id'] = member.id
             return redirect(url_for('main.index'))
         flash(error)
-    return render_template('auth/login.html', form=form)
+    return render_template('client_templates/auth/login.html', form=form)
 
 @bp.before_app_request
 def load_logged_in_member():

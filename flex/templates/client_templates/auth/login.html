@@ -5,7 +5,7 @@
         {{ form.csrf_token }}
         {% include "form_errors.html" %}
         <div class="form-group">
-            <label for="id">사용자 ID</label>
+            <label for="id">아이디</label>
             <input type="text" class="form-control" name="id" id="id"
                    value="{{ form.id.data or '' }}">
         </div>
