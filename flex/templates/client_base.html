@@ -117,23 +117,17 @@
                                 <li class="nav-item nav-item-arrow-down nav-hover-show-sub">
                                     <a class="nav-link" href="#" data-role="nav-toggler">User pages</a>
                                     <div class="nav-arrow"><i class="fas fa-chevron-down"></i></div>
-                                    <ul class="collapse nav">
-                                        {% if g.member %}
-                                        <ul class="navbar-nav">
-                                            <li class="nav-item ">
-                                                <a class="nav-link" href="{{ url_for('auth.logout') }}">로그아웃</a>
-                                            </li>
-                                        </ul>
-                                    </ul>
-                                        {% else %}
+                                    <ul class="collapse nav"> <!-- 로그인, 회원가입, 로그아웃 페이지 // navbar에 구현했지만, 혹시 몰라서 남겨둠 -->
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{ url_for('auth.login') }}">로그인</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{ url_for('auth.signup') }}">회원가입</a>
                                         </li>
+                                        <li class="nav-item ">
+                                             <a class="nav-link" href="{{ url_for('auth.logout') }}">로그아웃</a>
+                                         </li>
                                     </ul>
-                                    {% endif %}
                                 </li>
                                 <li class="nav-item nav-item-arrow-down nav-hover-show-sub">
                                     <a class="nav-link" href="#" data-role="nav-toggler">Status pages</a>
@@ -163,12 +157,12 @@
                         </li>
                     </ul>
                     <div class="navbar-extra">
-                        <ul class="navbar-nav">
-                            {% if g.member %}
+                        <ul class="navbar-nav"> <!-- navbar에 로그인, 회원가입 / 로그아웃 탭 추가 -->
+                            {% if g.member %} <!-- 로그인 상태라면 로그아웃탭 노출 -->
                             <li class="nav-item ">
                                 <a class="nav-link" href="{{ url_for('auth.logout') }}">로그아웃</a>
                              </li>
-                            {% else %}
+                            {% else %} <!-- 로그인 상태가 아니라면 로그인, 회원가입탭 노출 -->
                             <li class="nav-item ">
                                 <a class="nav-link" href="{{ url_for('auth.login') }}">로그인</a>
                             </li>
@@ -177,7 +171,7 @@
                             </li>
                             {% endif %}
                             <li class="nav-item ">
-                                <a class="btn-theme btn" href="#"><i class="fas fa-ticket-alt"></i>&nbsp;&nbsp;빠른예매</a>
+                                <a class="btn-theme btn" href="#"><i class="fas fa-ticket-alt"></i>&nbsp;&nbsp;빠른예매</a>  <!-- buy ticket => 빠른 예매로 수정 -->
                             </li>
                         </ul>
                     </div>
