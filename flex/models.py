@@ -45,7 +45,8 @@ class Membership(db.Model):
 
 class Member(db.Model):
     id = db.Column(db.String(20), primary_key=True)
-    pw = db.Column(db.String(20), nullable=False)
+    name = db.Column(db.String(20), nullable=False) # 이름 속성 누락 추가
+    pw = db.Column(db.String(200), nullable=False)  # pw 암호화를 위해 20 => 200byte 변경
     birth_date = db.Column(db.Date, nullable=False) # emplyoee와 통일성을 위한 언더바 추가
     phone = db.Column(db.String(11), nullable=False)
     email = db.Column(db.String(20), nullable=False)
