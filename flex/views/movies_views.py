@@ -1,6 +1,6 @@
 from flask import Blueprint, url_for, render_template
 from werkzeug.utils import redirect
-from flex.models import Movie
+from flex.models import Movie, Actor
 
 bp = Blueprint('movies', __name__, url_prefix='/movies')
 
@@ -15,4 +15,5 @@ def list():
 @bp.route('/detail/<int:movie_id>')
 def detail(movie_id):
     movie = Movie.query.get(movie_id)
-    return render_template('client_templates/movie-info-sidebar-right.html', movie = movie)
+    actor_list = Actor.query.filter(Actor.movie_id == movie_id).all()
+    return render_template('client_templates/movie-info-sidebar-right.html', movie = movie, actor_list = actor_list)

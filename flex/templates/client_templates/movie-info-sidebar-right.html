@@ -25,7 +25,7 @@
                             <div class="movie-info-entity">
                                 <div class="entity-poster" data-role="hover-wrap">
                                     <div class="embed-responsive embed-responsive-poster">
-                                        <img class="embed-responsive-item" src="../../static/client_static/images/{{ movie.title }}_logo.jpg" alt="" />
+                                        <img class="embed-responsive-item" src="../../static/client_static/images/{{ movie.eng_title }}_logo.jpg" alt="" />
                                     </div>
                                     <div class="d-over bg-theme-lighted collapse animated faster" data-show-class="fadeIn show" data-hide-class="fadeOut show">
                                         <div class="entity-play">
@@ -56,30 +56,25 @@
                                     </div>
                                     <ul class="entity-list">
                                         <li>
-                                            <span class="entity-list-title">Release:</span>July 21, 2014 (Dolby Theatre), August 1, 2014 (United States)</li>
+                                            <span class="entity-list-title">Release:</span>{{ movie.release }}</li>
                                         <li>
                                             <span class="entity-list-title">Directed:</span>
                                             <a class="content-link" href="#">{{ movie.director }}</a>
                                         </li>
-                                        <li>
-                                            <span class="entity-list-title">Starring:</span>
-                                            <a class="content-link" href="#">Octopus Wardens</a>,
-                                            <a class="content-link" href="#">Quanta Wardens</a>,
-                                            <a class="content-link" href="#">Anabelle Two</a>,
-                                            <a class="content-link" href="#">Anabelle Three</a>
-                                        </li>
-                                        <li>
-                                            <span class="entity-list-title">Production company:</span>
-                                            <a class="content-link" href="#">Re-Production Bro.</a>,
-                                            <a class="content-link" href="#">Pentakid</a>
-                                        </li>
+                                        {% if actor_list %}
+                                            <li>
+                                            <span class="entity-list-title">Actor:</span>
+                                            {% for actor in actor_list %}
+                                                    <a class="content-link" href="#">{{ actor.name }}</a>,
+                                            {% endfor %}
+                                            </li>
+                                        {%  endif %}
                                         <li>
                                             <span class="entity-list-title">Country:</span>
-                                            <a class="content-link" href="#">USA</a>,
-                                            <a class="content-link" href="#">India</a>
+                                            <a class="content-link" href="#">{{ movie.country }}</a>
                                         </li>
                                         <li>
-                                            <span class="entity-list-title">Language:</span>english</li>
+                                            <span class="entity-list-title">Language:</span>{{ movie.language }}</li>
                                     </ul>
                                 </div>
                             </div>
