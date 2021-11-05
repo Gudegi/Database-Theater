@@ -18,6 +18,7 @@ def signup():
             member = Member(id=form.id.data,
                             pw=generate_password_hash(form.password1.data),
                             birth_date=form.birth_date.data,
+                            name=form.name.data,
                             phone=form.phone.data,
                             email=form.email.data,
                             nickname=form.nickname.data)

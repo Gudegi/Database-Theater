@@ -20,6 +20,11 @@
                    value="{{ form.password2.data or '' }}">
         </div>
         <div class="form-group">
+            <label for="id">이름</label>
+            <input type="text" class="form-control" name="name" id="name"
+                   value="{{ form.name.data or '' }}">
+        </div>
+        <div class="form-group">
             <label for="birth_date">생년월일</label>
             <input type="date" class="form-control" name="birth_date" id="birth_date"
                    value="{{ form.birth_date.data or '' }}">
