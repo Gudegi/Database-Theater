@@ -4,7 +4,7 @@
 <html>
     <body class="body">
         <section class="after-head d-flex section-text-white position-relative">
-            <div class="d-background" data-image-src="http://via.placeholder.com/1920x1080" data-parallax="scroll"></div>
+            <div class="d-background" data-image-src="../../static/client_static/images/{{ movie.title }}_logo.jpg" data-parallax="scroll"></div>
             <div class="d-background bg-black-80"></div>
             <div class="top-block top-inner container">
                 <div class="top-block-content">
@@ -25,7 +25,7 @@
                             <div class="movie-info-entity">
                                 <div class="entity-poster" data-role="hover-wrap">
                                     <div class="embed-responsive embed-responsive-poster">
-                                        <img class="embed-responsive-item" src="http://via.placeholder.com/340x510" alt="" />
+                                        <img class="embed-responsive-item" src="../../static/client_static/images/{{ movie.eng_title }}_logo.jpg" alt="" />
                                     </div>
                                     <div class="d-over bg-theme-lighted collapse animated faster" data-show-class="fadeIn show" data-hide-class="fadeOut show">
                                         <div class="entity-play">
@@ -36,52 +36,45 @@
                                     </div>
                                 </div>
                                 <div class="entity-content">
-                                    <h2 class="entity-title">Blick</h2>
+                                    <h2 class="entity-title">{{ movie.title }}</h2>
                                     <div class="entity-category">
-                                        <a class="content-link" href="movies-blocks.html">comedy</a>,
-                                        <a class="content-link" href="movies-blocks.html">detective</a>
+                                        <a class="content-link" href="movies-blocks.html">{{ movie.genre }}</a>
                                     </div>
                                     <div class="entity-info">
                                         <div class="info-lines">
                                             <div class="info info-short">
                                                 <span class="text-theme info-icon"><i class="fas fa-star"></i></span>
-                                                <span class="info-text">8,7</span>
+                                                <span class="info-text">8.7</span>
                                                 <span class="info-rest">/10</span>
                                             </div>
                                             <div class="info info-short">
                                                 <span class="text-theme info-icon"><i class="fas fa-clock"></i></span>
-                                                <span class="info-text">130</span>
+                                                <span class="info-text">{{ movie.running_time }}</span>
                                                 <span class="info-rest">&nbsp;min</span>
                                             </div>
                                         </div>
                                     </div>
                                     <ul class="entity-list">
                                         <li>
-                                            <span class="entity-list-title">Release:</span>July 21, 2014 (Dolby Theatre), August 1, 2014 (United States)</li>
+                                            <span class="entity-list-title">Release:</span>{{ movie.release }}</li>
                                         <li>
                                             <span class="entity-list-title">Directed:</span>
-                                            <a class="content-link" href="#">Lindson Wardens</a>,
-                                            <a class="content-link" href="#">Anabelle One</a>
+                                            <a class="content-link" href="#">{{ movie.director }}</a>
                                         </li>
-                                        <li>
-                                            <span class="entity-list-title">Starring:</span>
-                                            <a class="content-link" href="#">Octopus Wardens</a>,
-                                            <a class="content-link" href="#">Quanta Wardens</a>,
-                                            <a class="content-link" href="#">Anabelle Two</a>,
-                                            <a class="content-link" href="#">Anabelle Three</a>
-                                        </li>
-                                        <li>
-                                            <span class="entity-list-title">Production company:</span>
-                                            <a class="content-link" href="#">Re-Production Bro.</a>,
-                                            <a class="content-link" href="#">Pentakid</a>
-                                        </li>
+                                        {% if actor_list %}
+                                            <li>
+                                            <span class="entity-list-title">Actor:</span>
+                                            {% for actor in actor_list %}
+                                                    <a class="content-link" href="#">{{ actor.name }}</a>,
+                                            {% endfor %}
+                                            </li>
+                                        {%  endif %}
                                         <li>
                                             <span class="entity-list-title">Country:</span>
-                                            <a class="content-link" href="#">USA</a>,
-                                            <a class="content-link" href="#">India</a>
+                                            <a class="content-link" href="#">{{ movie.country }}</a>
                                         </li>
                                         <li>
-                                            <span class="entity-list-title">Language:</span>english</li>
+                                            <span class="entity-list-title">Language:</span>{{ movie.language }}</li>
                                     </ul>
                                 </div>
                             </div>
@@ -91,12 +84,9 @@
                                 <h2 class="section-title text-uppercase">Synopsis</h2>
                             </div>
                             <div class="section-description">
-                                <p class="lead">Lead text. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                <h6 class="text-dark">Why do we use it?</h6>
-                                <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
-                                <h6 class="text-dark">Where does it come from?</h6>
-                                <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
-                                <p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>
+                                <p class="lead">희미한 글씨 테스트용</p>
+                                <h6 class="text-dark">줄거리</h6>
+                                <p>{{ movie.information }}</p>
                             </div>
                             <div class="section-bottom">
                                 <div class="row">
@@ -113,9 +103,7 @@
                                     <div class="col-auto">
                                         <div class="entity-links">
                                             <div class="entity-list-title">Tags:</div>
-                                            <a class="content-link" href="#">family</a>,&nbsp;
-                                            <a class="content-link" href="#">gaming</a>,&nbsp;
-                                            <a class="content-link" href="#">historical</a>
+                                            <a class="content-link" href="#">{{ movie.genre }}</a>
                                         </div>
                                     </div>
                                 </div>

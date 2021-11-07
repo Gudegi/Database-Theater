@@ -19,12 +19,23 @@ class Inquiry(db.Model):
 class Movie(db.Model):
     id = db.Column(db.String(20), primary_key=True)
     title = db.Column(db.String(45), nullable=False)
+    eng_title = db.Column(db.String(45), nullable=False)
     genre = db.Column(db.String(20), nullable=False)
     age = db.Column(db.String(20), nullable=False)
     director = db.Column(db.String(20), nullable=False)
     running_time = db.Column(db.Integer, nullable=False)
     information = db.Column(db.String(255), nullable=False)
+    release = db.Column(db.Date, nullable=False)
+    country = db.Column(db.String(20), nullable=False)
+    language = db.Column(db.String(20), nullable=False)
 
+
+class Actor(db.Model):
+    id = db.Column(db.String(20), primary_key=True)
+    movie_id = db.Column(db.String(20), db.ForeignKey('movie.id'))
+    name = db.Column(db.String(20), nullable=False)
+    # backref를 이용
+    #movie = db.relationship('Movie', backref=db.backref('answer_set'))
 
 class Review(db.Model):
     id = db.Column(db.String(20), primary_key=True)
