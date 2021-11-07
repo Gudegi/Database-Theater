@@ -29,6 +29,10 @@ class Movie(db.Model):
     country = db.Column(db.String(20), nullable=False)
     language = db.Column(db.String(20), nullable=False)
 
+    def __str__(self):
+        return self.title
+
+
 
 class Actor(db.Model):
     id = db.Column(db.String(20), primary_key=True)
@@ -126,6 +130,7 @@ class Screenschedule(db.Model):
     endtime = db.Column(db.DateTime, nullable=False) # _추가
     screen_number = db.Column(db.Integer, db.ForeignKey('screen.number'))
     movie_id = db.Column(db.String(20), db.ForeignKey('movie.id'))
+    title = db.relationship('Movie', backref=db.backref('titles'))
     theater_id = db.Column(db.String(20), db.ForeignKey('theater.id'))
 
 
@@ -250,6 +255,9 @@ class Question(db.Model):
     content = db.Column(db.Text(), nullable=False)
     create_date = db.Column(db.DateTime(), nullable=False)
 
+    def __str__(self):
+        return self.content
+
 
 class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -260,27 +268,30 @@ class Answer(db.Model):
 
 #adminLTE####################
 # Define models
+
 roles_users = db.Table('roles_users',
         db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
         db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
-
+        
 class Role(db.Model, RoleMixin):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(255), unique=True)
-    password = db.Column(db.String(255))
+    first_name = db.Column(db.String(255), nullable=False)
+    last_name = db.Column(db.String(255))
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
     active = db.Column(db.Boolean())
     confirmed_at = db.Column(db.DateTime())
-    roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
+    roles = db.relationship('Role', secondary=roles_users,
+                            backref=db.backref('users', lazy='dynamic'))
 
-
-    def __str__(self):
-        return self.first_name + " " + self.last_name + " <" + self.email + ">"
+    def __unicode__(self):
+        return self.email
