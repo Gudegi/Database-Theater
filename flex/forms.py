@@ -22,5 +22,5 @@ class MemberCreateForm(FlaskForm):
     nickname = StringField('닉네임', validators=[DataRequired('닉네임은 필수입력 항목입니다.')])
 
 class MemberLoginForm(FlaskForm):
-    id = StringField('아이디', validators=[DataRequired(), Length(min=3, max=25)])
-    password = PasswordField('비밀번호', validators=[DataRequired()])
+    id = StringField('아이디', validators=[DataRequired("아이디를 입력해주세요."), Length(min=3, max=25)])
+    password = PasswordField('비밀번호', validators=[DataRequired("비밀번호를 입력해주세요.")])
