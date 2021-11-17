@@ -299,20 +299,13 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(255))
     email = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
-    gender = db.Column(db.String(10), nullable=False)
-    birth_date = db.Column(db.Date, nullable=False)
-    age = db.Column(db.Integer, nullable=False)
-    phone = db.Column(db.String(11), nullable=False)
     active = db.Column(db.Boolean())
     salary = db.Column(db.Integer, nullable=False)
     account = db.Column(db.String(20), nullable=False)
     department_info = db.Column(db.String(20))
     confirmed_at = db.Column(db.DateTime())
-    theater_id = db.Column(db.String(20), db.ForeignKey('theater.id'))
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
-            
 
     def __unicode__(self):
         return self.email
-
