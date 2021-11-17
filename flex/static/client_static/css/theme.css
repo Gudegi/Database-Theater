@@ -41,7 +41,7 @@ Theme colors: #FF8A00
     [1. Body]
 */
 body {
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   color: #666;
   font-size: 0.875rem;
   line-height: 1.75;
@@ -2745,6 +2745,7 @@ a.paginator-item:hover {
 .showtime-wrap .btn-time {
   width: 100%;
 }
+
 /* playlist */
 .playlist-sidebar {
   position: relative;

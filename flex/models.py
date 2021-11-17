@@ -89,7 +89,7 @@ class Discount(db.Model):
 
 
 class Pay(db.Model):
-    number = db.Column(db.Integer, primary_key=True)
+    number = db.Column(db.Integer, primary_key=True, autoincrement=True)
     firstpay = db.Column(db.Integer, nullable=False) # _추가
     discountpay = db.Column(db.Integer, nullable=False) # _추가
     lastpay = db.Column(db.Integer, nullable=False) # _추가
@@ -125,12 +125,13 @@ class Reservation(db.Model):
 
 class Screenschedule(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    session = db.Column(db.String(45), nullable=False)
+    session = db.Column(db.Integer, nullable=False)
     starttime = db.Column(db.DateTime, nullable=False) #_추가
     endtime = db.Column(db.DateTime, nullable=False) # _추가
     screen_number = db.Column(db.Integer, db.ForeignKey('screen.number'))
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
     title = db.relationship('Movie', backref=db.backref('titles')) #어드민 페이지 위한 역참조
+    screen = db.relationship('Screen', backref=db.backref('screens')) #잔여 좌석수 계산을 위한 역참조
     theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))
 
 
@@ -139,9 +140,9 @@ class Theater(db.Model):
     name = db.Column(db.String(10), nullable=False)
     type = db.Column(db.String(10), nullable=False)
     tel = db.Column(db.String(11), nullable=False)
-    address = db.Column(db.String(50), nullable=False)
-    seat = db.Column(db.Integer, nullable=False)
-    screen = db.Column(db.Integer, nullable=False)
+    address = db.Column(db.String(50), nullable=False) # 추가
+    seat = db.Column(db.Integer, nullable=False) # 추가
+    screen = db.Column(db.Integer, nullable=False) #추가
     representive = db.Column(db.String(10), nullable=False)
 
 '''
@@ -157,24 +158,19 @@ class Screen(db.Model):
     number = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(20), nullable=False)
     name = db.Column(db.String(20), nullable=False)
+    seat = db.Column(db.Integer, nullable=False) # 추가
     theater_id = db.Column(db.Integer, db.ForeignKey('theater.id')) # 추가, 상영관은 영화관 참조
 
 
 class Seat(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     available = db.Column(db.Integer, nullable=False)
-    #seatprice = db.Column(db.Integer, nullable=False) # _추가
+    price = db.Column(db.Integer, nullable=False) # _추가
     row = db.Column(db.String(1), nullable=False)
     col = db.Column(db.Integer, nullable=False)
-    #type = db.Column(db.String(10), nullable=False)
-    seattype_type = db.Column(db.String(10), db.ForeignKey('seattype.type'))
-    seattype_price = db.Column(db.Integer, db.ForeignKey('seattype.price'))
+    type = db.Column(db.String(10), nullable=False)
     screen_number = db.Column(db.Integer, db.ForeignKey('screen.number'))
-
-class Seattype(db.Model):
-    type = db.Column(db.String(10), primary_key=True)
-    price = db.Column(db.Integer, nullable=False)
-
+    schedule_id = db.Column(db.Integer, db.ForeignKey('screenschedule.id'))
 
 
 # 아래부터 직원파트

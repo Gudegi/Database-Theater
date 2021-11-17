@@ -44,7 +44,8 @@
             aria-disabled="false"
             href="{{ url_for('theaters.other', theater_id = 2) }}">이태원점</a>
             {% endif %}
-          </div><div class="col">
+          </div>
+          <div class="col">
             {%if theaters.id == 3 %}
             <span class="btn-time btn"
             aria-disabled="true"
@@ -54,7 +55,8 @@
             aria-disabled="false"
             href="{{ url_for('theaters.other', theater_id = 3) }}">금호점</a>
             {% endif %}
-          </div><div class="col">
+          </div>
+          <div class="col">
             {%if theaters.id == 4 %}
             <span class="btn-time btn"
             aria-disabled="true"
@@ -64,7 +66,8 @@
             aria-disabled="false"
             href="{{ url_for('theaters.other', theater_id = 4) }}">한양대점</a>
             {% endif %}
-          </div><div class="col">
+          </div>
+          <div class="col">
             {%if theaters.id == 5 %}
             <span class="btn-time btn"
             aria-disabled="true"
@@ -145,26 +148,48 @@
           </li>
           {% endfor %}
         </ul>
-        <div class="tap-content">
-          <ul class="list-group list-group-flush">
-            {% for movie in movies %}
-              <li class="list-group-item">
-                {{ movie.title }} / {{ movie.genre }} / {{ movie.running_time }} 분 / {{ movie.age }} 이상 관람가 
-              </li>
-              {% endfor %}
-              <li class="list-group-item disabled">
-                <a class="text-black-50" href="#">
-                </a>
-              </li>                   
-              <li class="list-group-item">
-                <a href="#">
-                </a>
-              </li>  
-              <li class="list-group-item disabled">
-                <a class="text-black-50" href="#">
-                </a>
-              </li>
-          </ul>
+        <div class="tab-content">
+          {% for week in week_list %}
+            <div class="tab-pane fade {% if week['date'] == date %}show active{% endif %}" id="{{ week['weekday'] }}">
+              <ul class="list-group list-group-flush">
+                {% for movie in movies %}
+                  <li class="list-group-item" style="padding-left: 0.5em;">
+                    <b>{{ movie.title }}</b> / {{ movie.genre }} / {{ movie.running_time }} 분 / {{ movie.age }} 이상 관람가 
+                  </li>
+                  <div class="showtime-wrap" style="margin-top:0.1rem; margin-bottom: 0.5rem;">
+                    {% for screenschedule in movie.screenschedules %}
+                      {% if screenschedule.starttime.strftime('%Y-%m-%d') == week['date'] %}
+                        {% if now < screenschedule.starttime %}
+                          {% if screenschedule.screen.seat < 1 %}
+                          <!-- 잔여좌석수 0일시 매진 표시 -->
+                          <div class="showtime-item">
+                            <a class="btn-time btn disabled" href="#" >
+                            {{ screenschedule.starttime.strftime('%H:%M') }} ~ {{ screenschedule.endtime.strftime('%H:%M') }} 매진
+                            </a>
+                          </div>
+                          {% else %}           
+                          <div class="showtime-item"> 
+                          <!-- hover시 관/회차/잔여좌석수 표시 -->
+                            <a class="btn-time btn" href="#" onMouseOver="this.innerHTML='{{ screenschedule.screen.name }} {{ screenschedule.session }}회차 {{screenschedule.screen.seat}}석'" onMouseOut="this.innerHTML='{{ screenschedule.starttime.strftime('%H:%M') }} ~ {{ screenschedule.endtime.strftime('%H:%M') }}'">
+                            {{ screenschedule.starttime.strftime('%H:%M') }} ~ {{ screenschedule.endtime.strftime('%H:%M') }}
+                            </a>
+                          </div>
+                          {% endif %}
+                        {% else %}
+                        <!-- 상영시간이 현재 시간보다 이전일 경우, 예매 마감 표시 -->
+                        <div class="showtime-item">
+                          <a class="btn-time btn disabled" href="#">
+                          {{ screenschedule.starttime.strftime('%H:%M') }} ~ {{ screenschedule.endtime.strftime('%H:%M') }} 예매 마감
+                          </a>
+                        </div>
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endfor %}
         </div>
       </div>
     </section>
