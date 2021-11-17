@@ -130,8 +130,8 @@ class Screenschedule(db.Model):
     endtime = db.Column(db.DateTime, nullable=False) # _추가
     screen_number = db.Column(db.Integer, db.ForeignKey('screen.number'))
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
-    title = db.relationship('Movie', backref=db.backref('titles')) #어드민 페이지 위한 역참조
-    screen = db.relationship('Screen', backref=db.backref('screens')) #잔여 좌석수 계산을 위한 역참조
+    title = db.relationship('Movie', backref=db.backref('titles')) # 어드민 페이지 위한 역참조
+    screen = db.relationship('Screen', backref=db.backref('screens')) # 잔여 좌석수 계산을 위한 역참조
     theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))
 
 
@@ -142,7 +142,7 @@ class Theater(db.Model):
     tel = db.Column(db.String(11), nullable=False)
     address = db.Column(db.String(50), nullable=False) # 추가
     seat = db.Column(db.Integer, nullable=False) # 추가
-    screen = db.Column(db.Integer, nullable=False) #추가
+    screen = db.Column(db.Integer, nullable=False) # 추가
     representive = db.Column(db.String(10), nullable=False)
 
 '''
@@ -299,13 +299,20 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(255))
     email = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
+    gender = db.Column(db.String(10), nullable=False)
+    birth_date = db.Column(db.Date, nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    phone = db.Column(db.String(11), nullable=False)
     active = db.Column(db.Boolean())
     salary = db.Column(db.Integer, nullable=False)
     account = db.Column(db.String(20), nullable=False)
     department_info = db.Column(db.String(20))
     confirmed_at = db.Column(db.DateTime())
+    theater_id = db.Column(db.String(20), db.ForeignKey('theater.id'))
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
+            
 
     def __unicode__(self):
         return self.email
+

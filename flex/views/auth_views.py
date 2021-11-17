@@ -27,7 +27,7 @@ def signup():
             db.session.commit()
             return redirect(url_for('main.index'))
         else:
-            flash('이미 존재하는 사용자입니다.')
+            flash('이미 가입된 사용자입니다.')
     return render_template('client_templates/auth/signup.html', form=form)
 
 @bp.route('/login/', methods=('GET', 'POST'))
@@ -61,7 +61,7 @@ def logout():
     session.clear()
     return redirect(url_for('main.index'))
 
-
+# 추가
 def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
