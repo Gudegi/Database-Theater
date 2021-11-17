@@ -78,7 +78,6 @@ def create_app():
     )
 
 
-
     #  오류 처리
     app.register_error_handler(404, page_not_found)
     return app
