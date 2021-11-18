@@ -5,8 +5,9 @@ from werkzeug.utils import redirect
 from flex import db
 from flex.forms import MemberCreateForm, MemberLoginForm
 from flex.models import Member
+import functools
 
-bp = Blueprint('auth', __name__, url_prefix='/client_templates/auth')
+bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
 @bp.route('/signup/', methods=('GET', 'POST'))
@@ -26,7 +27,7 @@ def signup():
             db.session.commit()
             return redirect(url_for('main.index'))
         else:
-            flash('이미 존재하는 사용자입니다.')
+            flash('이미 가입된 사용자입니다.')
     return render_template('client_templates/auth/signup.html', form=form)
 
 @bp.route('/login/', methods=('GET', 'POST'))
@@ -59,3 +60,12 @@ def load_logged_in_member():
 def logout():
     session.clear()
     return redirect(url_for('main.index'))
+
+# 추가
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('auth.login'))
+        return view(**kwargs)
+    return wrapped_view
