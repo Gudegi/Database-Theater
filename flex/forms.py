@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, PasswordField
+from wtforms import StringField, TextAreaField, PasswordField, IntegerField, SubmitField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, Length, EqualTo, Email
 
@@ -24,3 +24,23 @@ class MemberCreateForm(FlaskForm):
 class MemberLoginForm(FlaskForm):
     id = StringField('아이디', validators=[DataRequired(), Length(min=3, max=25)])
     password = PasswordField('비밀번호', validators=[DataRequired()])
+
+
+class ReservationFirstForm(FlaskForm):
+    theater_name = StringField('영화관', validators=[DataRequired('필수입력 항목입니다.')])
+    res_date = StringField('예매날짜', validators=[DataRequired(' 필수입력 항목입니다.')])
+    
+class ReservationSecondForm(FlaskForm):
+    res_time = StringField('예매시간', validators=[DataRequired(' 필수입력 항목입니다.')])
+
+
+class ReservationSeatForm(FlaskForm):
+    res_seats = IntegerField('좌석', validators=[DataRequired(' 필수입력 항목입니다.')])
+
+
+class PaymentForm(FlaskForm):
+    coupon = StringField('쿠폰', validators=[DataRequired(' 필수입력 항목입니다.')])
+    point = IntegerField('멤버쉽 포인트', validators=[DataRequired(' 필수입력 항목입니다.')])
+
+class PaymentCommitForm(FlaskForm):
+    commit = SubmitField('결제 완료', validators=[DataRequired(' 필수입력 항목입니다.')])

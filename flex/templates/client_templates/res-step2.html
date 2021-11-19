@@ -1,0 +1,155 @@
+{% extends 'client_base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+    <body class="body">
+        <section class="after-head d-flex section-text-white position-relative">
+            <div class="d-background" data-image-src="{{ url_for('static', filename="../../static/client_static/images/" + movie.eng_title + "_logo.jpg") }}" data-parallax="scroll"></div>
+            <div class="d-background bg-black-80"></div>
+            <div class="top-block top-inner container">
+                <div class="top-block-content">
+                    <h1 class="section-title">{{ movie.title }}</h1>
+                    <div class="page-breadcrumbs">
+                        <a class="content-link" href="#">영화 예매</a>
+                        <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
+                        <span>{{ theater_name }}점</span>
+                        <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
+                        <span>시간표</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% if schedule_list %}
+        <section class="section-long">
+            <div class="container">
+                <form class="movie-line-entity">
+                    <div class="entity-content">
+                        <h4 class="entity-title">
+                            <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie.id) }}" target="_blank">{{ movie.title }}</a>
+                        </h4>
+                        <div class="entity-category">
+                            <a class="content-link" href="movies-blocks.html">{{ theater_name }}점</a>
+{#                            영화관 테이블 완성되면 영화관 정보로 연결되게.#}
+                        </div>
+                        <div class="entity-info">
+                            <div class="info-lines">
+                                <div class="info info-short">
+                                    <span class="text-theme info-icon"><i class="fas fa-calendar"></i></span>
+                                    <span class="info-text">{{ schedule_list[0].starttime.strftime("%Y/%m/%d") }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="entity-content">
+                        <div class="entity-category">
+                            <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie.id) }}" target="_blank">상세정보</a>
+{#                            영화관 테이블 완성되면 영화관 정보로 연결되게.#}
+                        </div>
+                        <div class="entity-info">
+                            <div class="info-lines">
+                                <div class="info info-short">
+                                    <span class="text-theme info-icon"><i class="fas fa-calendar"></i></span>
+                                    <span class="info-text">{{ movie.age }} 관람가</span>
+                                </div>
+                            </div>
+                            &nbsp;
+                            <div class="info-lines">
+                                <div class="info info-short">
+                                    <span class="text-theme info-icon"><i class="fas fa-clock"></i></span>
+                                    <span class="info-text">{{ movie.running_time }} 분</span>
+                                </div>
+                            </div>
+                            &nbsp;
+                            <div class="info-lines">
+                                <div class="info info-short">
+                                    <span class="text-theme info-icon"><i class="fas fa-user"></i></span>
+                                    <span class="info-text">{{ movie.director }} 감독</span>
+                                </div>
+                            </div>
+                            &nbsp;
+                            {% if actor_list %}
+                                {% for actor in actor_list %}
+                                    <div class="info-lines">
+                                        <div class="info info-short">
+                                            <span class="text-theme info-icon"><i class="fas fa-users"></i></span>
+                                            <span class="info-text">{{ actor.name }}</span>
+                                    {% endfor %}
+                            {% endif %}
+                            주연
+                                        </div>
+                                    </div>
+                            &nbsp;
+                            <div class="info-lines">
+                                <div class="info info-short">
+                                    <span class="text-theme info-icon"><i class="fas fa-language"></i></span>
+                                    <span class="info-text">{{ movie.language }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        <form method="post" class="post-form">
+                            <div class="entity-extra">
+                            {{ form.csrf_token }}
+                            {% include "form_errors.html" %}
+                            <div class="text-uppercase entity-extra-title">시간표</div>
+                            <div class="entity-showtime">
+                                <div class="showtime-wrap">
+                                    {% for schedule in schedule_list %}
+                                        <div class="showtime-item">
+                                        <input type="radio" id = "res_{{ schedule.id }}" name = "res_time"  aria-disabled="false" href="#" value="{{schedule.id}}">
+                                        <label for="res_{{ schedule.id }}" >
+                                            <span class="btn-time btn">{{schedule.starttime.strftime("%H:%M")}}</span>
+                                        </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            </div>
+                            <div class="entity-extra">
+                                <div class="text-uppercase entity-extra-title"></div>
+                                <div class="entity-showtime"> </div>
+                                <input type = "submit" formmethod="post" class="btn-theme btn" value="좌석 선택 ▶" href="#">
+                            </div>
+                    </form>
+                </article>
+                </form>
+            </div>
+        </section>
+
+    {% else %}
+        <section class="section-long">
+            <div class="container">
+                <article class="movie-line-entity">
+                    <div class="entity-content">
+                        <h4 class="entity-title">
+                            <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie.id) }}" target="_blank">{{ movie.title }}</a>
+                        </h4>
+                        <div class="entity-category">
+                            <a class="content-link" href="movies-blocks.html">{{ theater_name }}점</a>
+{#                            영화관 테이블 완성되면 영화관 정보로 연결되게.#}
+                        </div>
+                        <div class="entity-info">
+                            <div class="info-lines">
+                                <div class="info info-short">
+                                    <span class="text-theme info-icon"><i class="fas fa-calendar"></i></span>
+                                    <span class="info-text">{{ res_date }}</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="entity-content">
+                        <h5 class="entity-content">
+                            {{ res_date }}일 {{ theater_name }}점에 <br> 영화 {{ movie.title }} 상영 정보가 없습니다. <br>다른 날짜를 선택해주세요
+                        </h5>
+                    </div>
+                    <div class="entity-extra">
+                        <input type = "button" formmethod="post" class="btn-theme btn" value="◀ 뒤로가기" onclick="history.back();" />
+                    </div>
+                </article>
+            </div>
+        </section>
+    {% endif %}
+    </body>
+</html>
+{% endblock %}

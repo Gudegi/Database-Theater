@@ -1,0 +1,121 @@
+{% extends 'client_base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+    <body class="body">
+        <section class="after-head d-flex section-text-white position-relative">
+            <div class="d-background" data-image-src="http://via.placeholder.com/1920x1080" data-parallax="scroll"></div>
+            <div class="d-background bg-black-80"></div>
+            <div class="top-block top-inner container">
+                <div class="top-block-content">
+                    <h1 class="section-title">Movies list</h1>
+                    <div class="page-breadcrumbs">
+                        <a class="content-link" href="#">Home</a>
+                        <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
+                        <span>Movies</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+<section class="section-long">
+    <div class="container">
+        <div class="section-pannel">
+            <div class="grid row">
+                <div class="col-md-10">
+                    <form autocomplete="off">
+                        <div class="row form-grid">
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="input-view-flat input-group"><select class="form-control" name="genre">
+                                        <option selected="true">genre</option>
+                                        <option>action</option>
+                                        <option>adventure</option>
+                                        <option>comedy</option>
+                                        <option>crime</option>
+                                        <option>detective</option>
+                                        <option>drama</option>
+                                        <option>fantasy</option>
+                                        <option>melodrama</option>
+                                        <option>romance</option>
+                                        <option>superhero</option>
+                                        <option>supernatural</option>
+                                        <option>thriller</option>
+                                        <option>sport</option>
+                                        <option>historical</option>
+                                        <option>horror</option>
+                                        <option>musical</option>
+                                        <option>sci-fi</option>
+                                        <option>war</option>
+                                        <option>western</option>
+                                    </select></div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="input-view-flat date input-group" data-toggle="datetimepicker" data-target="#release-year-field"><input class="datetimepicker-input form-control" id="release-year-field" name="releaseYear" type="text" placeholder="release year" data-target="#release-year-field" data-date-format="Y">
+                                    <div class="input-group-append"><span class="input-group-text"><i class="fas fa-calendar-alt"></i></span></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="input-view-flat input-group"><select class="form-control" name="sortBy">
+                                        <option selected="true">sort by</option>
+                                        <option>name</option>
+                                        <option>release year</option>
+                                        <option>rating</option>
+                                    </select></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-2 my-md-auto d-flex"><span class="info-title d-md-none mr-3">Select view:</span>
+                    <ul class="ml-md-auto h5 list-inline">
+                        <li class="list-inline-item"><a class="content-link transparent-link active" href="movies-blocks.html"><i class="fas fa-th"></i></a></li>
+                        <li class="list-inline-item"><a class="content-link transparent-link" href="movies-list.html"><i class="fas fa-th-list"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="grid row">
+            {% if movie_list %}
+                {% for movie in movie_list %}
+                    <div class="col-md-6 col-lg-4 col-xl-3">
+                        <article class="movie-block-entity">
+                            <div class="entity-poster" data-role="hover-wrap">
+                                <div class="embed-responsive embed-responsive-poster"><img class="embed-responsive-item" src="../../static/client_static/images/{{ movie.eng_title }}_logo.jpg" alt=""></div>
+{#                                {{ movie_list[(schedule.movie_id)-1].eng_title}}#}
+                                <div class="d-over bg-theme-lighted collapse animated faster" data-show-class="fadeIn show" data-hide-class="fadeOut show">
+                                    <div class="entity-play"><a class="action-icon-theme action-icon-bordered rounded-circle" href="https://www.youtube.com/watch?v=d96cjJhvlMA" data-magnific-popup="iframe"><span class="icon-content"><i class="fas fa-play"></i></span></a></div>
+                                </div>
+                            </div>
+                            <div class="entity-content">
+                                <h4 class="entity-title"><a class="content-link" href="movie-info-sidebar-right.html">{{ movie.title }}</a></h4>
+                                <div class="entity-category"><a class="content-link" href="movies-blocks.html">{{ movie.genre}}</a>
+                                <div class="entity-info">
+                                    <div class="info-lines">
+                                        <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-star"></i></span>
+                                            <span class="info-text">8.7</span><span class="info-rest">/10</span></div>
+                                    </div>
+                                    &nbsp;
+                                    <div class="info-lines">
+                                        <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-calendar"></i></span>
+                                            <span class="info-text">&nbsp;{{ movie.release.strftime("%Y/%m/%d") }}</span><span class="info-rest"></span></div>
+                                    </div>
+                                    &nbsp;
+                                </div>
+                                <div class="entity-extra">
+                                    <div class="entity-actions"><a class="btn-theme btn" href="{{url_for('reservation.res_step1', movie_id=movie.id)}}">
+                                        <i class="fas fa-ticket-alt"></i>&nbsp;예매하기</a></div>
+                                </div>
+                            </div>
+                            </div>
+                        </article>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="section-bottom">
+            <div class="paginator"><a class="paginator-item" href="#"><i class="fas fa-chevron-left"></i></a><a class="paginator-item" href="#">1</a><span class="active paginator-item">2</span><a class="paginator-item" href="#">3</a><span class="paginator-item">...</span><a class="paginator-item" href="#">10</a><a class="paginator-item" href="#"><i class="fas fa-chevron-right"></i></a></div>
+        </div>
+    </div>
+</section>
+        <a class="scroll-top disabled" href="#"><i class="fas fa-angle-up" aria-hidden="true"></i></a>
+    </body>
+</html>
+{% endblock %}

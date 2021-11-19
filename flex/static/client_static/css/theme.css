@@ -956,6 +956,20 @@ textarea.form-control {
 .form-rating [type="radio"] {
   display: none;
 }
+
+
+.showtime-item input[type=radio]{
+  display: none;
+}
+
+
+.showtime-item input[type=radio]:checked ~ label span{
+  background-color: #ff8a00;
+}
+
+
+
+
 .rating-line {
   display: -webkit-box;
   display: -moz-box;
@@ -2573,10 +2587,48 @@ a.paginator-item:hover {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
+
+.showtime-res {
+  display : inline-block;
+  margin-top: 0rem;
+  margin-left: 0rem;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -moz-box-orient: horizontal;
+  -o-box-orient: horizontal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  -o-box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.showtime-res .showtime-item {
+  padding: 0rem 0.1rem;
+  margin: 0.25rem 0.75rem;
+  text-align: center;
+}
+
+input[type="radio"] {
+	opacity: 0;
+	width: 0;
+}
+
 .showtime-wrap .showtime-item {
   padding-left: 0.5rem;
   margin-top: 0.5rem;
 }
+
 .showtime-wrap .btn-time {
   width: 100%;
 }
@@ -2797,6 +2849,77 @@ a.paginator-item:hover {
     display: none;
   }
 }
+/* 블록 형식 view 추가 */
+
+
+.movie-block-entity{
+  -webkit-box-shadow: 0 0.5rem 1.75rem rgba(0,0,0,0.08);
+  box-shadow: 0 0.5rem 1.75rem rgba(0,0,0,0.08);
+}
+
+.movie-line-entity + .movie-block-entity {
+  margin-top: 2rem;
+}
+
+.movie-block-entity .entity-content {
+  padding: 1.25rem;
+}
+
+.movie-block-entity .entity-extra {
+  width: 100%;
+  border-style: dotted;
+  border-width: 2px 0 0;
+  border-color: #eee;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -o-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  padding: 1.25rem;
+}
+
+.movie-block-entity .entity-showtime {
+  margin-top: 1.25rem;
+}
+
+  .movie-block-entity .entity-preview {
+    width: 50%;
+  }
+  .movie-block-entity .entity-poster,
+  .movie-block-entity .entity-preview {
+    -webkit-align-self: flex-start;
+    align-self: flex-start;
+    -ms-flex-item-align: start;
+  }
+  .movie-block-entity .entity-content {
+    width: 100%;
+    max-width: 100%;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -o-box-flex: 1;
+    box-flex: 1;
+    -webkit-flex: 1 0;
+    -ms-flex: 1 0;
+    flex: 1 0;
+    margin: auto 0;
+  }
+
+
+
+
 /* line view */
 .movie-line-entity {
   -webkit-box-shadow: 0 0.5rem 1.75rem rgba(0,0,0,0.08);

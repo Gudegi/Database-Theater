@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>도미노 멀티플렉스</title>
+		<meta name="description" content="An experimental demo where a 3D perspective preview is shown for a selected seat in a cinema room." />
+		<meta name="keywords" content="cinema, seat booking, seating plan, perspective, 3d" />
+		<meta name="author" content="Codrops" />
+		<link rel="shortcut icon" href="favicon.ico">
+        <link rel="stylesheet" type="text/css" href= "{{ url_for('static', filename='client_static/seat/css/normalize.css') }}"  />
+		<link rel="stylesheet" type="text/css" href= "{{ url_for('static', filename='client_static/seat/css/demo.css') }}" />
+		<link rel="stylesheet" type="text/css" href=" {{ url_for('static', filename='client_static/seat/css/component.css') }}" />
+		<script src=" {{ url_for('static', filename='client_static/seat/js/modernizr-custom.js') }} "></script>
+	</head>
+	<body>
+		<header class="header">
+			<h1 class="header__title">{{ movie.title }} - {{ theater.name }}점 {{ schedule.screen_number }}관 {{ schedule.starttime.strftime('%H:%M') }} </h1>
+			<p class="note note--screen">Please view on a larger screen</p>
+			<p class="note note--support">Sorry, but your browser doesn't support preserve-3d!</p>
+		</header>
+		<div class="container">
+			<div class="cube">
+				<div class="cube__side cube__side--front"></div>
+				<div class="cube__side cube__side--back">
+					<div class="screen">
+						<div class="video">
+							<img class="video-player" src="{{ url_for('static', filename="../../static/client_static/images/" + movie.eng_title + "_logo.jpg") }}" preload="auto" poster="media/sintel.jpg">
+								<source src=src="{{ url_for('static', filename="../../static/client_static/images/" + movie.eng_title + "_logo.jpg") }}" type='video/ogg; codecs="theora, vorbis"'>
+								<source src=src="{{ url_for('static', filename="../../static/client_static/images/" + movie.eng_title + "_logo.jpg") }}" type='video/mp4; codecs="avc1.4D401E, mp4a.40.2"'>
+								<p>Sorry, but your browser does not support this video format.</p>
+							</img>
+							<button class="action action--play action--shown" aria-label="Play Video"></button>
+						</div>
+						<div class="intro intro--shown">
+							<div class="intro__side">
+								<h2 class="intro__title">
+									<span class="intro__up"> <em>{{ schedule.starttime.strftime('%Y-%m-%d %H:%M')}}</em></span>
+									<span class="intro__down">{{ movie.title }} <span class="intro__partial"> <a href="https://durian.blender.org/">{{theater.name}}점</a> {{ schedule.screen_number }}관</span></span>
+								</h2>
+							</div>
+							<div class="intro__side">
+								<button class="action action--seats">좌석 선택하기</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="cube__side cube__side--left"></div>
+				<div class="cube__side cube__side--right"></div>
+				<div class="cube__side cube__side--top"></div>
+				<div class="rows rows--large">
+{#                    {% if seat_list %}#}
+{#                        {% for i in range(16) %}#}
+{#                            <div class="row">#}
+{#                            {% for j in range(18) %}#}
+{#                                <div data-seat="{{ seat_list[i][j] }}3" class="row__seat"></div>#}
+{#                            {% endfor %}#}
+{#                            </div>#}
+{#                        {% endfor %}#}
+{#                    {% endif %}#}
+                    {% if seat_list %}
+                     {% for seat in seat_list %}
+                        {% if seat.col == 1 %}
+                        <div class="row">
+                        {% endif %}
+                        <div data-seat="{{ seat.row }}{{ seat.col }}" class="row__seat"></div>
+                        {% if seat.col == 18 %}
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    {% endif %}
+				</div><!-- /rows -->
+			</div><!-- /cube -->
+		</div><!-- /container -->
+		<div class="plan">
+            <form method="post" class="post-form">
+			<h3 class="plan__title">{{ movie.title }} - {{ theater.name }}점 {{ schedule.screen_number }}관 {{ schedule.starttime.strftime('%H:%M') }}</h3>
+			<div class="rows rows--mini">
+                {{ form.csrf_token }}
+                {% include "form_errors.html" %}
+                {% if seat_list %}
+                    {% for seat in seat_list %}
+                        {% if seat.col == 1 %}
+                        <div class="row">
+                        {% endif %}
+                            {% if seat.available == 1 %}
+{#                                <div class="row__seat tooltip" data-tooltip="{{ seat.row }}{{ seat.col }}"></div>#}
+                                <input type="checkbox"  class="row__seat tooltip" name="res_seats" id="seats_{{ seat.id }}" data-tooltip="{{ seat.row }}{{ seat.col }}" value="{{ seat.id }}">
+{#                                <label style="width: 10px; height: 10px; margin: 1px">#}
+{#                                    <div class="row__seat tooltip" data-tooltip="{{ seat.row }}{{ seat.col }}"></div>#}
+{#                                </label>#}
+                            {% else %}
+{#                                <div class="row__seat row__seat--reserved"></div>#}
+{#                                <input class="row__seat row__seat--reserved" style="display:none; padding: 0; margin: 0;" disabled>#}
+{#                                <label style="width: 10px; height: 10px; margin: 1px">#}
+                                    <div class="row__seat row__seat--reserved"></div>
+{#                                </label>#}
+                            {% endif %}
+                        {% if seat.col == 9 %}
+                            <div style="width: 100px"></div>
+                        {% endif %}
+                        {% if seat.col == 18 %}
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+			</div>	<!-- /rows -->
+			<ul class="legend">
+				<li class="legend__item legend__item--free">일반</li>
+				<li class="legend__item legend__item--reserved">예매완료</li>
+				<li class="legend__item legend__item--selected">선택</li>
+			</ul>
+			<input type="submit" formmethod="post" class="action action--buy" value="구매하기">
+            </form>
+		</div><!-- /plan -->
+		<button class="action action--lookaround action--disabled" arial-label="Unlook View"></button>
+        <script src=" {{ url_for('static', filename='client_static/seat/js/modernizr-custom.js') }} "></script>
+		<script src="{{ url_for('static', filename='client_static/seat/js/classie.js') }}"></script>
+		<script src="{{ url_for('static', filename='client_static/seat/js/main.js') }}"></script>
+	</body>
+</html>

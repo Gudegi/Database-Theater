@@ -55,12 +55,13 @@ def create_app():
 
 
     # 블루프린트
-    from .views import main_views, question_views, answer_views, movies_views, auth_views
+    from .views import main_views, question_views, answer_views, movies_views, auth_views, reservation_views
     app.register_blueprint(main_views.bp)
     app.register_blueprint(question_views.bp)
     app.register_blueprint(answer_views.bp)
     app.register_blueprint(auth_views.bp)
     app.register_blueprint(movies_views.bp)
+    app.register_blueprint(reservation_views.bp)
     
     # 직원
     user_datastore = SQLAlchemyUserDatastore(db, User, Role)
@@ -74,8 +75,6 @@ def create_app():
             h=admin_helpers,
             get_url=url_for
     )
-
-
 
     #  오류 처리
     app.register_error_handler(404, page_not_found)
