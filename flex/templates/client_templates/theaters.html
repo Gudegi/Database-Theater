@@ -103,6 +103,11 @@
           {% endif %}
         </div>
         <article class="movie-line-entity">
+          <div class="entity-theater" data-role="hover-wrap">
+            <div class="embed-responsive embed-responsive-poster" style="width: 1088px; height: 420px;">
+                <img class="embed-responsive-item" src="../../static/client_static/images/Theater_{{ theaters.name }}.jpg" alt="http://via.placeholder.com/340x510" />
+            </div>
+          </div>
           <div class="entity-content">
             주소 : {{ theaters.address }}
             <br>전화번호 : {{ theaters.tel }}<br>대표 : {{ theaters.representive }}<br>{{ theaters.screen }}관 / {{ theaters.seat }}석
