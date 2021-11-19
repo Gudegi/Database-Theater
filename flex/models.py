@@ -1,3 +1,4 @@
+from sqlalchemy.orm import relationship
 from flex import db
 from flask_security import RoleMixin, UserMixin
 
@@ -38,7 +39,7 @@ class Movie(db.Model):
 class Actor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
-    name = db.Column(db.String(20), nullable=False)
+    name = db.Column(db.String(255), nullable=False)
     # backref를 이용
     # movie = db.relationship('Movie', backref=db.backref('answer_set'))
 
@@ -132,9 +133,13 @@ class Screenschedule(db.Model):
     endtime = db.Column(db.DateTime, nullable=False)  # _추가
     screen_number = db.Column(db.Integer, db.ForeignKey('screen.number'))
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
-    title = db.relationship('Movie', backref=db.backref('titles'))  # 어드민 페이지 위한 역참조
-    screen = db.relationship('Screen', backref=db.backref('screens'))  # 잔여 좌석수 계산을 위한 역참조
     theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))
+    theater = db.relationship('Theater', backref=db.backref('theater_names'))  # 어드민 페이지 위한 역참조
+    title = db.relationship('Movie', backref=db.backref('titles'))  # 어드민 페이지 위한 역참조
+    screen = db.relationship('Screen', backref=db.backref('screen_names'))  # 어드민 페이지 위한 역참조
+
+    def __str__(self):
+        return self.theater_id
 
 
 class Theater(db.Model):
@@ -147,14 +152,16 @@ class Theater(db.Model):
     screen = db.Column(db.Integer, nullable=False)  # 추가
     representive = db.Column(db.String(10), nullable=False)
 
+    def __str__(self):
+        return self.name
 
-'''
+
 class Notice(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(45), nullable=False)
     content = db.Column(db.String(255))
     date = db.Column(db.DateTime, nullable=False)
-    theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))'''
+    theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))
 
 
 class Screen(db.Model):
@@ -164,11 +171,14 @@ class Screen(db.Model):
     seat = db.Column(db.Integer, nullable=False)  # 추가
     theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))  # 추가, 상영관은 영화관 참조
 
+    def __str__(self):
+        return self.name
+
 
 class Seat(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     available = db.Column(db.Integer, nullable=False)
-    price = db.Column(db.Integer, nullable=False)  # _추가
+    price = db.Column(db.Integer, nullable=False)
     row = db.Column(db.String(1), nullable=False)
     col = db.Column(db.Integer, nullable=False)
     type = db.Column(db.String(10), nullable=False)
@@ -213,47 +223,27 @@ class Product(db.Model):
     subfacility_id = db.Column(db.Integer, db.ForeignKey('subfacility.id'))
 
 
-'''
-class Info(db.Model):
-    department = db.Column(db.String(20), primary_key=True)
-    position = db.Column(db.String(25), primary_key=True)
-    authority = db.Column(db.String(30))
-
-
-class Employee(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(20), nullable=False)
-    pw = db.Column(db.String(20), nullable=False)
-    gender = db.Column(db.String(10), nullable=False)
-    birth_date = db.Column(db.Date, nullable=False)
-    age = db.Column(db.Integer, nullable=False)
-    phone = db.Column(db.String(11), nullable=False)
-    email = db.Column(db.String(20), nullable=False) #이메일로 로그인
-    salary = db.Column(db.Integer, nullable=False)
-    account = db.Column(db.String(20), nullable=False)
-    theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))
-    # department_info = db.Column(db.String(20), db.ForeignKey('info.department'))
-    # position_info = db.Column(db.String(25), db.ForeignKey('info.position'))
-    # author_info = db.Column(db.String(30), db.ForeignKey('info.authority'))
-    # adminLte 사용에 따라 일단 주석 처리.
-'''
-
-
 class Evaluation(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     score = db.Column(db.Integer, nullable=False)
     comment = db.Column(db.String(45), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
-    employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
 class Commute(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     type = db.Column(db.String(20), nullable=False)
-    date = db.Column(db.DateTime, nullable=False)
+    date = db.Column(db.Date, nullable=False)
     starttime = db.Column(db.DateTime, nullable=False)  # _추가
     endtime = db.Column(db.DateTime, nullable=False)  # _ 추가
-    employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref=db.backref('user_name'))  # 어드민 페이지 역참조
+
+    @property
+    def work_time(self):
+        # 일한 시간
+        return self.endtime - self.starttime
 
 
 class Schedulemanage(db.Model):
@@ -261,7 +251,7 @@ class Schedulemanage(db.Model):
     type = db.Column(db.String(20), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
     reason = db.Column(db.String(50), nullable=False)
-    employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
 # 이 아래는 Pybo 원본
@@ -278,7 +268,7 @@ class Question(db.Model):
 class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     question_id = db.Column(db.Integer, db.ForeignKey('question.id', ondelete='CASCADE'))
-    question = db.relationship('Question', backref=db.backref('answer_set'))
+    question = db.relationship('Question', backref=db.backref('qsa'))
     content = db.Column(db.Text(), nullable=False)
     create_date = db.Column(db.DateTime(), nullable=False)
 
@@ -294,6 +284,7 @@ roles_users = db.Table('roles_users',
 class Role(db.Model, RoleMixin):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     name = db.Column(db.String(80), unique=True)
+    # name = db.relationship('User', secondary = roles_users, back_populates="roles")
     description = db.Column(db.String(255))
 
     def __unicode__(self):
@@ -313,12 +304,20 @@ class User(db.Model, UserMixin):
     active = db.Column(db.Boolean())
     salary = db.Column(db.Integer, nullable=False)
     account = db.Column(db.String(20), nullable=False)
-    department_info = db.Column(db.String(20))
+    department_info = db.Column(db.String(20))  # 변경 예정 department_info > position
     confirmed_at = db.Column(db.DateTime())
-    theater_id = db.Column(db.String(20), db.ForeignKey('theater.id'))
-    roles = db.relationship('Role', secondary=roles_users,
-                            backref=db.backref('users', lazy='dynamic'))
+    theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))
+    roles = db.relationship('Role', secondary=roles_users, backref=db.backref('roles', lazy='dynamic'))
 
-    def __unicode__(self):
-        return self.email
+    def __str__(self):
+        name = self.last_name + self.first_name
+        return name
 
+    # admin_views에서 self.roles만 가져다 쓰면 <Role 1> 이렇게 밖에 못씀. 여기서 리턴 바꿔줘야함
+    @property
+    def role_name(self):
+        # 한 행(직원)씩 리턴 직원 6명이면 6번 return
+        lis = []
+        for i in self.roles:
+            lis.append(i.name)
+        return lis
