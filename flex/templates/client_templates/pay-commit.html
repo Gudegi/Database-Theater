@@ -51,7 +51,12 @@
                                 <span class="info-text">쿠폰 : -</span><span class="info-rest"></span></div>
                         </div>
                         {% else %}
-                            {#            쿠폰 -1 아닐때 구현 필요         #}
+                            {% for i in bene %}
+                                {% if i.coupon_code in coupon %}
+                                    <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-money-bill-alt"></i></span>
+                                    <span class="info-text">쿠폰 : {{ i.benefit }}</span><span class="info-rest"></span></div>
+                                {% endif %}
+                            {% endfor %}
                         {% endif %}
                         <div class="info-lines">
                             <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-user-plus"></i></span>

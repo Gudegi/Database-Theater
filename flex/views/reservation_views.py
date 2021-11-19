@@ -106,6 +106,7 @@ def last_commit(movie_id, res_date, theater_name, schedule_id, seats, coupon, po
     screen_number = schedule.screen_number
     date = schedule.starttime
     membership = Membership.query.get(g.member.membership_id)
+    bene = Benefit.query.all()
     x = ast.literal_eval(seats)
     total_seat_price = 0
     seat_list = []
@@ -119,9 +120,9 @@ def last_commit(movie_id, res_date, theater_name, schedule_id, seats, coupon, po
         total_seat_price += int(seat.price)
     # coupon이 "-1" 이 아니면
     # if coupon != "-1":
-
+    #     coupon = Benefit.query.filter(Benefit.coupon_code == coupon)
 
     # form에서 reservation, pay, discount를
 
     return render_template('client_templates/pay-commit.html', theater_name = theater_name, schedule = schedule,
-                           coupon = coupon, point = point, seat_price = total_seat_price, seat_list =seat_list, movie=movie)
+                           coupon = coupon, point = point, seat_price = total_seat_price, seat_list =seat_list, movie=movie, bene=bene)
