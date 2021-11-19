@@ -144,13 +144,13 @@ class Theater(db.Model):
     representive = db.Column(db.String(10), nullable=False)
 
 
-'''
+
 class Notice(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(45), nullable=False)
     content = db.Column(db.String(255))
     date = db.Column(db.DateTime, nullable=False)
-    theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))'''
+    theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))
 
 
 class Screen(db.Model):
