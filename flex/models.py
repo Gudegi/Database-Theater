@@ -51,7 +51,7 @@ class Review(db.Model):
     date = db.Column(db.DateTime, nullable=False)
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))  # ondelete='CASCADE' 필요 없지 않나?
     member_id = db.Column(db.String(20), db.ForeignKey('member.id'))
-    modify_date = db.Column(db.DateTime, nullable=False)
+    modify_date = db.Column(db.DateTime)
 
 
 class Membership(db.Model):
