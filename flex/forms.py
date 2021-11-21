@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, PasswordField
+from wtforms import StringField, TextAreaField, PasswordField, IntegerField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, Length, EqualTo, Email
 
@@ -23,3 +23,9 @@ class MemberCreateForm(FlaskForm):
 class MemberLoginForm(FlaskForm):
     id = StringField('아이디', validators=[DataRequired("아이디를 입력해주세요."), Length(min=3, max=25)])
     password = PasswordField('비밀번호', validators=[DataRequired("비밀번호를 입력해주세요.")])
+
+class ReviewForm(FlaskForm):
+    title = StringField('제목', validators=[DataRequired('제목은 필수입력 항목입니다.')])
+    content = TextAreaField('내용', validators=[DataRequired('내용은 필수입력 항목입니다.')])
+    rate = IntegerField('평가', validators=[DataRequired('점수는 1~10 필수입력 항목입니다.')])
+
