@@ -47,7 +47,7 @@ class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(45), nullable=False)
     content = db.Column(db.String(255), nullable=False)
-    rate = db.Column(db.Integer, nullable=False)
+    rate = db.Column(db.Integer, nullable=False) # float에서 int로 변경
     date = db.Column(db.DateTime, nullable=False)
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))  # ondelete='CASCADE' 필요 없지 않나?
     member_id = db.Column(db.String(20), db.ForeignKey('member.id'))
