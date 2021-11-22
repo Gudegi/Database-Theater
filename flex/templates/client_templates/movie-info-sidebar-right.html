@@ -145,12 +145,16 @@
                                                 <div class="col-auto">
                                                     <a class="content-link" href="{{ url_for('movies.delete_review',movie_id=review.movie_id, review_id=review.id) }}"><i class="fas fa-quote-left"></i>&nbsp;&nbsp;삭제</a>
                                                 </div>
+                                                {% elif g.member.id == null %}
+                                                <div class="ml-sm-auto col-auto">
+                                                    <a class="content-link activate" href="{{ url_for('auth.login_movie', movie_id=movie.id) }}" title="로그인시 수정 및 삭제 가능"><i class="fas fa-reply"></i>&nbsp;&nbsp;로그인 하기</a>
+                                                </div>
                                                 {% else %}
                                                 <div class="ml-sm-auto col-auto">
-                                                    <div class="link" href="#"><i class="fas fa-reply"></i>&nbsp;&nbsp;수정</div>
+                                                    <div class="content-link disabled" href="#" title="ID가 같지 않다"><i class="fas"></i>수정불가</div>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <div class="link" href="#"><i class="fas fa-quote-left"></i>&nbsp;&nbsp;삭제</div>
+                                                    <div class="content-link disabled" href="#" title="ID가 같지 않다"><i class="fas"></i>삭제불가</div>
                                                 </div>
                                                 {% endif %}
                                             </div>
