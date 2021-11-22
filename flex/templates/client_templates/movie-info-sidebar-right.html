@@ -120,10 +120,11 @@
                                         <div class="entity-content">
                                             <h4 class="entity-title">{{ review.title }}</h4>
                                             {% if review.modify_date %}
-                                            <p class="entity-subtext">수정:({{ review.modify_date }})</p>
+                                            <p class="entity-subtext">수정:{{ review.modify_date }}</p>
                                             {% else %}
                                             <p class="entity-subtext">{{ review.date }}</p>
                                             {% endif %}
+                                            <p class="entity-subtext">작성자:{{ review.member_id }}</p>
                                             <p class="entity-text">{{ review.content }}</p>
                                         </div>
                                         <div class="entity-extra">
@@ -151,10 +152,10 @@
                                                 </div>
                                                 {% else %}
                                                 <div class="ml-sm-auto col-auto">
-                                                    <div class="content-link disabled" href="#" title="ID가 같지 않다"><i class="fas"></i>수정불가</div>
+                                                    <div class="entity-text"><i class="fas"></i>수정불가</div>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <div class="content-link disabled" href="#" title="ID가 같지 않다"><i class="fas"></i>삭제불가</div>
+                                                    <div class="entity-text"><i class="fas"></i>삭제불가</div>
                                                 </div>
                                                 {% endif %}
                                             </div>
