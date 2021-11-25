@@ -1,0 +1,92 @@
+{% extends 'client_base.html' %}
+{% block content %}
+<div class="container">
+    <form method="post" class="post-form" autocomplete="off">
+        {{ form.csrf_token }} {% include "form_errors.html" %}
+        <div class="sidebar-container">
+            <div class="content">
+                <div class="section-line">
+                    <div class="section-head">
+                        <h2 class="section-title text-uppercase">평가등록하기</h2>
+                    </div>
+                    <div class="row form-grid">
+                        <div class="form-group col-12">
+                            <div class="input-view-flat input-group">
+                                <label for="title">제목</label>
+                                <input type="input" class="form-control" name="title" id="title" placeholder="제목", value="{{ form.title.data or '' }}"/>
+                            </div>
+                        </div>
+                        <div class="form-group col-12">
+                            <div class="input-view-flat input-group">
+                                <label for="content">내용</label>
+                                <textarea class="form-control" name="content" id="content" placeholder="리뷰를 입력해주세요" >{{ form.content.data or '' }}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group col-12">
+                            <div class="rating-line">
+                                <label for >Rating:</label>
+                                <div class="form-rating">
+                                    <input type="radio" id="rating-10" name="rate" value="10" />
+                                    <label for="rating-10">
+                                        <span class="rating-active-icon"><i class="fas fa-star"></i></span>
+                                        <span class="rating-icon"><i class="far fa-star"></i></span>
+                                    </label>
+                                    <input type="radio" id="rating-9" name="rate" value="9" />
+                                    <label for="rating-9">
+                                        <span class="rating-active-icon"><i class="fas fa-star"></i></span>
+                                        <span class="rating-icon"><i class="far fa-star"></i></span>
+                                    </label>
+                                    <input type="radio" id="rating-8" name="rate" value="8" />
+                                    <label for="rating-8">
+                                        <span class="rating-active-icon"><i class="fas fa-star"></i></span>
+                                        <span class="rating-icon"><i class="far fa-star"></i></span>
+                                    </label>
+                                    <input type="radio" id="rating-7" name="rate" value="7" />
+                                    <label for="rating-7">
+                                        <span class="rating-active-icon"><i class="fas fa-star"></i></span>
+                                        <span class="rating-icon"><i class="far fa-star"></i></span>
+                                    </label>
+                                    <input type="radio" id="rating-6" name="rate" value="6" />
+                                    <label for="rating-6">
+                                        <span class="rating-active-icon"><i class="fas fa-star"></i></span>
+                                        <span class="rating-icon"><i class="far fa-star"></i></span>
+                                    </label>
+                                    <input type="radio" id="rating-5" name="rate" value="5" />
+                                    <label for="rating-5">
+                                        <span class="rating-active-icon"><i class="fas fa-star"></i></span>
+                                        <span class="rating-icon"><i class="far fa-star"></i></span>
+                                    </label>
+                                    <input type="radio" id="rating-4" name="rate" value="4" />
+                                    <label for="rating-4">
+                                        <span class="rating-active-icon"><i class="fas fa-star"></i></span>
+                                        <span class="rating-icon"><i class="far fa-star"></i></span>
+                                    </label>
+                                    <input type="radio" id="rating-3" name="rate" value="3" />
+                                    <label for="rating-3">
+                                        <span class="rating-active-icon"><i class="fas fa-star"></i></span>
+                                        <span class="rating-icon"><i class="far fa-star"></i></span>
+                                    </label>
+                                    <input type="radio" id="rating-2" name="rate" value="2" />
+                                    <label for="rating-2">
+                                        <span class="rating-active-icon"><i class="fas fa-star"></i></span>
+                                        <span class="rating-icon"><i class="far fa-star"></i></span>
+                                    </label>
+                                    <input type="radio" id="rating-1" name="rate" value="1" />
+                                    <label for="rating-1">
+                                        <span class="rating-active-icon"><i class="fas fa-star"></i></span>
+                                        <span class="rating-icon"><i class="far fa-star"></i></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button class="px-5 btn btn-theme">저장하기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

@@ -15,7 +15,7 @@ migrate = Migrate()
 
 # Create admin
 admin = Admin(name='My Dashboard', base_template='admin_base.html', template_mode='bootstrap4')
-from .models import Screen, User, Role, Movie, Screenschedule, Question, Answer
+from .models import Screen, User, Role, Movie, Screenschedule, Question, Answer, Review
 # Add model views
 from .views.admin_views import MyModelView, ScheduleView, UserView, CustomView, MovieView, QuestionView, AnswerView
 admin.add_view(MyModelView(Role, db.session, menu_icon_type='fa', menu_icon_value='fa-server', name="Roles"))

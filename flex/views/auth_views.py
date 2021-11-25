@@ -47,6 +47,23 @@ def login():
         flash(error)
     return render_template('client_templates/auth/login.html', form=form)
 
+@bp.route('/login/<int:movie_id>/movie', methods=('GET', 'POST'))  # 추가.
+def login_movie(movie_id):
+    form = MemberLoginForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        error = None
+        member = Member.query.filter_by(id=form.id.data).first()
+        if not member:
+            error = "존재하지 않는 사용자입니다."
+        elif not check_password_hash(member.pw, form.password.data):
+            error = "비밀번호가 올바르지 않습니다."
+        if error is None:
+            session.clear()
+            session['member_id'] = member.id
+            return redirect(url_for('movies.detail', movie_id=movie_id))
+        flash(error)
+    return render_template('client_templates/auth/login.html', form=form)
+
 @bp.before_app_request
 def load_logged_in_member():
     member_id = session.get('member_id')
@@ -65,7 +82,7 @@ def logout():
 def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        if g.user is None:
+        if g.member is None:    # g.user 수정
             return redirect(url_for('auth.login'))
         return view(**kwargs)
     return wrapped_view
