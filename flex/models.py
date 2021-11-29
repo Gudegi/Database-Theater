@@ -48,10 +48,11 @@ class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(45), nullable=False)
     content = db.Column(db.String(255), nullable=False)
-    rate = db.Column(db.Float, nullable=False)
+    rate = db.Column(db.Integer, nullable=False) # float에서 int로 변경
     date = db.Column(db.DateTime, nullable=False)
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))  # ondelete='CASCADE' 필요 없지 않나?
     member_id = db.Column(db.String(20), db.ForeignKey('member.id'))
+    modify_date = db.Column(db.DateTime)
 
 
 class Membership(db.Model):
@@ -293,11 +294,11 @@ class Role(db.Model, RoleMixin):
     #name = db.relationship('User', secondary = roles_users, back_populates="roles")
     description = db.Column(db.String(255))
 
-        
+
     def __unicode__(self):
-        
+
         return self.name
-    
+
 
 
 class User(db.Model, UserMixin):
@@ -317,7 +318,7 @@ class User(db.Model, UserMixin):
     confirmed_at = db.Column(db.DateTime())
     theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))
     roles = db.relationship('Role', secondary=roles_users, backref=db.backref('roles', lazy='dynamic'))
-    
+
     def __str__(self):
         name = self.last_name + self.first_name
         return name
