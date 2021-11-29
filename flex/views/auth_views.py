@@ -3,14 +3,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import redirect
 
 from flex import db
-from flex.forms import MemberCreateForm, MemberLoginForm
-from flex.models import Member
+from flex.forms import MemberCreateForm, MemberLoginForm, NonmemberLoginForm
+from flex.models import Member, Nonmember
 import functools
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
-@bp.route('/signup/', methods=('GET', 'POST'))
+@bp.route('/signup', methods=('GET', 'POST'))
 def signup():
     form = MemberCreateForm()
     if request.method == 'POST' and form.validate_on_submit():
@@ -30,7 +30,7 @@ def signup():
             flash('이미 가입된 사용자입니다.')
     return render_template('client_templates/auth/signup.html', form=form)
 
-@bp.route('/login/', methods=('GET', 'POST'))
+@bp.route('/login', methods=('GET', 'POST'))
 def login():
     form = MemberLoginForm()
     if request.method == 'POST' and form.validate_on_submit():
@@ -47,6 +47,30 @@ def login():
         flash(error)
     return render_template('client_templates/auth/login.html', form=form)
 
+@bp.route('/guest', methods=('GET', 'POST'))
+def guest_login():
+    form = NonmemberLoginForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        guest = Nonmember.query.filter_by(phone=form.phone.data).first()
+        if not guest:
+            guest = Nonmember(phone=form.phone.data,
+                              name=form.name.data,
+                              pw=generate_password_hash(form.password.data),
+                              birth_date=form.birth_date.data)                
+            db.session.add(guest)
+            db.session.commit()
+            session.clear()
+            session['nonmember_phone'] = guest.phone
+        else:
+            session.clear()
+            session['nonmember_phone'] = guest.phone
+        return redirect(url_for('main.index'))
+    return render_template('client_templates/auth/guest.html', form=form)
+
+@bp.route('/guest/reservation', methods=('GET', 'POST'))
+def guest_reservation():
+    return render_template('client_templates/auth/guest_reservation.html')
+
 @bp.before_app_request
 def load_logged_in_member():
     member_id = session.get('member_id')
@@ -55,8 +79,16 @@ def load_logged_in_member():
     else:
         g.member = Member.query.get(member_id)
 
+@bp.before_app_request
+def load_logged_in_guest():
+    nonmember_phone = session.get('nonmember_phone')
+    if nonmember_phone is None:
+        g.guest = None
+    else:
+        g.guest = Nonmember.query.get(nonmember_phone)
 
-@bp.route('/logout/')
+
+@bp.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('main.index'))

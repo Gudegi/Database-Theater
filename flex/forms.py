@@ -23,3 +23,9 @@ class MemberCreateForm(FlaskForm):
 class MemberLoginForm(FlaskForm):
     id = StringField('아이디', validators=[DataRequired("아이디를 입력해주세요."), Length(min=3, max=25)])
     password = PasswordField('비밀번호', validators=[DataRequired("비밀번호를 입력해주세요.")])
+
+class NonmemberLoginForm(FlaskForm):
+    phone = StringField('휴대폰번호', validators=[DataRequired("휴대폰번호를 입력해주세요.")])
+    name = StringField('이름', validators=[DataRequired("이름을 입력해주세요.")])
+    password = PasswordField('비밀번호', validators=[DataRequired("비밀번호를 입력해주세요.")])
+    birth_date = StringField('생년월일', validators=[DataRequired('생년월일을 입력해주세요.')])

@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request
 from datetime import datetime, timedelta
 from werkzeug.utils import redirect
-from flex.models import Theater, Screenschedule, Movie, Seat, Screen
+from flex.models import Theater, Screenschedule, Movie, Seat
 from sqlalchemy import and_
 
 bp = Blueprint('theaters', __name__, url_prefix='/theaters')
@@ -37,7 +37,10 @@ def index():
             seat_cnt = Seat.query.filter(Seat.screen_number == screenschedule.screen_number).\
                 filter(Seat.schedule_id == screenschedule.id).\
                     filter(Seat.available == 1).count()
-            screenschedule_list.append(dict(id=screenschedule.id, starttime=screenschedule.starttime, endtime=screenschedule.endtime, session=screenschedule.session, screen=dict(number=screenschedule.screen.number, seat=seat_cnt, name=screenschedule.screen.name)))
+            # 총 좌석수 계산
+            tot_seat = Seat.query.filter(Seat.screen_number == screenschedule.screen_number).\
+                filter(Seat.schedule_id == screenschedule.id).count()
+            screenschedule_list.append(dict(id=screenschedule.id, starttime=screenschedule.starttime, endtime=screenschedule.endtime, session=screenschedule.session, screen=dict(number=screenschedule.screen.number, tot_seat=tot_seat, seat=seat_cnt, name=screenschedule.screen.name)))
         movie_list.append(dict(id=movie.id, title=movie.title, age=movie.age, running_time=movie.running_time, genre=movie.genre, screenschedules=screenschedule_list))
  
     return render_template('client_templates/theaters.html', theaters=theaters, date=selected_date, week_list=week_list, now=datetime.now(), movies=movie_list)
@@ -74,7 +77,10 @@ def other(theater_id):
             seat_cnt = Seat.query.filter(Seat.screen_number == screenschedule.screen_number).\
                 filter(Seat.schedule_id == screenschedule.id).\
                     filter(Seat.available == 1).count()
-            screenschedule_list.append(dict(id=screenschedule.id, starttime=screenschedule.starttime, endtime=screenschedule.endtime, session=screenschedule.session, screen=dict(number=screenschedule.screen.number, seat=seat_cnt, name=screenschedule.screen.name)))
+            # 총 좌석수 계산
+            tot_seat = Seat.query.filter(Seat.screen_number == screenschedule.screen_number).\
+                filter(Seat.schedule_id == screenschedule.id).count()
+            screenschedule_list.append(dict(id=screenschedule.id, starttime=screenschedule.starttime, endtime=screenschedule.endtime, session=screenschedule.session, screen=dict(number=screenschedule.screen.number, tot_seat=tot_seat, seat=seat_cnt, name=screenschedule.screen.name)))
         movie_list.append(dict(id=movie.id, title=movie.title, age=movie.age, running_time=movie.running_time, genre=movie.genre, screenschedules=screenschedule_list))
 
     return render_template('client_templates/theaters.html', theaters=theaters, date=selected_date, week_list=week_list, now=datetime.now(), movies=movie_list)

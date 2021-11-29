@@ -81,7 +81,7 @@ class IsUsed(db.Model):
 # coupon_code, benefit 둘다 PK가 맞는지?
 class Benefit(db.Model):
     coupon_code = db.Column(db.String(20), db.ForeignKey('coupon.code'), primary_key=True)
-    benefit = db.Column(db.String(20), primary_key=True)
+    benefit = db.Column(db.Integer(), nullable=False)
 
 
 class Discount(db.Model):
@@ -94,9 +94,9 @@ class Discount(db.Model):
 class Pay(db.Model):
     number = db.Column(db.Integer, primary_key=True, autoincrement=True)
     firstpay = db.Column(db.Integer, nullable=False)  # _추가
-    discountpay = db.Column(db.Integer, nullable=False)  # _추가
-    lastpay = db.Column(db.Integer, nullable=False)  # _추가
-    method = db.Column(db.String(20), nullable=False)
+    coupon_code = db.Column(db.String(20), nullable=False)  # _추가
+    used_points = db.Column(db.Integer, nullable=False)  # _추가
+    method = db.Column(db.String(20), nullable=False)-1
     reservation_id = db.Column(db.Integer, db.ForeignKey('reservation.id'))
 
 
@@ -111,8 +111,8 @@ class Cancel(db.Model):
 class Nonmember(db.Model):
     phone = db.Column(db.String(11), primary_key=True)
     name = db.Column(db.String(20), nullable=False)
-    pw = db.Column(db.String(20), nullable=False)
-    birth_date = db.Column(db.DateTime, nullable=False)  # 통일성을 위한 언더바 추가
+    pw = db.Column(db.String(200), nullable=False) # 암호화
+    birth_date = db.Column(db.Date, nullable=False)  # 통일성을 위한 언더바 추가
 
 
 class Reservation(db.Model):
@@ -121,8 +121,7 @@ class Reservation(db.Model):
     screen_schedule_id = db.Column(db.Integer, db.ForeignKey('screenschedule.id'))
     member_id = db.Column(db.String(20), db.ForeignKey('member.id'))
     nonmember_phone = db.Column(db.String(11), db.ForeignKey('nonmember.phone'))
-    # movie_id = db.Column(db.String(20), nullable=False) 상영 스케쥴에 영화 정보 있으니까 뺌
-    seat_id = db.Column(db.Integer, db.ForeignKey('seat.id'))
+    seats = db.Column(db.String(1000), nullable=False)
     seat_screen_number = db.Column(db.Integer, db.ForeignKey('seat.screen_number'))
 
 
@@ -161,6 +160,14 @@ class Notice(db.Model):
     content = db.Column(db.String(255))
     date = db.Column(db.DateTime, nullable=False)
     theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))
+
+
+class NoticeAnswer(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    notice_id = db.Column(db.Integer, db.ForeignKey('notice.id', ondelete='CASCADE'))
+    notice = db.relationship('Notice', backref=db.backref('answer_set'))
+    content = db.Column(db.Text(), nullable=False)
+    create_date = db.Column(db.DateTime(), nullable=False)
 
 
 class Screen(db.Model):
