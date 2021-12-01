@@ -1,0 +1,134 @@
+{% extends 'client_base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+    <body class="body">
+        <section class="after-head d-flex section-text-white position-relative">
+            <div class="d-background" data-image-src="http://via.placeholder.com/1920x1080" data-parallax="scroll"></div>
+            <div class="d-background bg-black-80"></div>
+            <div class="top-block top-inner container">
+                <div class="top-block-content">
+                    <h1 class="section-title">Movies list</h1>
+                    <div class="page-breadcrumbs">
+                        <a class="content-link" href="#">Home</a>
+                        <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
+                        <span>Movies</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+<section class="section-long">
+    <div class="container">
+        <div class="section-pannel" style=" width: 1000px">
+                    <div class="grid row">
+                        <div class="col-md-10">
+                            <form autocomplete="off">
+                                <div class="row form-grid">
+                                    <div class="col-sm-6 col-lg-3">
+                                            <h2 class="entity-title">예매한 영화 Reservation</h2>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+        <div class="grid row" style="padding-bottom: 100px">
+            {% if future_list %}
+                {% for i in range(future_num) %}
+                    <div class="col-md-6 col-lg-4 col-xl-3">
+                        <article class="movie-block-entity">
+                            <div class="entity-poster" data-role="hover-wrap">
+                                <div class="embed-responsive embed-responsive-poster"><img class="embed-responsive-item" src="../../static/client_static/images/{{ future_list[i][1].eng_title }}_logo.jpg" alt=""></div>
+{#                                {{ movie_list[(schedule.movie_id)-1].eng_title}}#}
+                                <div class="d-over bg-theme-lighted collapse animated faster" data-show-class="fadeIn show" data-hide-class="fadeOut show">
+                                    <div class="entity-play"><a class="action-icon-theme action-icon-bordered rounded-circle" href="https://www.youtube.com/watch?v=d96cjJhvlMA" data-magnific-popup="iframe"><span class="icon-content"><i class="fas fa-play"></i></span></a></div>
+                                </div>
+                            </div>
+                            <div class="entity-content">
+                                <h4 class="entity-title"><a class="content-link" href="movie-info-sidebar-right.html">{{ future_list[i][1].title }}</a></h4>
+                                <div class="entity-category"><a class="content-link" href="movies-blocks.html">{{ future_list[i][1].genre }}</a>
+                                <div class="entity-info">
+                                    <div class="info-lines">
+                                        <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-star"></i></span>
+                                            <span class="info-text">8.7</span><span class="info-rest">/10</span></div>
+                                    </div>
+                                    &nbsp;
+                                    <div class="info-lines">
+                                        <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-calendar"></i></span>
+                                            <span class="info-text">&nbsp;{{ future_list[i][2].starttime}}</span><span class="info-rest"></span></div>
+                                    </div>
+                                    &nbsp;
+                                </div>
+                                <div class="entity-extra">
+                                    <div class="entity-actions"><a class="btn-theme btn" href="">
+                                        <i class="fas fa-ticket-alt"></i>&nbsp;예매취소</a></div>
+                                </div>
+                            </div>
+                            </div>
+                        </article>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+<div class="container">
+                <div class="section-pannel" style=" width: 1000px">
+{#                    위에 width 빼는게 더 이쁠지도?#}
+                    <div class="grid row" >
+                        <div class="col-md-10">
+                            <form autocomplete="off">
+                                <div class="row form-grid">
+                                    <div class="col-sm-6 col-lg-3">
+                                            <h2 class="entity-title">관람한 영화</h2>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+    <div class="grid row">
+            {% if history_list %}
+                {% for i in range(history_num) %}
+                    <div class="col-md-6 col-lg-4 col-xl-3">
+                        <article class="movie-block-entity">
+                            <div class="entity-poster" data-role="hover-wrap">
+                                <div class="embed-responsive embed-responsive-poster"><img class="embed-responsive-item" src="../../static/client_static/images/{{ history_list[i][1].eng_title }}_logo.jpg" alt=""></div>
+{#                                {{ movie_list[(schedule.movie_id)-1].eng_title}}#}
+                                <div class="d-over bg-theme-lighted collapse animated faster" data-show-class="fadeIn show" data-hide-class="fadeOut show">
+                                    <div class="entity-play"><a class="action-icon-theme action-icon-bordered rounded-circle" href="https://www.youtube.com/watch?v=d96cjJhvlMA" data-magnific-popup="iframe"><span class="icon-content"><i class="fas fa-play"></i></span></a></div>
+                                </div>
+                            </div>
+                            <div class="entity-content">
+                                <h4 class="entity-title"><a class="content-link" href="movie-info-sidebar-right.html">{{ history_list[i][1].title }}</a></h4>
+                                <div class="entity-category"><a class="content-link" href="movies-blocks.html">{{ history_list[i][1].genre }}</a>
+                                <div class="entity-info">
+                                    <div class="info-lines">
+                                        <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-star"></i></span>
+                                            <span class="info-text">8.7</span><span class="info-rest">/10</span></div>
+                                    </div>
+                                    &nbsp;
+                                    <div class="info-lines">
+                                        <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-calendar"></i></span>
+                                            <span class="info-text">&nbsp;{{ history_list[i][2].starttime}}</span><span class="info-rest"></span></div>
+                                    </div>
+                                    &nbsp;
+                                </div>
+                                <div class="entity-extra">
+                                    <div class="entity-actions"><a class="btn-theme btn" href="">
+                                        <i class="fas fa-ticket-alt"></i>&nbsp;리뷰 작성</a></div>
+                                </div>
+                            </div>
+                            </div>
+                        </article>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="section-bottom">
+            <div class="paginator"><a class="paginator-item" href="#"><i class="fas fa-chevron-left"></i></a><a class="paginator-item" href="#">1</a><span class="active paginator-item">2</span><a class="paginator-item" href="#">3</a><span class="paginator-item">...</span><a class="paginator-item" href="#">10</a><a class="paginator-item" href="#"><i class="fas fa-chevron-right"></i></a></div>
+        </div>
+    </div>
+</section>
+        <a class="scroll-top disabled" href="#"><i class="fas fa-angle-up" aria-hidden="true"></i></a>
+    </body>
+</html>
+{% endblock %}

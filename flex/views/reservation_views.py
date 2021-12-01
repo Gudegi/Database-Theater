@@ -4,7 +4,8 @@ from werkzeug.utils import redirect
 import datetime
 import ast
 
-from flex.models import Movie, Screenschedule, Theater, Actor, Seat, Membership, Coupon, Benefit, IsUsed
+from flex import db
+from flex.models import Movie, Screenschedule, Theater, Actor, Seat, Membership, Coupon, Benefit, IsUsed, Reservation, Pay, IsUsed
 from flex.forms import ReservationFirstForm, ReservationSecondForm, ReservationSeatForm, PaymentForm, PaymentCommitForm
 
 bp = Blueprint('reservation', __name__, url_prefix='/ticket')
@@ -78,10 +79,10 @@ def pay(movie_id, res_date, theater_name, schedule_id, seats):
     if g.member:
         membership = Membership.query.get(g.member.membership_id)
         membership_point = membership.point
-        isuse = IsUsed.query.filter(IsUsed.membership_id == membership.id, IsUsed.issued == 1).all()
+        isuse = IsUsed.query.filter(IsUsed.membership_id == membership.id, IsUsed.issued == 0).all()
         for item in isuse:
             code = Coupon.query.get(item.coupon_code)
-            if code.expiredate > datetime.datetime.now() :
+            if code.expiredate > datetime.datetime.now():
                 membership_coupon[item.coupon_code] = code.expiredate
     if isinstance(x, list):
         for seat in x:
@@ -110,6 +111,11 @@ def last_commit(movie_id, res_date, theater_name, schedule_id, seats, coupon, po
     x = ast.literal_eval(seats)
     total_seat_price = 0
     seat_list = []
+    member_id = -1
+    seats_string = ""
+    is_used = -1
+    if g.member :
+        member_id = g.member.id
     if isinstance(x, list):
         for seat in x:
             seat_list.append(Seat.query.get(seat))
@@ -118,11 +124,47 @@ def last_commit(movie_id, res_date, theater_name, schedule_id, seats, coupon, po
     # 총가격 계산
     for seat in seat_list:
         total_seat_price += int(seat.price)
-    # coupon이 "-1" 이 아니면
-    # if coupon != "-1":
-    #     coupon = Benefit.query.filter(Benefit.coupon_code == coupon)
-
-    # form에서 reservation, pay, discount를
+        seats_string = seats_string + str(seat.id) + " "
+    if request.method == 'POST' and form.validate_on_submit():
+            already_reserved = False # 결제하는 사이에 다른 사람이 예약 완료하지 않았는지.
+            for seat in seat_list :
+                if Seat.query.get(seat.id).available == 0:
+                    already_reserved = True
+            if already_reserved == False :
+                reservation = Reservation(date=datetime.datetime.now(),
+                                          screen_schedule_id=schedule_id,
+                                          member_id=member_id,
+                                          seats=seats_string,
+                                          seat_screen_number=screen_number
+                                        )
+                db.session.add(reservation)
+                db.session.commit() #reservation id를 만들어주기 위함
+                for seat in seat_list:
+                    seat.available = 0
+                pay = Pay(firstpay=total_seat_price,
+                          coupon_code=coupon,
+                          used_points=point,
+                          method="card",
+                          reservation_id=reservation.id
+                )
+                membership.point -= point
+                if coupon != "-1":
+                    is_used = IsUsed.query.filter(IsUsed.membership_id == membership.id, IsUsed.coupon_code == coupon).all()
+                    is_used[0].issued = 1
+                db.session.add(pay)
+                db.session.add(membership)
+                db.session.commit()
+                return redirect((url_for('reservation.ticket')))
+            else:
+                return redirect((url_for('main.init404')))
 
     return render_template('client_templates/pay-commit.html', theater_name = theater_name, schedule = schedule,
-                           coupon = coupon, point = point, seat_price = total_seat_price, seat_list =seat_list, movie=movie, bene=bene)
+                           coupon = coupon, point = point, seat_price = total_seat_price, seat_list =seat_list, movie=movie, bene=bene, form=form, seats_string=seats_string, isused=is_used)
+
+
+@bp.after_request
+def add_header(resp):
+    resp.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    resp.headers["Pragma"] = "no-cache"
+    resp.headers["Expires"] = "0"
+    return resp

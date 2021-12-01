@@ -1,6 +1,13 @@
 {% extends 'client_base.html' %}
 {% block content %}
 <!DOCTYPE html>
+{#    뒤로가기 방지#}
+    <script type="text/javascript">
+        window.history.forward();
+        function noBack() {
+            window.history.forward();
+        }
+    </script>
 <html>
     <body class="body">
         <section class="after-head d-flex section-text-white position-relative">
@@ -53,8 +60,9 @@
                         {% else %}
                             {% for i in bene %}
                                 {% if i.coupon_code in coupon %}
+                                    <p>{{ cou_benefit }}</p>
                                     <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-money-bill-alt"></i></span>
-                                    <span class="info-text">쿠폰 : {{ i.benefit }}</span><span class="info-rest"></span></div>
+                                    <span class="info-text">쿠폰 : {{i.benefit}} </span><span class="info-rest"></span></div>
                                 {% endif %}
                             {% endfor %}
                         {% endif %}
@@ -68,9 +76,21 @@
                 </div>
                 <div class="entity-extra">
                     <h4 class="entity-title"><p href="movie-info-sidebar-right.html">Last Price</p></h4>
-                    &nbsp;
-                    <span class="info-text" style="color:#ff680d; font-size: 20px">&#8361;{{seat_price - point}}</span><span class="info-rest"></span></div>
-                    <div class="entity-actions" style="padding-left: 90px"><a class="btn-theme btn" href="" ><i class="fas fa-ticket-alt"></i>&nbsp;결제확인 / 예매하기</a></div>
+                <p>{{ isused }}</p>
+                    {% if coupon != "-1" %}
+                    {% for i in bene %}
+                        {% if i.coupon_code in coupon %}
+                            <span class="info-text" style="color:#ff680d; font-size: 20px">&#8361;{{seat_price - point - i.benefit}}</span><span class="info-rest"></span></div>
+                        {% endif %}
+                    {% endfor %}
+                    {% else %}
+                        <span class="info-text" style="color:#ff680d; font-size: 20px">&#8361;{{seat_price - point}}</span><span class="info-rest"></span>
+                    {% endif %}
+                    <form method="post" class="post-form" >
+                    {{ form.csrf_token }}
+                    {% include "form_errors.html" %}
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" class="btn-theme btn" style="width: 200px" value="결제확인 / 예매하기 ▶">&nbsp</input>
+                    </form>
             </article>
     </div>
 </section>
