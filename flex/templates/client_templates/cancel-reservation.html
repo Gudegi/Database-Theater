@@ -15,11 +15,11 @@
             <div class="d-background bg-black-80"></div>
             <div class="top-block top-inner container">
                 <div class="top-block-content">
-                    <h1 class="section-title">결제 확인</h1>
+                    <h1 class="section-title">예매 취소</h1>
                     <div class="page-breadcrumbs">
-                        <a class="content-link" href="#">결제</a>
+                        <a class="content-link" href="#">마이페이지</a>
                         <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
-                        <span>결제 확인 및 완료</span>
+                        <span>예매 취소</span>
                     </div>
                 </div>
             </div>
@@ -65,9 +65,11 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="entity-extra">
                     <h4 class="entity-title"><p href="movie-info-sidebar-right.html">환불 가격</p></h4>
                         <span class="info-text" style="color:#ff680d; font-size: 20px">&#8361;{{ pay.firstpay - pay.used_points - coupon_value }}</span><span class="info-rest"></span>
+                    &nbsp;&nbsp;&nbsp;
                     <form method="post" class="post-form" >
                     {{ form.csrf_token }}
                     {% include "form_errors.html" %}

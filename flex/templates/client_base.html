@@ -240,7 +240,12 @@
               <ul class="navbar-nav">
                 <!-- navbar에 로그인, 회원가입 / 로그아웃 탭 추가 -->
                 {% if g.member %}
-                <!-- 로그인 상태라면 로그아웃탭 노출 -->
+                <!-- 로그인 상태라면 로그아웃 + 마이페이지 탭 노출 -->
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('mypage.mypage') }}"
+                    >마이페이지</a
+                  >
+                </li>
                 <li class="nav-item">
                   <a class="nav-link" href="{{ url_for('auth.logout') }}"
                     >로그아웃</a
@@ -333,51 +338,21 @@
           <h5 class="footer-title text-uppercase">Movies</h5>
           <ul class="list-unstyled list-wide footer-content">
             <li>
-              <a class="content-link" href="#">All Movies</a>
+              <a class="content-link" href="{{ url_for('movies.list') }}">영화목록</a>
             </li>
             <li>
-              <a class="content-link" href="#">Upcoming movies</a>
+              <a class="content-link" href="{{ url_for('reservation.ticket') }}">빠른예매</a>
             </li>
             <li>
-              <a class="content-link" href="#">Top 100 movies</a>
-            </li>
-            <li>
-              <a class="content-link" href="#">Blockbasters</a>
-            </li>
-            <li>
-              <a class="content-link" href="#">British movies</a>
-            </li>
-            <li>
-              <a class="content-link" href="#">Summer movies collection</a>
-            </li>
-            <li>
-              <a class="content-link" href="#">Movie trailers</a>
+              <a class="content-link" href="{{ url_for('theaters.index') }}">극장</a>
             </li>
           </ul>
         </div>
         <div class="col-sm-6 col-lg-3">
           <h5 class="footer-title text-uppercase">Information</h5>
-          <ul class="list-unstyled list-wide footer-content">
+            <ul class="list-unstyled list-wide footer-content">
             <li>
-              <a class="content-link" href="#">Schedule</a>
-            </li>
-            <li>
-              <a class="content-link" href="#">News</a>
-            </li>
-            <li>
-              <a class="content-link" href="#">Contact us</a>
-            </li>
-            <li>
-              <a class="content-link" href="#">Community</a>
-            </li>
-            <li>
-              <a class="content-link" href="#">Blog</a>
-            </li>
-            <li>
-              <a class="content-link" href="#">Events</a>
-            </li>
-            <li>
-              <a class="content-link" href="#">Help center</a>
+              <a class="content-link" href="{{ url_for('theaters.index') }}">극장</a>
             </li>
           </ul>
         </div>

@@ -17,10 +17,9 @@ def init():
     today = datetime.date.today().strftime('%Y/%m/%d')
     return render_template('client_templates/homepage-1.html', movie_list=movie_list, today=today)
 
-# 두개가 같은 역활을 하고 메인페이지 url에는 아무것도 붙지 않는 것이 좋은 것 같아 변경. => 고객 / 관리자 구분 위해서라면 client만 붙이면 될듯.
-# @bp.route('/client_init')
-# def init():
-#     return render_template('client_templates/homepage-1.html')
+@bp.route('/client_init')
+def index():
+    return render_template('client_templates/homepage-1.html')
 
 #<전처리 완료 페이지 모음, 여기 써있는 페이지들은 작업 가능. 이 함수들은 추후 삭제 -----
 

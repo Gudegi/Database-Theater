@@ -28,8 +28,7 @@
                             <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie.id) }}" target="_blank">{{ movie.title }}</a>
                         </h4>
                         <div class="entity-category">
-                            <a class="content-link" href="movies-blocks.html">{{ theater_name }}</a>
-{#                            영화관 테이블 완성되면 영화관 정보로 연결되게.#}
+                            {{ theater_name }}
                         </div>
                         <div class="entity-info">
                             <div class="info-lines">
