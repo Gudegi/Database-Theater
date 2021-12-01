@@ -103,9 +103,9 @@ class Pay(db.Model):
 class Cancel(db.Model):
     number = db.Column(db.Integer, primary_key=True)
     cancelpay = db.Column(db.Integer, nullable=False)  # _추가
-    usingcoupon = db.Column(db.Integer, nullable=False)  # _ 추가
     datetime = db.Column(db.DateTime, nullable=False)
     pay_number = db.Column(db.Integer, db.ForeignKey('pay.number'))
+    res_id = db.Column(db.Integer, db.ForeignKey('reservation.id'))
 
 
 class Nonmember(db.Model):

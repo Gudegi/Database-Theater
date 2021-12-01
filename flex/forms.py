@@ -49,3 +49,6 @@ class PaymentForm(FlaskForm):
 
 class PaymentCommitForm(FlaskForm):
     commit = SubmitField('결제 완료')
+
+class ReservationCancelForm(FlaskForm):
+    commit = SubmitField('결제 완료')

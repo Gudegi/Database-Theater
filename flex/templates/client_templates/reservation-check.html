@@ -47,8 +47,8 @@
                                 <div class="entity-category"><a class="content-link" href="movies-blocks.html">{{ future_list[i][1].genre }}</a>
                                 <div class="entity-info">
                                     <div class="info-lines">
-                                        <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-star"></i></span>
-                                            <span class="info-text">8.7</span><span class="info-rest">/10</span></div>
+                                        <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-map-marker-alt"></i></span>
+                                            <span class="info-text">&nbsp;{{ future_list[i][4] }} <b>{{future_list[i][5]}}</b></span><span class="info-rest"></span></div>
                                     </div>
                                     &nbsp;
                                     <div class="info-lines">
@@ -64,7 +64,7 @@
                                     {% endfor %}
                                 </div>
                                 <div class="entity-extra">
-                                    <div class="entity-actions"><a class="btn-theme btn" href="">
+                                    <div class="entity-actions"><a class="btn-theme btn" href="{{ url_for('mypage.cancel', res_id= future_list[i][0].id) }}">
                                         <i class="fas fa-ticket-alt"></i>&nbsp;예매취소</a></div>
                                 </div>
                             </div>
