@@ -24,7 +24,7 @@ def signup():
                             nickname=form.nickname.data)
             db.session.add(member)
             db.session.commit()
-            return redirect(url_for('main.index'))
+            return redirect(url_for('main.init'))
         else:
             flash('이미 존재하는 사용자입니다.')
     return render_template('client_templates/auth/signup.html', form=form)
@@ -42,7 +42,7 @@ def login():
         if error is None:
             session.clear()
             session['member_id'] = member.id
-            return redirect(url_for('main.index'))
+            return redirect(url_for('main.init'))
         flash(error)
     return render_template('client_templates/auth/login.html', form=form)
 
@@ -58,4 +58,4 @@ def load_logged_in_member():
 @bp.route('/logout/')
 def logout():
     session.clear()
-    return redirect(url_for('main.index'))
+    return redirect(url_for('main.init'))

@@ -13,6 +13,8 @@ def mypage():
     member_id = -1
     if g.member:
         member_id = g.member.id
+    else :
+        return redirect(url_for('main.init')) #로그인 안한상태면 메인화면으로 보냄.
     res_list = Reservation.query.filter(Reservation.member_id == member_id).all()
     history_list = []
     future_list = []
@@ -23,6 +25,13 @@ def mypage():
         this_list.append(res_list[i])  # list[][0] Reservation
         this_list.append(Movie.query.get(this_schedule.movie_id))  # list[][1] Movie
         this_list.append(this_schedule)  # list[0][2] Schedule
+        seat_list = res_list[i].seats.split()
+        query_seat_list = []
+        for j in range(len(seat_list)):
+            seat = Seat.query.get(seat_list[j])
+            query_seat_list.append(seat)
+        this_list.append(query_seat_list)
+
         if this_schedule.starttime > datetime.datetime.now():
             future_list.append(this_list)
         else:

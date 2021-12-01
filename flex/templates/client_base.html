@@ -37,7 +37,7 @@
         <div class="container">
             <nav class="navbar">
                 <!-- 메인 아이콘-->
-                <a class="navbar-brand" href="{{ url_for('main.init')  }}">
+                <a class="navbar-brand" href="{{ url_for('main.init') }}">
                     <span class="logo-element">
                         <span class="logo-tape">
                             <span class="svg-content svg-fill-theme", data-svg="">
@@ -196,8 +196,9 @@
 <script src="{{url_for('static', filename='client_static/slick/slick.min.js') }}"></script>
 <!-- Magnific Popup -->
 <script src="{{url_for('static', filename='client_static/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
+<script src="{{url_for('static', filename='client_static/js/script.js') }}"></script>
 <!-- Inits product scripts  구글 맵 api 사용 js 이거 쓰면 계속 refresh돼서 서버 터짐
-<script src="{{url_for('static', filename='client_static/js/script.js') }}"></script> -->
+-->
 <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ4Qy67ZAILavdLyYV2ZwlShd0VAqzRXA&callback=initMap"></script> -->
 <script async defer src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/js/rating.js"></script>
 

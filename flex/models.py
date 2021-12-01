@@ -48,10 +48,11 @@ class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(45), nullable=False)
     content = db.Column(db.String(255), nullable=False)
-    rate = db.Column(db.Float, nullable=False)
+    rate = db.Column(db.Integer, nullable=False)
     date = db.Column(db.DateTime, nullable=False)
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))  # ondelete='CASCADE' 필요 없지 않나?
     member_id = db.Column(db.String(20), db.ForeignKey('member.id'))
+    modify_date = db.Column(db.DateTime)
 
 
 class Membership(db.Model):
@@ -110,8 +111,8 @@ class Cancel(db.Model):
 class Nonmember(db.Model):
     phone = db.Column(db.String(11), primary_key=True)
     name = db.Column(db.String(20), nullable=False)
-    pw = db.Column(db.String(20), nullable=False)
-    birth_date = db.Column(db.DateTime, nullable=False)  # 통일성을 위한 언더바 추가
+    pw = db.Column(db.String(200), nullable=False)
+    birth_date = db.Column(db.Date, nullable=False)  # 통일성을 위한 언더바 추가
 
 
 class Reservation(db.Model):

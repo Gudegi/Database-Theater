@@ -8,11 +8,9 @@
             <div class="d-background bg-black-80"></div>
             <div class="top-block top-inner container">
                 <div class="top-block-content">
-                    <h1 class="section-title">Movies list</h1>
+                    <h1 class="section-title">MY PAGE</h1>
                     <div class="page-breadcrumbs">
-                        <a class="content-link" href="#">Home</a>
-                        <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
-                        <span>Movies</span>
+                        <span>마이페이지</span>
                     </div>
                 </div>
             </div>
@@ -58,6 +56,12 @@
                                             <span class="info-text">&nbsp;{{ future_list[i][2].starttime}}</span><span class="info-rest"></span></div>
                                     </div>
                                     &nbsp;
+                                    {% for seat in future_list[i][3] %}
+                                        <div class="info-lines" style="border: 40px">
+                                            <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-ticket-alt"></i></span>
+                                                <span class="info-text">&nbsp;{{ seat.row }}{{ seat.col }}석</span><span class="info-rest"></span></div>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <div class="entity-extra">
                                     <div class="entity-actions"><a class="btn-theme btn" href="">
@@ -70,6 +74,7 @@
                 {% endfor %}
             {% endif %}
         </div>
+    </div>
 <div class="container">
                 <div class="section-pannel" style=" width: 1000px">
 {#                    위에 width 빼는게 더 이쁠지도?#}
@@ -128,7 +133,6 @@
         </div>
     </div>
 </section>
-        <a class="scroll-top disabled" href="#"><i class="fas fa-angle-up" aria-hidden="true"></i></a>
     </body>
 </html>
 {% endblock %}
