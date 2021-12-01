@@ -1,0 +1,42 @@
+{% extends "client_base.html" %} {% block content %}
+<section class="section-solid-short">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title text-uppercase">비회원 예매내역</h2>
+      <p class="section-text"></p>
+    </div>
+    <div class="container">
+      <div class="grid row">
+        {% for reservation in reservations %} {% for screenschedule in
+        reservation.screenschedules %} {% for movie in screenschedule.movies %}
+        {% for theater in screenschedule.theaters %}
+        <div class="col-sm-6 col-xl-4">
+          <div class="card">
+            <img
+              src="../../static/client_static/images/{{movie.eng_title}}_logo.jpg"
+              class="card-img-top"
+            />
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><h5><b>{{ movie.title }}</b></h5></li>
+              <li class="list-group-item">
+                DMN {{ theater.name }} / {{ screenschedule.screen }}관 {{
+                screenschedule.session }}회차
+              </li>
+              <li class="list-group-item">
+                {{ screenschedule.endtime.strftime('%Y-%m-%d %H:%M')}} 상영
+              </li>
+              <li class="list-group-item">좌석 : {{ reservation.seats }}</li>
+              </li>
+              <li class="list-group-item">예매일시 : {{ reservation.date }}</li>
+            </ul>
+            <div class="card-body" style="text-align: center">
+              <a href="#" class="btn btn-outline-theme">예매취소</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %} {% endfor %} {% endfor %} {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

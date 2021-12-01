@@ -113,7 +113,7 @@ class Nonmember(db.Model):
     phone = db.Column(db.String(11), primary_key=True)
     name = db.Column(db.String(20), nullable=False)
     pw = db.Column(db.String(200), nullable=False) # 암호화
-    birth_date = db.Column(db.Date, nullable=False)  # 통일성을 위한 언더바 추가
+    birth_date = db.Column(db.String(8), nullable=False)  # 통일성을 위한 언더바 추가 +date타입에서 string으로 변경
 
 
 class Reservation(db.Model):

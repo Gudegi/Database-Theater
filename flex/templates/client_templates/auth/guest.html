@@ -1,22 +1,30 @@
 {% extends "client_base.html" %} {% block content %}
 <div class="container my-5">
   <div class="row justify-content-center mt-5">
-    <div class="col-lg-4">
+    <div class="col-lg-5">
       <div class="card">
         <div class="card-body pb-0">
           <div class="showtime-wrap" style="margin-bottom: 1rem;">
             <div class="showtime-item">
               <a class="btn-time btn"
-                 style="width: 100px; color: white;"
+                 style="width: 125px; color: white;"
                  href="{{ url_for('auth.login') }}">로그인
               </a>
             </div>
             <div class="showtime-item">
               <span
                 class="btn-time btn"
-                style="width: 100px; background-color: coral;"
+                style="width: 125px; background-color: coral;"
                 >비회원 예매
               </span>
+            </div>
+            <div class="showtime-item">
+              <a
+                class="btn-time btn"
+                style="width: 125px; color: white;"
+                href="{{ url_for('auth.guest_reservation') }}"
+                >비회원 예매확인
+            </a>
             </div>
           </div>
         <form method="post" class="post-form">
@@ -32,9 +40,9 @@
             />
           </div>
           <div class="form-group">
-            <label for="birth_date">생년월일</label>
+            <label for="birth_date">생년월일(8자리)</label>
             <input
-              type="date"
+              type="text"
               class="form-control"
               name="birth_date"
               id="birth_date"

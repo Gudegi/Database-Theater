@@ -246,7 +246,7 @@
                     >로그아웃</a
                   >
                 </li>
-                {% elif g.guest%}
+                {% elif g.guest %}
                 <!-- 비회원 로그인 상태라면 비회원 로그아웃탭 노출 -->
                 <li class="nav-item">
                   <a class="nav-link" href="{{ url_for('auth.logout') }}"

@@ -28,7 +28,12 @@ class NonmemberLoginForm(FlaskForm):
     phone = StringField('휴대폰번호', validators=[DataRequired("휴대폰번호를 입력해주세요.")])
     name = StringField('이름', validators=[DataRequired("이름을 입력해주세요.")])
     password = PasswordField('비밀번호', validators=[DataRequired("비밀번호를 입력해주세요.")])
-    birth_date = StringField('생년월일', validators=[DataRequired('생년월일을 입력해주세요.')])
+    birth_date = StringField('생년월일', validators=[DataRequired('생년월일을 입력해주세요.'), Length(min=8, max=8)])
+
+class NonmemberReservationForm(FlaskForm):
+    birth_date = StringField('생년월일', validators=[DataRequired('생년월일을 입력해주세요.'),Length(min=8, max=8)])
+    phone = StringField('휴대폰번호', validators=[DataRequired("휴대폰번호를 입력해주세요.")])
+    password = PasswordField('비밀번호', validators=[DataRequired("비밀번호를 입력해주세요.")])
     
 class ReviewForm(FlaskForm):
     title = StringField('제목', validators=[DataRequired('제목은 필수입력 항목입니다.')])
