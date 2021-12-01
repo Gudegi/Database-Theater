@@ -5,7 +5,7 @@ import datetime
 import ast
 
 from flex import db
-from flex.models import Movie, Screenschedule, Theater, Actor, Seat, Membership, Coupon, Benefit, IsUsed, Reservation, \
+from flex.models import Movie, Screenschedule, Theater, Actor, Seat, Membership, Coupon, Benefit, IsUsed, Reservation, Screen, \
     Pay, IsUsed
 from flex.forms import ReservationFirstForm, ReservationSecondForm, ReservationSeatForm, PaymentForm, PaymentCommitForm
 
@@ -62,6 +62,7 @@ def res_step2(theater_name, res_date, movie_id):
 def seat(movie_id, res_date, theater_name, schedule_id):
     movie = Movie.query.get(movie_id)
     schedule = Screenschedule.query.get(schedule_id)
+    screen = Screen.query.get(schedule.screen_number)
     theater = Theater.query.get(schedule.theater_id)
     seat_list = Seat.query.filter(Seat.schedule_id == schedule_id).order_by(Seat.row.asc(), Seat.col.asc())  # 각각 행열로
     form = ReservationSeatForm()
@@ -70,7 +71,7 @@ def seat(movie_id, res_date, theater_name, schedule_id):
         return redirect(url_for('reservation.pay', movie_id=movie_id, res_date=res_date, theater_name=theater_name,
                                 schedule_id=schedule_id, seats=abc))
     return render_template('client_templates/seat.html', movie=movie, res_date=res_date, schedule=schedule,
-                           theater=theater, seat_list=seat_list, form=form)
+                           theater=theater, seat_list=seat_list, form=form, screen=screen)
 
 
 @bp.route('/<int:movie_id>/<string:res_date>/<string:theater_name>/<int:schedule_id>/seat/<seats>/pay',

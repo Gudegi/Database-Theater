@@ -83,7 +83,6 @@ def cancel(res_id):
         membership.point += pay.used_points
         db.session.add(cancel)
         db.session.commit()
-        flash("예매 취소가 완료되었습니다.")
         return redirect((url_for('mypage.mypage')))
     return render_template('client_templates/cancel-reservation.html', reservation = reservation, schedule = schedule, movie = movie,
                            pay = pay, query_seat_list = query_seat_list, theater_name=theater_name, screen=screen, coupon_value = coupon_value, form=form)
