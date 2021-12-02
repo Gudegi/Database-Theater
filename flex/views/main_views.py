@@ -1,5 +1,7 @@
 from flask import Blueprint, url_for, render_template
 from werkzeug.utils import redirect
+from flex.models import Movie
+import datetime
 
 bp = Blueprint('main', __name__, url_prefix='/')
 
@@ -9,18 +11,29 @@ bp = Blueprint('main', __name__, url_prefix='/')
 def hello_flex():
     return 'flexxxx'
 
-#<전처리 완료 페이지 모음, 여기 써있는 페이지들은 작업 가능. 이 함수들은 추후 삭제 -----
-@bp.route('/client_init')
+@bp.route('/')
 def init():
+    movie_list = Movie.query.order_by(Movie.id.desc())
+    today = datetime.date.today().strftime('%Y/%m/%d')
+    return render_template('client_templates/homepage-1.html', movie_list=movie_list, today=today)
+
+@bp.route('/client_init')
+def index():
     return render_template('client_templates/homepage-1.html')
+
+#<전처리 완료 페이지 모음, 여기 써있는 페이지들은 작업 가능. 이 함수들은 추후 삭제 -----
+
+
 
 @bp.route('/client_404')
 def init404():
     return render_template('client_templates/404-1.html')
 
+
 @bp.route('/client_article')
 def article():
     return render_template('client_templates/article-sidebar-right.html')
+
 
 @bp.route('/client_contact')
 def contact():
@@ -51,11 +64,6 @@ def newsBlock():
 def underConstruction():
     return render_template('client_templates/under-construction.html')
 #----->
-
-
-@bp.route('/')
-def index():
-    return render_template('client_templates/homepage-1.html')
 
 
 @bp.route('/ques')

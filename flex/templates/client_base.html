@@ -240,7 +240,12 @@
               <ul class="navbar-nav">
                 <!-- navbar에 로그인, 회원가입 / 로그아웃 탭 추가 -->
                 {% if g.member %}
-                <!-- 로그인 상태라면 로그아웃탭 노출 -->
+                <!-- 로그인 상태라면 로그아웃 + 마이페이지 탭 노출 -->
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('mypage.mypage') }}"
+                    >마이페이지</a
+                  >
+                </li>
                 <li class="nav-item">
                   <a class="nav-link" href="{{ url_for('auth.logout') }}"
                     >로그아웃</a
@@ -260,7 +265,7 @@
                 </li>
                 {% endif %}
                 <li class="nav-item">
-                  <a class="btn-theme btn" href="#"
+                  <a class="btn-theme btn" href="{{ url_for('reservation.ticket') }}"
                     ><i class="fas fa-ticket-alt"></i>&nbsp;&nbsp;빠른예매</a
                   >
                   <!-- buy ticket => 빠른 예매로 수정 -->
@@ -271,34 +276,31 @@
         </nav>
       </div>
     </header>
-    <!-- 여기부터 페이지 별 내용 Start -->
-    {% block content %} {% endblock %}
-    <!-- 여기까지 페이지 별 내용 End -->
-    <a class="scroll-top disabled" href="#"
-      ><i class="fas fa-angle-up" aria-hidden="true"></i
-    ></a>
-    <!-- jQuery library -->
-    <script src="{{ url_for('static', filename='client_static/js/jquery-3.3.1.js') }}"></script>
-    <!-- Bootstrap -->
-    <script src="{{url_for('static', filename='client_static/bootstrap/js/bootstrap.js') }}"></script>
-    <!-- Paralax.js -->
-    <script src="{{url_for('static', filename='client_static/parallax.js/parallax.js') }}"></script>
-    <!-- Waypoints -->
-    <script src="{{url_for('static', filename='client_static/waypoints/jquery.waypoints.min.js') }}"></script>
-    <!-- Slick carousel -->
-    <script src="{{url_for('static', filename='client_static/slick/slick.min.js') }}"></script>
-    <!-- Magnific Popup -->
-    <script src="{{url_for('static', filename='client_static/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
-    <!-- Inits product scripts  구글 맵 api 사용 js 이거 쓰면 계속 refresh돼서 서버 터짐
-<script src="{{url_for('static', filename='client_static/js/script.js') }}"></script> -->
-    <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ4Qy67ZAILavdLyYV2ZwlShd0VAqzRXA&callback=initMap"></script> -->
-    <script
-      async
-      defer
-      src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/js/rating.js"
-    ></script>
-  </body>
-  <footer class="section-text-white footer footer-links bg-darken">
+<!-- 여기부터 페이지 별 내용 Start -->
+{% block content %}
+{% endblock %}
+<!-- 여기까지 페이지 별 내용 End -->
+<a class="scroll-top disabled" href="#"><i class="fas fa-angle-up" aria-hidden="true"></i></a>
+<!-- jQuery library -->
+<script src="{{ url_for('static', filename='client_static/js/jquery-3.3.1.js') }}"></script>
+<!-- Bootstrap -->
+<script src="{{url_for('static', filename='client_static/bootstrap/js/bootstrap.js') }}"></script>
+<!-- Paralax.js -->
+<script src="{{url_for('static', filename='client_static/parallax.js/parallax.js') }}"></script>
+<!-- Waypoints -->
+<script src="{{url_for('static', filename='client_static/waypoints/jquery.waypoints.min.js') }}"></script>
+<!-- Slick carousel -->
+<script src="{{url_for('static', filename='client_static/slick/slick.min.js') }}"></script>
+<!-- Magnific Popup -->
+<script src="{{url_for('static', filename='client_static/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
+<script src="{{url_for('static', filename='client_static/js/script.js') }}"></script>
+<!-- Inits product scripts  구글 맵 api 사용 js 이거 쓰면 계속 refresh돼서 서버 터짐
+-->
+<!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ4Qy67ZAILavdLyYV2ZwlShd0VAqzRXA&callback=initMap"></script> -->
+<script async defer src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/js/rating.js"></script>
+
+</body>
+<footer class="section-text-white footer footer-links bg-darken">
     <div class="footer-body container">
       <div class="row">
         <div class="col-sm-6 col-lg-3">
@@ -336,51 +338,21 @@
           <h5 class="footer-title text-uppercase">Movies</h5>
           <ul class="list-unstyled list-wide footer-content">
             <li>
-              <a class="content-link" href="#">All Movies</a>
+              <a class="content-link" href="{{ url_for('movies.list') }}">영화목록</a>
             </li>
             <li>
-              <a class="content-link" href="#">Upcoming movies</a>
+              <a class="content-link" href="{{ url_for('reservation.ticket') }}">빠른예매</a>
             </li>
             <li>
-              <a class="content-link" href="#">Top 100 movies</a>
-            </li>
-            <li>
-              <a class="content-link" href="#">Blockbasters</a>
-            </li>
-            <li>
-              <a class="content-link" href="#">British movies</a>
-            </li>
-            <li>
-              <a class="content-link" href="#">Summer movies collection</a>
-            </li>
-            <li>
-              <a class="content-link" href="#">Movie trailers</a>
+              <a class="content-link" href="{{ url_for('theaters.index') }}">극장</a>
             </li>
           </ul>
         </div>
         <div class="col-sm-6 col-lg-3">
           <h5 class="footer-title text-uppercase">Information</h5>
-          <ul class="list-unstyled list-wide footer-content">
+            <ul class="list-unstyled list-wide footer-content">
             <li>
-              <a class="content-link" href="#">Schedule</a>
-            </li>
-            <li>
-              <a class="content-link" href="#">News</a>
-            </li>
-            <li>
-              <a class="content-link" href="#">Contact us</a>
-            </li>
-            <li>
-              <a class="content-link" href="#">Community</a>
-            </li>
-            <li>
-              <a class="content-link" href="#">Blog</a>
-            </li>
-            <li>
-              <a class="content-link" href="#">Events</a>
-            </li>
-            <li>
-              <a class="content-link" href="#">Help center</a>
+              <a class="content-link" href="{{ url_for('theaters.index') }}">극장</a>
             </li>
           </ul>
         </div>

@@ -79,10 +79,9 @@ class IsUsed(db.Model):
     issued = db.Column(db.Integer, nullable=False)
 
 
-# coupon_code, benefit 둘다 PK가 맞는지?
 class Benefit(db.Model):
     coupon_code = db.Column(db.String(20), db.ForeignKey('coupon.code'), primary_key=True)
-    benefit = db.Column(db.String(20), primary_key=True)
+    benefit = db.Column(db.Integer(), nullable=False)
 
 
 class Discount(db.Model):
@@ -95,8 +94,8 @@ class Discount(db.Model):
 class Pay(db.Model):
     number = db.Column(db.Integer, primary_key=True, autoincrement=True)
     firstpay = db.Column(db.Integer, nullable=False)  # _추가
-    discountpay = db.Column(db.Integer, nullable=False)  # _추가
-    lastpay = db.Column(db.Integer, nullable=False)  # _추가
+    coupon_code = db.Column(db.String(20), nullable=False)  # _추가
+    used_points = db.Column(db.Integer, nullable=False)  # _추가
     method = db.Column(db.String(20), nullable=False)
     reservation_id = db.Column(db.Integer, db.ForeignKey('reservation.id'))
 
@@ -104,16 +103,16 @@ class Pay(db.Model):
 class Cancel(db.Model):
     number = db.Column(db.Integer, primary_key=True)
     cancelpay = db.Column(db.Integer, nullable=False)  # _추가
-    usingcoupon = db.Column(db.Integer, nullable=False)  # _ 추가
     datetime = db.Column(db.DateTime, nullable=False)
     pay_number = db.Column(db.Integer, db.ForeignKey('pay.number'))
+    res_id = db.Column(db.Integer, db.ForeignKey('reservation.id'))
 
 
 class Nonmember(db.Model):
     phone = db.Column(db.String(11), primary_key=True)
     name = db.Column(db.String(20), nullable=False)
-    pw = db.Column(db.String(20), nullable=False)
-    birth_date = db.Column(db.DateTime, nullable=False)  # 통일성을 위한 언더바 추가
+    pw = db.Column(db.String(200), nullable=False)
+    birth_date = db.Column(db.Date, nullable=False)  # 통일성을 위한 언더바 추가
 
 
 class Reservation(db.Model):
@@ -122,8 +121,7 @@ class Reservation(db.Model):
     screen_schedule_id = db.Column(db.Integer, db.ForeignKey('screenschedule.id'))
     member_id = db.Column(db.String(20), db.ForeignKey('member.id'))
     nonmember_phone = db.Column(db.String(11), db.ForeignKey('nonmember.phone'))
-    # movie_id = db.Column(db.String(20), nullable=False) 상영 스케쥴에 영화 정보 있으니까 뺌
-    seat_id = db.Column(db.Integer, db.ForeignKey('seat.id'))
+    seats = db.Column(db.String(1000), nullable=False)
     seat_screen_number = db.Column(db.Integer, db.ForeignKey('seat.screen_number'))
 
 
@@ -135,9 +133,9 @@ class Screenschedule(db.Model):
     screen_number = db.Column(db.Integer, db.ForeignKey('screen.number'))
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
     theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))
-    theater = db.relationship('Theater', backref=db.backref('theater_names')) # 어드민 페이지 위한 역참조
+    theater = db.relationship('Theater', backref=db.backref('theater_names'))  # 어드민 페이지 위한 역참조
     title = db.relationship('Movie', backref=db.backref('titles'))  # 어드민 페이지 위한 역참조
-    screen = db.relationship('Screen', backref=db.backref('screen_names')) # 어드민 페이지 위한 역참조
+    screen = db.relationship('Screen', backref=db.backref('screen_names'))  # 어드민 페이지 위한 역참조
 
     def __str__(self):
         return self.theater_id
@@ -147,9 +145,9 @@ class Theater(db.Model):
     name = db.Column(db.String(10), nullable=False)
     type = db.Column(db.String(10), nullable=False)
     tel = db.Column(db.String(11), nullable=False)
-    address = db.Column(db.String(50), nullable=False) # 추가
-    seat = db.Column(db.Integer, nullable=False) # 추가
-    screen = db.Column(db.Integer, nullable=False) # 추가
+    address = db.Column(db.String(50), nullable=False)  # 추가
+    seat = db.Column(db.Integer, nullable=False)  # 추가
+    screen = db.Column(db.Integer, nullable=False)  # 추가
     representive = db.Column(db.String(10), nullable=False)
 
     def __str__(self):
@@ -164,15 +162,24 @@ class Notice(db.Model):
     theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))
 
 
+class NoticeAnswer(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    notice_id = db.Column(db.Integer, db.ForeignKey('notice.id', ondelete='CASCADE'))
+    notice = db.relationship('Notice', backref=db.backref('answer_set'))
+    content = db.Column(db.Text(), nullable=False)
+    create_date = db.Column(db.DateTime(), nullable=False)
+
+
 class Screen(db.Model):
     number = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(20), nullable=False)
     name = db.Column(db.String(20), nullable=False)
-    seat = db.Column(db.Integer, nullable=False) # 추가
+    seat = db.Column(db.Integer, nullable=False)  # 추가
     theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))  # 추가, 상영관은 영화관 참조
 
     def __str__(self):
         return self.name
+
 
 class Seat(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -237,14 +244,12 @@ class Commute(db.Model):
     starttime = db.Column(db.DateTime, nullable=False)  # _추가
     endtime = db.Column(db.DateTime, nullable=False)  # _ 추가
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship('User', backref=db.backref('user_name')) #어드민 페이지 역참조
+    user = db.relationship('User', backref=db.backref('user_name'))  # 어드민 페이지 역참조
 
     @property
     def work_time(self):
-        #일한 시간
+        # 일한 시간
         return self.endtime - self.starttime
-
-
 
 
 class Schedulemanage(db.Model):
@@ -281,10 +286,11 @@ roles_users = db.Table('roles_users',
                        db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
                        db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
 
+
 class Role(db.Model, RoleMixin):
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     name = db.Column(db.String(80), unique=True)
-    #name = db.relationship('User', secondary = roles_users, back_populates="roles")
+    # name = db.relationship('User', secondary = roles_users, back_populates="roles")
     description = db.Column(db.String(255))
 
 
@@ -307,7 +313,7 @@ class User(db.Model, UserMixin):
     active = db.Column(db.Boolean())
     salary = db.Column(db.Integer, nullable=False)
     account = db.Column(db.String(20), nullable=False)
-    department_info = db.Column(db.String(20))   #변경 예정 department_info > position
+    department_info = db.Column(db.String(20))  # 변경 예정 department_info > position
     confirmed_at = db.Column(db.DateTime())
     theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))
     roles = db.relationship('Role', secondary=roles_users, backref=db.backref('roles', lazy='dynamic'))

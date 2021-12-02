@@ -1,14 +1,17 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, PasswordField, IntegerField
+from wtforms import StringField, TextAreaField, PasswordField, IntegerField, SubmitField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, Length, EqualTo, Email
+
 
 class QuestionForm(FlaskForm):
     subject = StringField('제목', validators=[DataRequired('제목은 필수입력 항목입니다.')])
     content = TextAreaField('내용', validators=[DataRequired('내용은 필수입력 항목입니다.')])
 
+
 class AnswerForm(FlaskForm):
     content = TextAreaField('내용', validators=[DataRequired('내용은 필수입력 항목입니다.')])
+
 
 class MemberCreateForm(FlaskForm):
     id = StringField('아이디', validators=[DataRequired('아이디는 필수입력 항목입니다.'), Length(min=3, max=25)])
@@ -20,9 +23,34 @@ class MemberCreateForm(FlaskForm):
     email = EmailField('이메일', validators=[DataRequired('이메일은 필수입력 항목입니다.'), Email()])
     nickname = StringField('닉네임', validators=[DataRequired('닉네임은 필수입력 항목입니다.')])
 
+
 class MemberLoginForm(FlaskForm):
     id = StringField('아이디', validators=[DataRequired("아이디를 입력해주세요."), Length(min=3, max=25)])
     password = PasswordField('비밀번호', validators=[DataRequired("비밀번호를 입력해주세요.")])
+
+
+class ReservationFirstForm(FlaskForm):
+    theater_name = StringField('영화관', validators=[DataRequired('필수입력 항목입니다.')])
+    res_date = StringField('예매날짜', validators=[DataRequired(' 필수입력 항목입니다.')])
+
+
+class ReservationSecondForm(FlaskForm):
+    res_time = StringField('예매시간', validators=[DataRequired(' 필수입력 항목입니다.')])
+
+
+class ReservationSeatForm(FlaskForm):
+    res_seats = IntegerField('좌석', validators=[DataRequired(' 필수입력 항목입니다.')])
+
+
+class PaymentForm(FlaskForm):
+    coupon = StringField('쿠폰', validators=[DataRequired(' 필수입력 항목입니다.')])
+    point = IntegerField('멤버쉽 포인트', validators=[DataRequired(' 필수입력 항목입니다.')])
+
+class PaymentCommitForm(FlaskForm):
+    commit = SubmitField('결제 완료')
+
+class ReservationCancelForm(FlaskForm):
+    commit = SubmitField('결제 완료')
 
 class ReviewForm(FlaskForm):
     title = StringField('제목', validators=[DataRequired('제목은 필수입력 항목입니다.')])
