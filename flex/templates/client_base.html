@@ -9,6 +9,12 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <title>도미노 멀티플렉스</title>
+    <!-- 챗봇 -->
+    <link
+      href="{{ url_for('static', filename='client_static/chatbot_static/style.css') }}"
+      rel="stylesheet"
+      type="text/css"
+    />
     <!-- Bootstrap -->
     <link
       href="{{ url_for('static', filename='client_static/bootstrap/css/bootstrap.css') }}"
@@ -418,6 +424,40 @@
       <div class="container">
         Copyright 2019 &copy; AmigosThemes. All rights reserved.
       </div>
+    </div>
+    <div id = "sidebox">
+      <div class="chatbox">
+          <div class="chatbox__support">
+              <div class="chatbox__header">
+                  <div class="chatbox__image--header">
+                      <img src="https://img.icons8.com/color/48/000000/circled-user-female-skin-type-5--v1.png" alt="image">
+                  </div>
+                  <div class="chatbox__content--header">
+                      <h4 class="chatbox__heading--header">DMN 챗봇</h4>
+                      <p class="chatbox__description--header">안녕하세요 DMN 챗봇입니다. 무엇을 도와드릴까요?
+                      </p>
+                  </div>
+              </div>
+              <div class="chatbox__messages">
+                  <div></div>
+              </div>
+              <div class="chatbox__footer">
+                  <input type="text" placeholder="메세지를 입력하세요...">
+                  <button class="chatbox__send--footer send__button">전송</button>
+              </div>
+          </div>
+          <div class="chatbox__button">
+              <button><img src="{{ url_for('static', filename='client_static/chatbot_static/images/chatbox-icon.svg') }}" /></button>
+          </div>
+      </div>
+      <script src="{{ url_for('static', filename='client_static/chatbot_static/app.js') }}"></script>
+      <script>
+        var currentPosition = parseInt($("#sidebox").css("top")); 
+        $(window).scroll(function() { 
+          var position = $(window).scrollTop(); 
+          $("#sidebox").stop().animate({"top":position+currentPosition+"px"},1000); 
+        });
+      </script>
     </div>
   </footer>
 </html>
