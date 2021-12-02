@@ -1,4 +1,4 @@
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import backref, relationship
 from flex import db
 from flask_security import RoleMixin, UserMixin
 
@@ -17,6 +17,14 @@ class Inquiry(db.Model):
     content = db.Column(db.String(255), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
     member_id = db.Column(db.String(20), db.ForeignKey('member.id'))
+
+
+class InquiryAnswer(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    inquiry_id = db.Column(db.Integer, db.ForeignKey('inquiry.number', ondelete='CASCADE'))
+    inquiry = db.relationship('Inquiry', backref=db.backref('inquiry'))
+    content = db.Column(db.Text(), nullable=False)
+    create_date = db.Column(db.DateTime(), nullable=False)
 
 
 class Movie(db.Model):
@@ -53,6 +61,7 @@ class Review(db.Model):
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))  # ondelete='CASCADE' 필요 없지 않나?
     member_id = db.Column(db.String(20), db.ForeignKey('member.id'))
     modify_date = db.Column(db.DateTime)
+    sentiment = db.Column(db.Integer)
 
 
 class Membership(db.Model):
@@ -160,6 +169,7 @@ class Notice(db.Model):
     content = db.Column(db.String(255))
     date = db.Column(db.DateTime, nullable=False)
     theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))
+    theater = db.relationship('Theater', backref=db.backref('theater_names2'))
 
 
 class NoticeAnswer(db.Model):
@@ -236,6 +246,14 @@ class Evaluation(db.Model):
     date = db.Column(db.DateTime, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    @property
+    def userName(self):
+        return self.user
+
+    @property
+    def userTheater(self):
+        return self.user.theater
+
 
 class Commute(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -278,6 +296,13 @@ class Answer(db.Model):
     content = db.Column(db.Text(), nullable=False)
     create_date = db.Column(db.DateTime(), nullable=False)
 
+    @property
+    def questionSubject(self):
+        return self.question.subject
+    
+    @property
+    def questionContent(self):
+        return self.question.content
 
 # adminLTE####################
 # Define models
@@ -294,8 +319,7 @@ class Role(db.Model, RoleMixin):
     description = db.Column(db.String(255))
 
 
-    def __unicode__(self):
-
+    def __str__(self):
         return self.name
 
 
@@ -313,15 +337,31 @@ class User(db.Model, UserMixin):
     active = db.Column(db.Boolean())
     salary = db.Column(db.Integer, nullable=False)
     account = db.Column(db.String(20), nullable=False)
-    department_info = db.Column(db.String(20))  # 변경 예정 department_info > position
+    department_info = db.Column(db.String(20))   #변경 예정 department_info > position
     confirmed_at = db.Column(db.DateTime())
     theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))
+    theater = db.relationship('Theater', backref=db.backref('theater2'))
+
     roles = db.relationship('Role', secondary=roles_users, backref=db.backref('roles', lazy='dynamic'))
-
+    
     def __str__(self):
-        name = self.last_name + self.first_name
-        return name
 
+        '''attrs = db.class_mapper(self.__class__).attrs
+
+        if 'first_name' in attrs:
+            name = self.last_name + self.first_name
+            return str(name)
+
+        if 'theater' in attrs:
+            return str(self.theater)'''
+        name = self.last_name + self.first_name
+        return str(name)
+
+    @property
+    def userName(self):
+        name = self.last_name + self.first_name
+        return str(name)
+        
     #admin_views에서 self.roles만 가져다 쓰면 <Role 1> 이렇게 밖에 못씀. 여기서 리턴 바꿔줘야함
     @property
     def role_name(self):

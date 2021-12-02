@@ -24,7 +24,7 @@ def index():
 #<전처리 완료 페이지 모음, 여기 써있는 페이지들은 작업 가능. 이 함수들은 추후 삭제 -----
 
 
-
+'''
 @bp.route('/client_404')
 def init404():
     return render_template('client_templates/404-1.html')
@@ -69,3 +69,4 @@ def underConstruction():
 @bp.route('/ques')
 def index2():
     return redirect(url_for('question._list'))
+'''

@@ -14,20 +14,26 @@ migrate = Migrate(compare_type=True)
 
 
 # Create admin
-admin = Admin(name='My Dashboard', base_template='admin_base.html', template_mode='bootstrap4')
-from .models import Screen, User, Role, Movie, Screenschedule, Question, Answer, Review
+from .views.admin_views import MyHomeView, CommuteView, ManageUserView, MyModelView, NoticeView, ScheduleView, UserView, CustomView, MovieView, QuestionView, AnswerView, FacilityView, TestView, EvaluationView
+admin = Admin(index_view=MyHomeView(), name='DMN Manage', base_template='admin_base.html', template_mode='bootstrap4')
+from .models import Evaluation, Facility, User, Role, Movie, Screenschedule, Question, Answer, Commute, Notice
 # Add model views
-from .views.admin_views import MyModelView, ScheduleView, UserView, CustomView, MovieView, QuestionView, AnswerView
 admin.add_view(MyModelView(Role, db.session, menu_icon_type='fa', menu_icon_value='fa-server', name="Roles"))
-admin.add_view(UserView(User, db.session, menu_icon_type='fa', menu_icon_value='fa-users', name="Users"))
-admin.add_view(MovieView(Movie, db.session, menu_icon_type='fa', menu_icon_value='fa-film', name="Movies", endpoint='moives'))
-admin.add_view(ScheduleView(Screenschedule,  db.session, menu_icon_type='fa', menu_icon_value='fa-calendar-check-o', name='Screen Schedule'))
+admin.add_view(UserView(User, db.session, menu_icon_type='fa', menu_icon_value='fa-users', name='전체 직원 조회', endpoint='users'))
+admin.add_view(MovieView(Movie, db.session, menu_icon_type='fa', menu_icon_value='fa-film', name='영화 목록', endpoint='moives'))
+admin.add_view(ScheduleView(Screenschedule,  db.session, menu_icon_type='fa', menu_icon_value='fa-calendar-check-o', name='상영 일정 관리', endpoint='screenschedules'))
+admin.add_view(CommuteView(Commute, db.session, menu_icon_type='fa', menu_icon_value='fa-clock-o', name='출근부', endpoint='commute' ))
+admin.add_view(FacilityView(Facility, db.session, menu_icon_type='fa', menu_icon_value='fa-wrench', name='시설물 조회', endpoint='facilitys'))
+admin.add_view(ManageUserView(User, db.session, menu_icon_type='fa', menu_icon_value='fa-user-plus', name='내 지점 직원 관리', endpoint='manageUsers' ))
+admin.add_view(EvaluationView(Evaluation, db.session, menu_icon_type='fa', menu_icon_value='fa-pencil-square-o', name='내 지점 인사 평가', endpoint='evaluation' ))
+admin.add_view(NoticeView(Notice, db.session, menu_icon_type='fa', menu_icon_value='fa-exclamation', name='지점 별 공지', endpoint='notice'  ))
 
-admin.add_view(QuestionView(Question,  db.session, menu_icon_type='fa', menu_icon_value='fa-calendar-check-o', name='Question', endpoint='questions'))
-admin.add_view(AnswerView(Answer,  db.session, menu_icon_type='fa', menu_icon_value='fa-calendar-check-o', name='Answer', endpoint='answers'))
+admin.add_view(TestView(User,db.session,endpoint='asdf', name='test'))
+admin.add_view(QuestionView(Question,  db.session, menu_icon_type='fa', menu_icon_value='fa-calendar-check-o', name='Question', endpoint='questions',category="model"))
+admin.add_view(AnswerView(Answer,  db.session, menu_icon_type='fa', menu_icon_value='fa-calendar-check-o', name='Answer', endpoint='answers',category="model"))
 
-# endpoint는 URI 마지막 의미(/admin/custom)
 admin.add_view(CustomView(name="Custom view", endpoint='custom', menu_icon_type='fa', menu_icon_value='fa-connectdevelop',))
+
 
 # Form Extentions
 from flask_security import RegisterForm
@@ -55,7 +61,7 @@ def create_app():
 
 
     # 블루프린트
-    from .views import main_views, question_views, answer_views, movies_views, auth_views, reservation_views, mypage_views, theaters_views
+    from .views import main_views, question_views, answer_views, movies_views, auth_views, reservation_views, mypage_views, theaters_views, chat_views
     app.register_blueprint(main_views.bp)
     app.register_blueprint(question_views.bp)
     app.register_blueprint(answer_views.bp)
@@ -64,6 +70,7 @@ def create_app():
     app.register_blueprint(reservation_views.bp)
     app.register_blueprint(mypage_views.bp)
     app.register_blueprint(theaters_views.bp)
+    app.register_blueprint(chat_views.bp)
 
 
     # 직원
