@@ -32,19 +32,19 @@ def res_step1(movie_id):
     return render_template('client_templates/res-step1.html', movie=movie, theater_list=theater_list, form=form)
 
 
-@bp.route('/<int:movie_id>/<string:res_date>/<string:theater_name>',
+@bp.route('/<int:movie_id>/<string:res_date>/<int:theater_name>',
           methods=('POST', 'GET'))  # url_for인자로 넘긴것은 무조건 bp에 들어가야함?
 def res_step2(theater_name, res_date, movie_id):
+    theater = Theater.query.get(theater_name)
     py_res_date = datetime.date.fromisoformat(res_date)
-    schedule_list = Screenschedule.query.filter(Theater.name == theater_name,
-                                                Screenschedule.movie_id == movie_id).order_by(
-        Screenschedule.starttime.asc())
+    schedule_list = Screenschedule.query.filter(Screenschedule.theater_id == theater.id,
+                                                Screenschedule.movie_id == movie_id).order_by(Screenschedule.starttime.asc())
     movie = Movie.query.get(movie_id)
     actor_list = Actor.query.filter(Actor.movie_id == movie_id).all()
     form = ReservationSecondForm()
     real_list = []
     for schedule in schedule_list:
-        if Screenschedule.query.get(schedule.id).starttime.date() == py_res_date:
+        if schedule.starttime.date() == py_res_date and schedule.starttime > datetime.datetime.now():
             real_list.append(schedule)
     if request.method == 'POST' and form.validate_on_submit():
         # for schedule in real_list :
@@ -52,13 +52,13 @@ def res_step2(theater_name, res_date, movie_id):
 
         return redirect(url_for('reservation.seat', movie_id=movie_id, res_date=res_date, theater_name=theater_name,
                                 schedule_id=form.res_time.data))
-    return render_template('client_templates/res-step2.html', schedule_list=real_list, theater_name=theater_name,
+    return render_template('client_templates/res-step2.html', schedule_list=real_list, theater=theater,
                            res_date=py_res_date,
                            movie=movie, actor_list=actor_list, form=form)
 
 
 # 좌석
-@bp.route('/<int:movie_id>/<string:res_date>/<string:theater_name>/<int:schedule_id>/seat', methods=('POST', 'GET'))
+@bp.route('/<int:movie_id>/<string:res_date>/<int:theater_name>/<int:schedule_id>/seat', methods=('POST', 'GET'))
 def seat(movie_id, res_date, theater_name, schedule_id):
     movie = Movie.query.get(movie_id)
     schedule = Screenschedule.query.get(schedule_id)
@@ -74,13 +74,14 @@ def seat(movie_id, res_date, theater_name, schedule_id):
                            theater=theater, seat_list=seat_list, form=form, screen=screen)
 
 
-@bp.route('/<int:movie_id>/<string:res_date>/<string:theater_name>/<int:schedule_id>/seat/<seats>/pay',
+@bp.route('/<int:movie_id>/<string:res_date>/<int:theater_name>/<int:schedule_id>/seat/<seats>/pay',
           methods=('POST', 'GET'))
 def pay(movie_id, res_date, theater_name, schedule_id, seats):
     form = PaymentForm()
     movie = Movie.query.get(movie_id)
     schedule = Screenschedule.query.get(schedule_id)
     theater = Theater.query.get(schedule.theater_id)
+    screen = Screen.query.get(schedule.screen_number)
     seat_list = []
     x = ast.literal_eval(seats)
     membership_point = 0
@@ -108,17 +109,18 @@ def pay(movie_id, res_date, theater_name, schedule_id, seats):
             flash("멤버쉽 포인트 : 보유 포인트 내로 작성해주세요")
     return render_template('client_templates/payment.html', schedule=schedule, movie=movie, theater=theater,
                            test=seat_list,
-                           point=membership_point, coupon=membership_coupon, bene=bene, form=form)
+                           point=membership_point, coupon=membership_coupon, bene=bene, form=form, screen=screen)
 
 
 @bp.route(
-    '/<int:movie_id>/<string:res_date>/<string:theater_name>/<int:schedule_id>/seat/<seats>/pay/commit/<coupon>/<int:point>',
+    '/<int:movie_id>/<string:res_date>/<int:theater_name>/<int:schedule_id>/seat/<seats>/pay/commit/<coupon>/<int:point>',
     methods=('POST', 'GET'))
 def last_commit(movie_id, res_date, theater_name, schedule_id, seats, coupon, point):
     movie = Movie.query.get(movie_id)
     form = PaymentCommitForm()
+    theater = Theater.query.get(theater_name)
     schedule = Screenschedule.query.get(schedule_id)
-    screen_number = schedule.screen_number
+    screen = Screen.query.get(schedule.screen_number)
     date = schedule.starttime
     membership = Membership.query.get(g.member.membership_id)
     bene = Benefit.query.all()
@@ -149,7 +151,7 @@ def last_commit(movie_id, res_date, theater_name, schedule_id, seats, coupon, po
                                       screen_schedule_id=schedule_id,
                                       member_id=member_id,
                                       seats=seats_string,
-                                      seat_screen_number=screen_number
+                                      seat_screen_number=schedule.screen_number
                                       )
             db.session.add(reservation)
             db.session.commit()  # reservation id를 만들어주기 위함
@@ -172,9 +174,9 @@ def last_commit(movie_id, res_date, theater_name, schedule_id, seats, coupon, po
         else:
             return redirect((url_for('main.init404')))
 
-    return render_template('client_templates/pay-commit.html', theater_name=theater_name, schedule=schedule,
+    return render_template('client_templates/pay-commit.html', theater=theater, schedule=schedule,
                            coupon=coupon, point=point, seat_price=total_seat_price, seat_list=seat_list,
-                           movie=movie, bene=bene, form=form, seats_string=seats_string, isused=is_used)
+                           movie=movie, bene=bene, form=form, seats_string=seats_string, isused=is_used, screen=screen)
 
 
 @bp.after_request
