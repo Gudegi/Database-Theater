@@ -28,7 +28,7 @@
                             <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie.id) }}" target="_blank">{{ movie.title }}</a>
                         </h4>
                         <div class="entity-category">
-                            {{ theater_name }}
+                            {{ theater.name }}
                         </div>
                         <div class="entity-info">
                             <div class="info-lines">
@@ -124,7 +124,7 @@
                             <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie.id) }}" target="_blank">{{ movie.title }}</a>
                         </h4>
                         <div class="entity-category">
-                            <a class="content-link" href="movies-blocks.html">{{ theater_name }}</a>
+                            <a class="content-link" href="movies-blocks.html">{{ theater.name }}</a>
 {#                            영화관 테이블 완성되면 영화관 정보로 연결되게.#}
                         </div>
                         <div class="entity-info">
@@ -139,7 +139,7 @@
                     </div>
                     <div class="entity-content">
                         <h5 class="entity-content">
-                            {{ res_date }}일 {{ theater_name }}에 <br> 영화 {{ movie.title }} 상영 정보가 없습니다. <br>다른 날짜를 선택해주세요
+                            {{ res_date }}일 {{ theater.name }}에 <br> 영화 {{ movie.title }} 상영 정보가 없습니다. <br>다른 날짜를 선택해주세요
                         </h5>
                     </div>
                     <div class="entity-extra">
