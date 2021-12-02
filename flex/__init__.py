@@ -10,7 +10,7 @@ from flask_admin import helpers as admin_helpers
 import config
 
 db = SQLAlchemy()
-migrate = Migrate()
+migrate = Migrate(compare_type=True)
 
 
 # Create admin
@@ -55,15 +55,17 @@ def create_app():
 
 
     # 블루프린트
-    from .views import main_views, question_views, answer_views, movies_views, auth_views, theaters_views
+    from .views import main_views, question_views, answer_views, movies_views, auth_views, reservation_views, mypage_views, theaters_views
     app.register_blueprint(main_views.bp)
     app.register_blueprint(question_views.bp)
     app.register_blueprint(answer_views.bp)
     app.register_blueprint(auth_views.bp)
     app.register_blueprint(movies_views.bp)
+    app.register_blueprint(reservation_views.bp)
+    app.register_blueprint(mypage_views.bp)
     app.register_blueprint(theaters_views.bp)
 
-    
+
     # 직원
     user_datastore = SQLAlchemyUserDatastore(db, User, Role)
     security = Security(app, user_datastore, register_form = ExtendedRegisterForm)
