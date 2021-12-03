@@ -163,6 +163,13 @@ class Notice(db.Model):
     date = db.Column(db.DateTime, nullable=False)
     theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))
 
+class NoticeAnswer(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    notice_id = db.Column(db.Integer, db.ForeignKey('notice.id', ondelete='CASCADE'))
+    notice = db.relationship('Notice', backref=db.backref('nsa'))
+    content = db.Column(db.Text(), nullable=False)
+    create_date = db.Column(db.DateTime(), nullable=False)
+
 
 class Screen(db.Model):
     number = db.Column(db.Integer, primary_key=True)
@@ -261,6 +268,8 @@ class Question(db.Model):
     subject = db.Column(db.String(200), nullable=False)
     content = db.Column(db.Text(), nullable=False)
     create_date = db.Column(db.DateTime(), nullable=False)
+    member_id = db.Column(db.String, db.ForeignKey('member.id', ondelete='CASCADE'), nullable=True,server_default='test2')
+    member = db.relationship('Member', backref=db.backref('question_set'))
 
     def __str__(self):
         return self.content

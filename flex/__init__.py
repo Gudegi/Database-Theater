@@ -55,13 +55,14 @@ def create_app():
 
 
     # 블루프린트
-    from .views import main_views, question_views, answer_views, movies_views, auth_views, theaters_views
+    from .views import main_views, question_views, answer_views, movies_views, auth_views, theaters_views,services_views
     app.register_blueprint(main_views.bp)
     app.register_blueprint(question_views.bp)
     app.register_blueprint(answer_views.bp)
     app.register_blueprint(auth_views.bp)
     app.register_blueprint(movies_views.bp)
     app.register_blueprint(theaters_views.bp)
+    app.register_blueprint(services_views.bp)
 
     
     # 직원
@@ -77,6 +78,8 @@ def create_app():
             get_url=url_for
     )
 
+    from .filter import format_datetime
+    app.jinja_env.filters['datetime'] = format_datetime
 
     #  오류 처리
     app.register_error_handler(404, page_not_found)

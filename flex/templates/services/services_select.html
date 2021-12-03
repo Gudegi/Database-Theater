@@ -1,0 +1,34 @@
+{% extends 'client_base.html' %}
+{% block content %}
+<section class="after-head d-flex section-text-white position-relative">
+            <div class="d-background" data-image-src="http://via.placeholder.com/1920x1080" data-parallax="scroll"></div>
+            <div class="d-background bg-black-80"></div>
+            <div class="top-block top-inner container">
+                <div class="top-block-content">
+                    <h1 class="section-title">고객센터</h1>
+                    <div class="page-breadcrumbs">
+                        <a class="content-link" href="#">고객센터</a>
+                    </div>
+                </div>
+            </div>
+</section>>
+
+
+
+
+<section class="section-long">
+            <div class="container">
+                <div class="status-entity">
+
+                    <a class="btn btn-outline-warning btn-lg" href="{{ url_for('services._notice') }}"
+                       style="WIDTH: 200pt; HEIGHT: 200pt; font-size:3em;line-height:5.3;margin:0 +30px"
+                    >공지사항</a>
+                    <a href="{{ url_for('services._inquiry') }}" class="btn btn-outline-primary"
+                       style="WIDTH: 200pt; HEIGHT: 200pt; font-size:3em; line-height:5.3;margin:0 +30px" >문의하기</a>
+                </div>
+            </div>
+</section>
+
+
+
+{% endblock %}
