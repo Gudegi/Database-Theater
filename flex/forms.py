@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, PasswordField, IntegerField, SubmitField
+from wtforms import StringField, TextAreaField, PasswordField, IntegerField, SubmitField, validators
 from wtforms.fields.html5 import EmailField
-from wtforms.validators import DataRequired, Length, EqualTo, Email
+from wtforms.validators import DataRequired, Length, EqualTo, Email, NumberRange
 
 
 class QuestionForm(FlaskForm):
@@ -44,7 +44,7 @@ class ReservationSeatForm(FlaskForm):
 
 class PaymentForm(FlaskForm):
     coupon = StringField('쿠폰', validators=[DataRequired(' 필수입력 항목입니다.')])
-    point = IntegerField('멤버쉽 포인트', validators=[DataRequired(' 필수입력 항목입니다.')])
+    point = IntegerField('멤버쉽 포인트', [validators.InputRequired("필수입력 항목입니다."), NumberRange(min=0, message='0 이상의 유효한 값을 입력하세요')] )
 
 class PaymentCommitForm(FlaskForm):
     commit = SubmitField('결제 완료')

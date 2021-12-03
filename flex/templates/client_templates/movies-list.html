@@ -4,7 +4,7 @@
 <html>
     <body class="body">
         <section class="after-head d-flex section-text-white position-relative">
-            <div class="d-background" data-image-src="http://via.placeholder.com/1920x1080" data-parallax="scroll"></div>
+            <div class="d-background" data-image-src="../../static/client_static/images/Theater_background.jpg" data-parallax="scroll"></div>
             <div class="d-background bg-black-80"></div>
             <div class="top-block top-inner container">
                 <div class="top-block-content">
@@ -34,12 +34,12 @@
                         </div>
                     </div>
                 </div>
-                {% if movie_list %}
-                    {% for movie in movie_list %}
+                {% if rate_list %}
+                    {% for movie in rate_list %}
                         <article class="movie-line-entity">
                             <div class="entity-poster" data-role="hover-wrap">
                                 <div class="embed-responsive embed-responsive-poster">
-                                    <img class="embed-responsive-item" src="../../static/client_static/images/{{ movie.eng_title }}_logo.jpg" alt="http://via.placeholder.com/340x510" />
+                                    <img class="embed-responsive-item" src="../../static/client_static/images/{{ movie[0].eng_title }}_logo.jpg" alt="http://via.placeholder.com/340x510" />
                                 </div>
                                 <div class="d-over bg-theme-lighted collapse animated faster" data-show-class="fadeIn show" data-hide-class="fadeOut show">
                                     <div class="entity-play">
@@ -51,32 +51,32 @@
                             </div>
                             <div class="entity-content">
                                 <h4 class="entity-title">
-                                    <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie.id) }}">{{ movie.title }}</a>
+                                    <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie[0].id) }}">{{ movie[0].title }}</a>
 {#                                    Blueprint 이름으로 연결#}
                                 </h4>
                                 <div class="entity-category">
-                                    <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie.id) }}">{{ movie.genre }}</a>
+                                    <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie[0].id) }}">{{ movie[0].genre }}</a>
                                 </div>
                                 <div class="entity-info">
                                     <div class="info-lines">
                                         <div class="info info-short">
-                                            <span class="text-theme info-icon"><i class="fas fa-calendar-alt"></i></span>
+                                            <span class="text-theme info-icon"><i class="fas fa-star"></i></span>
 {#                                            <span class="info-text">29 mar 2018</span>#}
-                                            <span class="info-text">8.7</span>
-                                            <span class="info-rest">/10</span>
+                                            <span class="info-text">{{ movie[1] }}</span>
+                                            <span class="info-rest">/ 10</span>
                                         </div>
                                         <div class="info info-short">
                                             <span class="text-theme info-icon"><i class="fas fa-clock"></i></span>
-                                            <span class="info-text">{{ movie.running_time }}</span>
+                                            <span class="info-text">{{ movie[0].running_time }}</span>
                                             <span class="info-rest">&nbsp;min</span>
                                         </div>
                                     </div>
                                 </div>
-                                <p class="text-short entity-text">{{ movie.information }}
+                                <p class="text-short entity-text">{{ movie[0].information }}
                                 </p>
                             </div>
                                 <div class="entity-extra">
-                                    <div class="entity-actions"><a class="btn-theme btn" href="{{url_for('reservation.res_step1', movie_id=movie.id)}}">
+                                    <div class="entity-actions"><a class="btn-theme btn" href="{{url_for('reservation.res_step1', movie_id=movie[0].id)}}">
                                         <i class="fas fa-ticket-alt"></i>&nbsp;예매하기</a></div>
                                 </div>
 {#                            <div class="entity-extra">#}
