@@ -1,8 +1,5 @@
 {% extends 'client_base.html' %}
 {% block content %}
-
-
-
 <!DOCTYPE html>
 {#    뒤로가기 방지#}
     <script type="text/javascript">
@@ -51,6 +48,8 @@
                             </div>
                         </div>
                         &nbsp;
+                    {% if g.member %}
+                    <!-- 회원예매의 경우 -->
                         <div class="info-lines">
                             <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-tags"></i></span>
                                 <span class="info-text">할인 전 가격 : &#8361;{{seat_price}}</span><span class="info-rest"></span></div>
@@ -82,20 +81,39 @@
                     {% if coupon != "-1" %}
                     {% for i in bene %}
                         {% if i.coupon_code in coupon %}
-                            <span class="info-text" style="color:#ff680d; font-size: 20px">&#8361;{{seat_price - point - i.benefit}}</span><span class="info-rest"></span></div>
-                        {% endif %}
-                    {% endfor %}
-                    {% else %}
-                        <span class="info-text" style="color:#ff680d; font-size: 20px">&#8361;{{seat_price - point}}</span><span class="info-rest"></span>
-                    {% endif %}
-                    <form method="post" class="post-form" >
-                    {{ form.csrf_token }}
-                    {% include "form_errors.html" %}
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" class="btn-theme btn" style="width: 200px" value="결제확인 / 예매하기 ▶">&nbsp</input>
-                    </form>
+                            <span class="info-text" style="color:#ff680d; font-size: 20px">&#8361;{{seat_price - point - i.benefit}}</span>
+                            <span class="info-rest"></span>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% else %}
+                <span class="info-text" style="color:#ff680d; font-size: 20px">&#8361;{{seat_price - point}}</span><span class="info-rest"></span>
+                {% endif %}
+                {% elif g.guest %}
+                <!-- 비회원예매의 경우 -->
+                    <div class="info-lines">
+                        <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-tags"></i></span>
+                            <span class="info-text">가격 : &#8361;{{seat_price}}</span><span class="info-rest"></span>
+                        </div>
+                    </div>
+                    &nbsp;
+
+            </div>
+            <div class="entity-extra">
+                <h4 class="entity-title"><p href="movie-info-sidebar-right.html">Last Price</p></h4>
+                    <span class="info-text" style="color:#ff680d; font-size: 20px">&#8361;{{seat_price}}</span>
+                    <span class="info-rest"></span>
+            </div>
+            {% endif %}
+            <form method="post" class="post-form" >
+            {{ form.csrf_token }}
+            {% include "form_errors.html" %}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="submit" class="btn-theme btn" style="width: 200px" value="결제확인 / 예매하기 ▶">&nbsp</input>
+            </form>
             </article>
-    </div>
-</section>
+        </div>
+    </section>
 </body>
 </html>
 {% endblock %}

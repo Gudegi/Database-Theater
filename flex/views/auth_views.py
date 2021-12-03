@@ -4,7 +4,7 @@ from werkzeug.utils import redirect
 
 from flex import db
 from flex.forms import MemberCreateForm, MemberLoginForm, NonmemberLoginForm, NonmemberReservationForm
-from flex.models import Member, Nonmember, Reservation, Movie, Screenschedule, Theater
+from flex.models import Member, Nonmember, Reservation, Movie, Screenschedule, Theater, Seat
 import functools
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -66,7 +66,7 @@ def guest_login():
             db.session.commit()
             session.clear()
             session['nonmember_phone'] = guest.phone
-        return redirect(url_for('main.index'))
+        return redirect(url_for('reservation.ticket'))
     return render_template('client_templates/auth/guest.html', form=form)
 
 @bp.route('/guest/reservation', methods=('GET', 'POST'))
@@ -92,7 +92,12 @@ def guest_reservation():
                     movies = Movie.query.filter(Movie.id == screenschedule.movie_id).all()
                     theaters = Theater.query.filter(Theater.id == screenschedule.theater_id).all()
                     screenschedule_list.append(dict(id=screenschedule.id, session=screenschedule.session, starttime=screenschedule.starttime, endtime=screenschedule.endtime, screen=screenschedule.screen_number, movies=movies, theaters=theaters))
-                reservation_list.append(dict(id=reservation.id, date=reservation.date, seats=reservation.seats, screen_number=reservation.seat_screen_number, screenschedules = screenschedule_list))
+                seat_list = reservation.seats.split()
+                res_seat_list = []
+                for i in range(len(seat_list)):
+                    seat = Seat.query.get(seat_list[i])
+                    res_seat_list.append(seat)
+                reservation_list.append(dict(id=reservation.id, date=reservation.date, seat=res_seat_list, screen_number=reservation.seat_screen_number, screenschedules = screenschedule_list))
             return render_template('client_templates/auth/guest_reservationlist.html', reservations=reservation_list)
         flash(error)
     return render_template('client_templates/auth/guest_reservation.html', form=form)

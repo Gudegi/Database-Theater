@@ -25,7 +25,7 @@
               <li class="list-group-item">
                 {{ screenschedule.endtime.strftime('%Y-%m-%d %H:%M')}} 상영
               </li>
-              <li class="list-group-item">좌석 : {{ reservation.seats }}</li>
+              <li class="list-group-item">좌석 : {% for seat in reservation.seat %}{{ seat.row }}{{ seat.col }} {% endfor %}</li>
               </li>
               <li class="list-group-item">예매일시 : {{ reservation.date }}</li>
             </ul>
@@ -34,7 +34,7 @@
             </div>
           </div>
         </div>
-        {% endfor %} {% endfor %} {% endfor %} {% endfor %}
+        {% endfor %} {% endfor %} {% endfor %} {% endfor %} 
       </div>
     </div>
   </div>
