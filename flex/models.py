@@ -56,7 +56,7 @@ class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(45), nullable=False)
     content = db.Column(db.String(255), nullable=False)
-    rate = db.Column(db.Integer, nullable=False) # float에서 int로 변경
+    rate = db.Column(db.Integer, nullable=False)  # float에서 int로 변경
     date = db.Column(db.DateTime, nullable=False)
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))  # ondelete='CASCADE' 필요 없지 않나?
     member_id = db.Column(db.String(20), db.ForeignKey('member.id'))
@@ -148,6 +148,7 @@ class Screenschedule(db.Model):
 
     def __str__(self):
         return self.theater_id
+
 
 class Theater(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -299,10 +300,11 @@ class Answer(db.Model):
     @property
     def questionSubject(self):
         return self.question.subject
-    
+
     @property
     def questionContent(self):
         return self.question.content
+
 
 # adminLTE####################
 # Define models
@@ -318,10 +320,8 @@ class Role(db.Model, RoleMixin):
     # name = db.relationship('User', secondary = roles_users, back_populates="roles")
     description = db.Column(db.String(255))
 
-
     def __str__(self):
         return self.name
-
 
 
 class User(db.Model, UserMixin):
@@ -341,11 +341,10 @@ class User(db.Model, UserMixin):
     confirmed_at = db.Column(db.DateTime())
     theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))
     theater = db.relationship('Theater', backref=db.backref('theater2'))
-
     roles = db.relationship('Role', secondary=roles_users, backref=db.backref('roles', lazy='dynamic'))
+
     
     def __str__(self):
-
         '''attrs = db.class_mapper(self.__class__).attrs
 
         if 'first_name' in attrs:
@@ -361,11 +360,11 @@ class User(db.Model, UserMixin):
     def userName(self):
         name = self.last_name + self.first_name
         return str(name)
-        
-    #admin_views에서 self.roles만 가져다 쓰면 <Role 1> 이렇게 밖에 못씀. 여기서 리턴 바꿔줘야함
+
+    # admin_views에서 self.roles만 가져다 쓰면 <Role 1> 이렇게 밖에 못씀. 여기서 리턴 바꿔줘야함
     @property
     def role_name(self):
-        #한 행(직원)씩 리턴 직원 6명이면 6번 return
+        # 한 행(직원)씩 리턴 직원 6명이면 6번 return
         lis = []
         for i in self.roles:
             lis.append(i.name)

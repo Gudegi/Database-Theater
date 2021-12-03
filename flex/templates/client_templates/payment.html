@@ -96,7 +96,7 @@ span.price {
                     <div class="page-breadcrumbs">
                         <a class="content-link" href="#">{{ movie.title }}</a>
                         <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
-                        <span>{{ theater.name }}점</span>
+                        <span>{{ theater.name }}</span>
                         <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
                         <span>{{ schedule.starttime.strftime('%Y-%m-%d %H:%M')}}</span>
                     </div>
@@ -185,7 +185,7 @@ span.price {
                 &nbsp;
                 <div class="info-lines">
                     <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-map-marker-alt"></i></span>
-                        <span class="info-text">&nbsp;{{ theater.name}} 제{{ schedule.screen_number }}관</span><span class="info-rest"></span></div>
+                        <span class="info-text">&nbsp;{{ theater.name}} {{ screen }}</span><span class="info-rest"></span></div>
                 </div>
                 &nbsp;
             </div>

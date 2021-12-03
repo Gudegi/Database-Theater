@@ -9,6 +9,12 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <title>도미노 멀티플렉스</title>
+    <!-- 챗봇 -->
+    <link
+      href="{{ url_for('static', filename='client_static/chatbot_static/style.css') }}"
+      rel="stylesheet"
+      type="text/css"
+    />
     <!-- Bootstrap -->
     <link
       href="{{ url_for('static', filename='client_static/bootstrap/css/bootstrap.css') }}"
@@ -109,131 +115,12 @@
           <div class="navbar-collapse">
             <ul class="navbar-nav">
               <li class="nav-item nav-item-arrow-down nav-hover-show-sub">
-                <a class="nav-link" href="#">Homepage</a>
-                <div class="nav-arrow"><i class="fas fa-chevron-down"></i></div>
-                <ul class="collapse nav">
-                  <li class="nav-item">
-                    <a class="nav-link" href="homepage-1.html">Homepage 1</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="homepage-2.html">Homepage 2</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="homepage-3.html">Homepage 3</a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-item nav-item-arrow-down nav-hover-show-sub">
-                <a class="nav-link" href="#" data-role="nav-toggler">Pages</a>
-                <div class="nav-arrow"><i class="fas fa-chevron-down"></i></div>
-                <ul class="collapse nav">
-                  <li class="nav-item nav-item-arrow-down nav-hover-show-sub">
-                    <a class="nav-link" href="#" data-role="nav-toggler"
-                      >Movies</a
-                    >
-                    <div class="nav-arrow">
-                      <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <ul class="collapse nav">
-                      <li class="nav-item">
-                        <a class="nav-link" href="movies-blocks.html"
-                          >Blocks - No Sidebar</a
-                        >
-                      </li>
-                      <li class="nav-item">
-                        <a
-                          class="nav-link"
-                          href="movies-blocks-sidebar-right.html"
-                          >Blocks - Sidebar right</a
-                        >
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="movies-posters.html"
-                          >Posters - No Sidebar</a
-                        >
-                      </li>
-                      <li class="nav-item">
-                        <a
-                          class="nav-link"
-                          href="movies-posters-sidebar-right.html"
-                          >Posters - Sidebar right</a
-                        >
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="movies-list.html"
-                          >List - No Sidebar</a
-                        >
-                      </li>
-                    </ul>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="movie-info-sidebar-right.html"
-                      >Movie info</a
-                    >
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="gallery.html">Gallery</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="news-blocks-sidebar-right.html"
-                      >News</a
-                    >
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="article-sidebar-right.html"
-                      >Article</a
-                    >
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="about-us.html">About us</a>
-                  </li>
-                  <li class="nav-item nav-item-arrow-down nav-hover-show-sub">
-                    <a class="nav-link" href="#" data-role="nav-toggler"
-                      >User pages</a
-                    >
-                    <div class="nav-arrow">
-                      <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <ul class="collapse nav"></ul>
-                  </li>
-                  <li class="nav-item nav-item-arrow-down nav-hover-show-sub">
-                    <a class="nav-link" href="#" data-role="nav-toggler"
-                      >Status pages</a
-                    >
-                    <div class="nav-arrow">
-                      <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <ul class="collapse nav">
-                      <li class="nav-item">
-                        <a class="nav-link" href="under-construction.html"
-                          >Under construction</a
-                        >
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="coming-soon.html"
-                          >Coming soon</a
-                        >
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="404-1.html">404 - 1</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="404-2.html">404 - 2</a>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('movies.list') }}">영화</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item nav-item-arrow-down nav-hover-show-sub">
                 <a class="nav-link" href="{{ url_for('theaters.index') }}"
                   >극장</a
                 >
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="contact-us.html">Contact us</a>
               </li>
             </ul>
             <div class="navbar-extra">
@@ -375,33 +262,8 @@
           <h5 class="footer-title text-uppercase">Follow</h5>
           <ul class="list-wide footer-content list-inline">
             <li class="list-inline-item">
-              <a class="content-link" href="#"
-                ><i class="fab fa-slack-hash"></i
-              ></a>
-            </li>
-            <li class="list-inline-item">
-              <a class="content-link" href="#"
-                ><i class="fab fa-twitter"></i
-              ></a>
-            </li>
-            <li class="list-inline-item">
-              <a class="content-link" href="#"
-                ><i class="fab fa-facebook-f"></i
-              ></a>
-            </li>
-            <li class="list-inline-item">
-              <a class="content-link" href="#"
-                ><i class="fab fa-dribbble"></i
-              ></a>
-            </li>
-            <li class="list-inline-item">
-              <a class="content-link" href="#"
-                ><i class="fab fa-google-plus-g"></i
-              ></a>
-            </li>
-            <li class="list-inline-item">
-              <a class="content-link" href="#"
-                ><i class="fab fa-instagram"></i
+              <a class="content-link" href="https://github.com/Gudegi/Database-Theater"
+                ><i class="fab fa-github-square"></i
               ></a>
             </li>
           </ul>
@@ -433,6 +295,40 @@
       <div class="container">
         Copyright 2019 &copy; AmigosThemes. All rights reserved.
       </div>
+    </div>
+    <div id = "sidebox">
+      <div class="chatbox">
+          <div class="chatbox__support">
+              <div class="chatbox__header">
+                  <div class="chatbox__image--header">
+                      <img src="https://img.icons8.com/color/48/000000/circled-user-female-skin-type-5--v1.png" alt="image">
+                  </div>
+                  <div class="chatbox__content--header">
+                      <h4 class="chatbox__heading--header">DMN 챗봇</h4>
+                      <p class="chatbox__description--header">안녕하세요 DMN 챗봇입니다. 무엇을 도와드릴까요?
+                      </p>
+                  </div>
+              </div>
+              <div class="chatbox__messages">
+                  <div></div>
+              </div>
+              <div class="chatbox__footer">
+                  <input type="text" placeholder="메세지를 입력하세요...">
+                  <button class="chatbox__send--footer send__button">전송</button>
+              </div>
+          </div>
+          <div class="chatbox__button">
+              <button><img src="{{ url_for('static', filename='client_static/chatbot_static/images/chatbox-icon.svg') }}" /></button>
+          </div>
+      </div>
+      <script src="{{ url_for('static', filename='client_static/chatbot_static/app.js') }}"></script>
+      <script>
+        var currentPosition = parseInt($("#sidebox").css("top")); 
+        $(window).scroll(function() { 
+          var position = $(window).scrollTop(); 
+          $("#sidebox").stop().animate({"top":position+currentPosition+"px"},1000); 
+        });
+      </script>
     </div>
   </footer>
 </html>

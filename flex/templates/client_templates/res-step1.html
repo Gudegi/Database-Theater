@@ -31,8 +31,7 @@
                             <div class="info-lines">
                                 <div class="info info-short">
                                     <span class="text-theme info-icon"><i class="fas fa-star"></i></span>
-                                    <span class="info-text">8.7</span>
-                                    <span class="info-rest">/10</span>
+                                    <span class="info-text">{{ rate }}</span>
                                 </div>
                                 <div class="info info-short">
                                     <span class="text-theme info-icon"><i class="fas fa-clock"></i></span>
@@ -53,7 +52,7 @@
                                     {% if theater_list %}
                                         {% for theater in theater_list %}
                                             <div class="showtime-item">
-                                                <input type="radio" id = "theater_{{ theater.id }}" name = "theater_name"  aria-disabled="false" href="#" value="{{ theater.name or ''}}">
+                                                <input type="radio" id = "theater_{{ theater.id }}" name = "theater_name"  aria-disabled="false" href="#" value="{{ theater.id or ''}}">
                                                 <label for="theater_{{ theater.id }}" >
                                                     <span class="btn-time btn">{{theater.name}}</span>
                                                 </label>
