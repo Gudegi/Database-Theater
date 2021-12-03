@@ -6,7 +6,7 @@ import ast
 
 from flex import db
 from flex.models import Movie, Screenschedule, Theater, Actor, Seat, Membership, Coupon, Benefit, IsUsed, Reservation, Screen, \
-    Pay, IsUsed
+    Pay, IsUsed, Review
 from flex.forms import ReservationFirstForm, ReservationSecondForm, ReservationSeatForm, PaymentForm, PaymentCommitForm
 
 bp = Blueprint('reservation', __name__, url_prefix='/ticket')
@@ -14,14 +14,38 @@ bp = Blueprint('reservation', __name__, url_prefix='/ticket')
 
 @bp.route('/')
 def ticket():
-    movie_list = Movie.query.all()
-    return render_template('client_templates/ticket.html', movie_list=movie_list)
+    movie_list = Movie.query.order_by(Movie.id.asc())
+    rate_list = []
+    for movie in movie_list:
+        this_list = []
+        review_list = Review.query.filter(Review.movie_id == movie.id).all()
+        sum = 0
+        num = 0
+        for review in review_list:
+            sum += review.rate
+            num += 1
+        if (num > 0):
+            rate = round(sum / num, 2)
+        else:
+            rate = 0
+        this_list.append(movie)
+        this_list.append(rate)
+        rate_list.append(this_list)
+    return render_template('client_templates/ticket.html', rate_list=rate_list)
 
 
 @bp.route('/<int:movie_id>', methods=('GET', 'POST'))
 def res_step1(movie_id):
     movie = Movie.query.get(movie_id)
     theater_list = Theater.query.all()
+    review_list = Review.query.filter(Review.movie_id == movie_id).all()
+    sum = 0
+    for review in review_list:
+        sum += review.rate
+    if len(review_list) != 0:
+        rate = round(sum / len(review_list),2)
+    else:
+        rate = 0
     form = ReservationFirstForm()
     if request.method == 'POST' and form.validate_on_submit():
         # return redirect((url_for('reservation.ticket')))
@@ -29,7 +53,7 @@ def res_step1(movie_id):
         return redirect(
             url_for('reservation.res_step2', theater_name=form.theater_name.data, res_date=form.res_date.data,
                     movie_id=movie_id))
-    return render_template('client_templates/res-step1.html', movie=movie, theater_list=theater_list, form=form)
+    return render_template('client_templates/res-step1.html', movie=movie, theater_list=theater_list, form=form, rate=rate)
 
 
 @bp.route('/<int:movie_id>/<string:res_date>/<int:theater_name>',

@@ -4,11 +4,11 @@
 <html>
     <body class="body">
         <section class="after-head d-flex section-text-white position-relative">
-            <div class="d-background" data-image-src="../../static/client_static/images/{{ movie.title }}_logo.jpg" data-parallax="scroll"></div>
+            <div class="d-background" data-image-src="../../static/client_static/images/{{ movie.eng_title }}_logo.jpg" data-parallax="scroll"></div>
             <div class="d-background bg-black-80"></div>
             <div class="top-block top-inner container">
                 <div class="top-block-content">
-                    <h1 class="section-title">Movies info</h1>
+                    <h1 class="section-title">{{ movie.title }}</h1>
                     <div class="page-breadcrumbs">
                         <a class="content-link" href="#">Home</a>
                         <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
@@ -44,7 +44,7 @@
                                         <div class="info-lines">
                                             <div class="info info-short">
                                                 <span class="text-theme info-icon"><i class="fas fa-star"></i></span>
-                                                <span class="info-text">8.7</span>
+                                                <span class="info-text">{{ rate }}</span>
                                                 <span class="info-rest">/10</span>
                                             </div>
                                             <div class="info info-short">

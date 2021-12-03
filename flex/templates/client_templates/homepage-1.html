@@ -20,7 +20,7 @@
                                     <div class="slick-slide">
                                         <article class="poster-entity" data-role="hover-wrap">
                                             <div class="embed-responsive embed-responsive-poster">
-                                                <img class="embed-responsive-item" src="../../static/client_static/images/{{ movie.eng_title }}_logo.jpg" alt="http://via.placeholder.com/340x510" />
+                                                <img class="embed-responsive-item" src="../../static/client_static/images/{{ movie[0].eng_title }}_logo.jpg" alt="http://via.placeholder.com/340x510" />
                                             </div>
                                             <div class="d-background bg-theme-lighted collapse animated faster" data-show-class="fadeIn show" data-hide-class="fadeOut show"></div>
                                             <div class="d-over bg-highlight-bottom">
@@ -30,21 +30,20 @@
                                                     </a>
                                                 </div>
                                                 <h4 class="entity-title">
-                                                    <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie.id) }}">{{ movie.title }}</a>
+                                                    <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie[0].id) }}">{{ movie[0].title }}</a>
                                                 </h4>
                                                 <div class="entity-category">
-                                                    <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie.id) }}">{{ movie.genre }}</a>
+                                                    <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie[0].id) }}">{{ movie[0].genre }}</a>
                                                 </div>
                                                 <div class="entity-info">
                                                     <div class="info-lines">
                                                         <div class="info info-short">
                                                             <span class="text-theme info-icon"><i class="fas fa-star"></i></span>
-                                                            <span class="info-text">8,1</span>
-                                                            <span class="info-rest">/10</span>
+                                                            <span class="info-text">{{ movie[1] }}</span>
                                                         </div>
                                                         <div class="info info-short">
                                                             <span class="text-theme info-icon"><i class="fas fa-clock"></i></span>
-                                                            <span class="info-text">{{ movie.running_time }}</span>
+                                                            <span class="info-text">{{ movie[0].running_time }}</span>
                                                             <span class="info-rest">&nbsp;min</span>
                                                         </div>
                                                     </div>
@@ -86,7 +85,7 @@
                         <article class="movie-line-entity">
                             <div class="entity-poster" data-role="hover-wrap">
                                 <div class="embed-responsive embed-responsive-poster">
-                                    <img class="embed-responsive-item" src="../../static/client_static/images/{{ movie.eng_title }}_logo.jpg" alt="http://via.placeholder.com/340x510" />
+                                    <img class="embed-responsive-item" src="../../static/client_static/images/{{ movie[0].eng_title }}_logo.jpg" alt="http://via.placeholder.com/340x510" />
                                 </div>
                                 <div class="d-over bg-theme-lighted collapse animated faster" data-show-class="fadeIn show" data-hide-class="fadeOut show">
                                     <div class="entity-play">
@@ -98,31 +97,31 @@
                             </div>
                              <div class="entity-content">
                                 <h4 class="entity-title">
-                                    <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie.id) }}">{{ movie.title }}</a>
+                                    <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie[0].id) }}">{{ movie[0].title }}</a>
                                 </h4>
                                 <div class="entity-category">
-                                    <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie.id) }}">{{ movie.genre }}</a>
+                                    <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie[0].id) }}">{{ movie[0].genre }}</a>
                                 </div>
                                 <div class="entity-info">
                                     <div class="info-lines">
                                         <div class="info info-short">
-                                            <span class="text-theme info-icon"><i class="fas fa-calendar-alt"></i></span>
-                                            <span class="info-text">8.7</span>
-                                            <span class="info-rest">/10</span>
+                                            <span class="text-theme info-icon"><i class="fas fa-star"></i></span>
+                                            <span class="info-text">{{ movie[1] }}</span>
+                                            <span class="info-rest">/ 10</span>
                                         </div>
                                         <div class="info info-short">
                                             <span class="text-theme info-icon"><i class="fas fa-clock"></i></span>
-                                            <span class="info-text">{{ movie.running_time }}</span>
+                                            <span class="info-text">{{ movie[0].running_time }}</span>
                                             <span class="info-rest">&nbsp;min</span>
                                         </div>
                                     </div>
                                 </div>
-                                <p class="text-short entity-text">{{ movie.information }}
+                                <p class="text-short entity-text">{{ movie[0].information }}
                                 </p>
                             </div>
 {#                            예매하기를 넣을지 말지.#}
 {#                            <div class="entity-extra">#}
-{#                                <div class="entity-actions"><a class="btn-theme btn" href="{{url_for('reservation.res_step1', movie_id=movie.id)}}">#}
+{#                                <div class="entity-actions"><a class="btn-theme btn" href="{{url_for('reservation.res_step1', movie_id=movie[0].id)}}">#}
 {#                                    <i class="fas fa-ticket-alt"></i>&nbsp;예매하기</a></div>#}
 {#                            </div>#}
                         </article>

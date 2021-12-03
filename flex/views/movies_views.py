@@ -14,8 +14,24 @@ bp = Blueprint('movies', __name__, url_prefix='/movies')
 #영화 목록 페이지
 @bp.route('/')
 def list():
-    movie_list = Movie.query.order_by(Movie.id.desc())
-    return render_template('client_templates/movies-list.html', movie_list = movie_list)
+    movie_list = Movie.query.order_by(Movie.id.asc())
+    rate_list = []
+    for movie in movie_list:
+        this_list = []
+        review_list = Review.query.filter(Review.movie_id == movie.id).all()
+        sum = 0
+        num = 0
+        for review in review_list:
+            sum += review.rate
+            num += 1
+        if(num > 0):
+            rate = round(sum / num, 2)
+        else:
+            rate = 0
+        this_list.append(movie)
+        this_list.append(rate)
+        rate_list.append(this_list)
+    return render_template('client_templates/movies-list.html', rate_list=rate_list)
 
 #영화 목록 페이지에서 영화 이름 누르면 해당 영화 detail 페이지 랜더링, 각 영화의 이미지, 이름 등 db에 있는 정보들을 인자로 넘겨서 랜더링
 
@@ -24,7 +40,14 @@ def detail(movie_id):
     movie = Movie.query.get(movie_id)
     actor_list = Actor.query.filter(Actor.movie_id == movie_id).all()
     review_list = Review.query.filter(Review.movie_id == movie_id).all()
-    return render_template('client_templates/movie-info-sidebar-right.html', movie=movie, actor_list=actor_list, review_list=review_list)
+    sum = 0
+    for review in review_list:
+        sum += review.rate
+    if len(review_list) != 0:
+        rate = round(sum / len(review_list),2)
+    else:
+        rate = 0
+    return render_template('client_templates/movie-info-sidebar-right.html', movie=movie, actor_list=actor_list, review_list=review_list, rate=rate)
 
 
 @bp.route('/detail/<int:movie_id>/create', methods=('GET', 'POST'))
