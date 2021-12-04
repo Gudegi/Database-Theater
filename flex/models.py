@@ -180,14 +180,6 @@ class NoticeAnswer(db.Model):
     content = db.Column(db.Text(), nullable=False)
     create_date = db.Column(db.DateTime(), nullable=False)
 
-class NoticeAnswer(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    notice_id = db.Column(db.Integer, db.ForeignKey('notice.id', ondelete='CASCADE'))
-    notice = db.relationship('Notice', backref=db.backref('nsa'))
-    content = db.Column(db.Text(), nullable=False)
-    create_date = db.Column(db.DateTime(), nullable=False)
-
-
 class Screen(db.Model):
     number = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(20), nullable=False)

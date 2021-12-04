@@ -4,7 +4,7 @@ from flask import Blueprint, render_template, request, url_for,g
 from werkzeug.utils import redirect
 
 from .. import db
-from flex.models import Notice,Question,Answer,NoticeAnswer
+from flex.models import Notice,Inquiry,InquiryAnswer,NoticeAnswer,Question,Answer
 from ..forms import QuestionForm, AnswerForm,NoticeForm,NoticeAnswerForm
 
 bp = Blueprint('services', __name__, url_prefix='/services')
@@ -46,9 +46,9 @@ def noticeDetail(notice_id):
 @bp.route('/inquiry/')
 def _inquiry():
     page = request.args.get('page', type=int, default=1)
-    question_list = Question.query.order_by(Question.create_date.desc())
-    question_list = question_list.paginate(page, per_page=10)
-    return render_template('services/services_question_list.html', question_list=question_list)
+    inquiry_list = Inquiry.query.order_by(Inquiry.create_date.desc())
+    inquiry_list = inquiry_list.paginate(page, per_page=10)
+    return render_template('services/services_question_list.html', Inquiry_list=inquiry_list)
 
 
 
