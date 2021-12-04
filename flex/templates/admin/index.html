@@ -4,10 +4,15 @@
 
 {% if current_user.is_authenticated %}
 
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    Dashboard
+    인사이트
     <small>Control panel</small>
   </h1>
   <ol class="breadcrumb">
@@ -23,13 +28,13 @@
       <!-- small box -->
       <div class="small-box bg-aqua">
         <div class="inner">
-          <h3>150</h3>
-          <p>New Orders</p>
+          <h3>{{ user_count }} <sup style="font-size: 20px">명</sup></h3>
+          <p>직원</p>
         </div>
         <div class="icon">
-          <i class="ion ion-bag"></i>
+          <i class="ion-ios-people"></i>
         </div>
-        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        <a href="#" class="small-box-footer">더 보기 <i class="fa fa-arrow-circle-right"></i></a>
       </div>
     </div>
     <!-- ./col -->
@@ -37,14 +42,13 @@
       <!-- small box -->
       <div class="small-box bg-green">
         <div class="inner">
-          <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-          <p>Bounce Rate</p>
+          <h3>{{ prev_month_pay }} <sup style="font-size: 20px">원</sup></h3>
+          <p>지난 30일 상영 매출</p>
         </div>
         <div class="icon">
-          <i class="ion ion-stats-bars"></i>
+          <i class="ion ion-cash"></i>
         </div>
-        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        <a href="#" class="small-box-footer">더 보기 <i class="fa fa-arrow-circle-right"></i></a>
       </div>
     </div>
     <!-- ./col -->
@@ -52,14 +56,13 @@
       <!-- small box -->
       <div class="small-box bg-yellow">
         <div class="inner">
-          <h3>44</h3>
-
-          <p>User Registrations</p>
+          <h3>{{client_count }} <sup style="font-size: 20px">명</sup></h3>
+          <p>회원</p>
         </div>
         <div class="icon">
           <i class="ion ion-person-add"></i>
         </div>
-        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        <a href="#" class="small-box-footer">더 보기 <i class="fa fa-arrow-circle-right"></i></a>
       </div>
     </div>
     <!-- ./col -->
@@ -67,14 +70,13 @@
       <!-- small box -->
       <div class="small-box bg-red">
         <div class="inner">
-          <h3>65</h3>
-
-          <p>Unique Visitors</p>
+          <h3>{{ best_movie[0] }}, {{best_movie[1]}}<sup style="font-size: 20px">원</sup></h3>
+          <p>최고 매출 영화</p>
         </div>
         <div class="icon">
           <i class="ion ion-pie-graph"></i>
         </div>
-        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        <a href="#" class="small-box-footer">더 보기 <i class="fa fa-arrow-circle-right"></i></a>
       </div>
     </div>
     <!-- ./col -->
@@ -88,14 +90,48 @@
       <div class="nav-tabs-custom">
         <!-- Tabs within a box -->
         <ul class="nav nav-tabs pull-right">
-          <li class="active"><a href="#revenue-chart" data-toggle="tab">Area</a></li>
-          <li><a href="#sales-chart" data-toggle="tab">Donut</a></li>
-          <li class="pull-left header"><i class="fa fa-inbox"></i> Sales</li>
+          <li class="active"><a href="#bar-chart" data-toggle="tab">막대차트</a></li>
+          <li class="pull-left header"><i class="fa fa-inbox"></i> 영화별 매출추이</li>
         </ul>
         <div class="tab-content no-padding">
           <!-- Morris chart - Sales -->
-          <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"></div>
-          <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"></div>
+          <div class="chart tab-pane active" id="bar-chart"  style="position: relative; height: 300px;"></div>
+          <div class="chart tab-pane " id="sales-chart2" style="position: relative; height: 300px;"></div>
+          <script>
+            //custom BAR Chart
+              var bar = new Morris.Bar({
+              element: 'bar-chart',
+              resize:true,
+              data: [
+                { y: '2006', a: 100, b: 90 },
+                { y: '2007', a: 75, b: 65 },
+                { y: '2008', a: 50, b: 40 },
+                { y: '2009', a: 75, b: 65 },
+                { y: '2010', a: 50, b: 40 },
+                { y: '2011', a: 75, b: 65 },
+                { y: '2012', a: 100, b: 90 }
+            ],
+            xkey: 'y',
+            ykeys: ['a', 'b'],
+            labels: ['Series A', 'Series B']
+            });
+          </script>
+  
+        </div>
+      </div>
+      <!-- /.nav-tabs-custom -->
+
+        <!-- Custom tabs (Charts with tabs)-->
+      <div class="nav-tabs-custom">
+        <!-- Tabs within a box -->
+        <ul class="nav nav-tabs pull-right">
+          <li class="active"><a href="#revenue-chart" data-toggle="tab">영역차트</a></li>
+          <li class="pull-left header"><i class="fa fa-inbox"></i> 지점별 매출추이 </li>
+        </ul>
+        <div class="tab-content no-padding">
+          <!-- Morris chart - Sales -->
+          <div class="chart tab-pane active" id="revenue-chart"  style="position: relative; height: 300px;"></div>
+  
         </div>
       </div>
       <!-- /.nav-tabs-custom -->
@@ -335,74 +371,85 @@
     <!-- /.Left col -->
     <!-- right col (We are only adding the ID to make the widgets sortable)-->
     <section class="col-lg-5 connectedSortable">
-
-      <!-- Map box -->
-      <div class="box box-solid bg-light-blue-gradient">
-        <div class="box-header">
-          <!-- tools box -->
-          <div class="pull-right box-tools">
-            <button type="button" class="btn btn-primary btn-sm daterange pull-right" data-toggle="tooltip" title="Date range">
-              <i class="fa fa-calendar"></i></button>
-            <button type="button" class="btn btn-primary btn-sm pull-right" data-widget="collapse" data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
-              <i class="fa fa-minus"></i></button>
-          </div>
-          <!-- /. tools -->
-
-          <i class="fa fa-map-marker"></i>
-
-          <h3 class="box-title">
-            Visitors
-          </h3>
-        </div>
-        <div class="box-body">
-          <div id="world-map" style="height: 250px; width: 100%;"></div>
-        </div>
-        <!-- /.box-body-->
-        <div class="box-footer no-border">
-          <div class="row">
-            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-              <div id="sparkline-1"></div>
-              <div class="knob-label">Visitors</div>
-            </div>
-            <!-- ./col -->
-            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-              <div id="sparkline-2"></div>
-              <div class="knob-label">Online</div>
-            </div>
-            <!-- ./col -->
-            <div class="col-xs-4 text-center">
-              <div id="sparkline-3"></div>
-              <div class="knob-label">Exists</div>
-            </div>
-            <!-- ./col -->
-          </div>
-          <!-- /.row -->
-        </div>
-      </div>
-      <!-- /.box -->
-
-      <!-- solid sales graph -->
-      <div class="box box-solid bg-teal-gradient">
+      
+    
+      <!-- CUSTOM PIE box -->
+      <div class="box box-solid box-solid box-primary ">
         <div class="box-header">
           <i class="fa fa-th"></i>
 
-          <h3 class="box-title">Sales Graph</h3>
+
+          <h3 class="box-title">영화 매출 점유율 </h3>
 
           <div class="box-tools pull-right">
-            <button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
+            <button type="button" class="btn bg-light-blue btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
             </button>
-            <button type="button" class="btn bg-teal btn-sm" data-widget="remove"><i class="fa fa-times"></i>
+            <button type="button" class="btn bg-light-blue btn-sm" data-widget="remove"><i class="fa fa-times"></i>
             </button>
           </div>
         </div>
         <div class="box-body border-radius-none">
-          <div class="chart" id="line-chart" style="height: 250px;"></div>
+            <div class="chart tab-pane active" id="sales-chart3" style="position: relative; height: 282px;"></div>
+        </div>
+          <script>
+            //Donut Char
+            var data = JSON.parse('{{movie_sales_data|tojson}}');
+            var data_list = [] 
+            for( i=0; i<data.movies.length; i++ ){
+              data_list.push( {"label": data.movies[i].title, "value": data.movies[i].sales} );
+            }
+            var donut = new Morris.Donut({
+            element: 'sales-chart3',
+            resize: true,
+            colors: ["#3c8dbc", "#f56954", "#00a65a", "#FF9933", "#6600CC"],
+            data: data_list,
+            hideHover: 'auto'
+            });
+            </script> 
+        </div>
+      
+      <!-- solid sales graph -->
+      <div class="box box-solid bg-blue-gradient">
+        <div class="box-header">
+          <i class="fa fa-th"></i>
+
+          <h3 class="box-title">직원 연봉 분포</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn bg-blue-gradient btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn bg-blue-gradient btn-sm" data-widget="remove"><i class="fa fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <div class="box-body border-radius-none">
+          <div class="chart" id="avg-salary-bar-chart" style="height: 250px;"></div>
+          <script>
+            //custom BAR Chart
+              var data = JSON.parse('{{salary_data|tojson}}');
+              var data_list = [] 
+              for( i=0; i<data.salary.length; i++ ){
+                data_list.push( {"salary": data.salary[i].salary, "count": data.salary[i].count} );
+              }
+              var bar = new Morris.Bar({
+              element: 'avg-salary-bar-chart',
+              resize:true,
+              data: data_list,
+              xkey: 'salary',
+              ykeys: ['count'],
+              //hideHover: 'always',
+              barColors: ["#f56954"],
+              labels: ['인원'],
+              gridTextColor: '#FFFFFF',
+              gridTextSize: '18'
+              });
+          </script>
         </div>
         <!-- /.box-body -->
         <div class="box-footer no-border">
           <div class="row">
             <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-              <input type="text" class="knob" data-readonly="true" value="20" data-width="60" data-height="60" data-fgColor="#39CCCC">
+              <input type="text" class="knob" data-readonly="true" value="20" data-width="60" data-height="60" data-fgColor="#39DCCC">
 
               <div class="knob-label">Mail-Orders</div>
             </div>

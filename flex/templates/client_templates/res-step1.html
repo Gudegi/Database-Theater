@@ -1,0 +1,86 @@
+{% extends 'client_base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+    <body class="body">
+        <section class="after-head d-flex section-text-white position-relative">
+            <div class="d-background" data-image-src="../../static/client_static/images/{{ movie.eng_title }}_logo.jpg" data-parallax="scroll"></div>
+            <div class="d-background bg-black-80"></div>
+            <div class="top-block top-inner container">
+                <div class="top-block-content">
+                    <h1 class="section-title">{{ movie.title }}</h1>
+                    <div class="page-breadcrumbs">
+                        <a class="content-link" href="#">영화 예매</a>
+                        <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
+                        <span>극장 및 날짜</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section-long">
+            <div class="container">
+                <article class="movie-line-entity">
+                    <div class="entity-content">
+                        <h4 class="entity-title">
+                            <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie.id) }}" target="_blank">{{ movie.title }}</a>
+                        </h4>
+                        <div class="entity-category">
+                            <a class="content-link" href="movies-blocks.html">{{ movie.genre }}</a>
+                        </div>
+                        <div class="entity-info">
+                            <div class="info-lines">
+                                <div class="info info-short">
+                                    <span class="text-theme info-icon"><i class="fas fa-star"></i></span>
+                                    <span class="info-text">{{ rate }}</span>
+                                </div>
+                                <div class="info info-short">
+                                    <span class="text-theme info-icon"><i class="fas fa-clock"></i></span>
+
+                                    <span class="info-text">{{ movie.running_time }}</span>
+                                    <span class="info-rest">&nbsp;min</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="entity-extra">
+                        <form method='POST' class="post-form">
+                            {{ form.csrf_token }}
+                            {% include "form_errors.html" %}
+                            <h5 class="text-uppercase entity-title">극장</h5>
+                            <div class="entity-showtime">
+                                <div class="showtime-res">
+                                    {% if theater_list %}
+                                        {% for theater in theater_list %}
+                                            <div class="showtime-item">
+                                                <input type="radio" id = "theater_{{ theater.id }}" name = "theater_name"  aria-disabled="false" href="#" value="{{ theater.id or ''}}">
+                                                <label for="theater_{{ theater.id }}" >
+                                                    <span class="btn-time btn">{{theater.name}}</span>
+                                                </label>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                    </div>
+                    <div class="entity-extra">
+                        <h5 class="text-uppercase entity-title">날짜</h5>
+                        <div class="entity-showtime">
+                            <div class="showtime-res">
+                                <div class="showtime-date">
+                                    <input type="date" id = "res_date" name = "res_date" class="form-control" aria-disabled="false" value="{{ form.res_date.data or '' }}" style="width: 235px">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="entity-extra">
+                        <div class="text-uppercase entity-extra-title"></div>
+                        <div class="entity-showtime"> </div>
+                        <input type = "submit"  class="btn-theme btn" value="다음 단계로 ▶" href="#">
+                    </div>
+                </form>
+                </article>
+            </div>
+        </section>
+    </body>
+</html>
+{% endblock %}
