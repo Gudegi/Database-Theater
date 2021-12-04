@@ -4,7 +4,7 @@
 <html>
     <body class="body">
         <section class="after-head d-flex section-text-white position-relative">
-            <div class="d-background" data-image-src="http://via.placeholder.com/1920x1080" data-parallax="scroll"></div>
+            <div class="d-background" data-image-src="../../static/client_static/images/mypage.jpg" data-parallax="scroll"></div>
             <div class="d-background bg-black-80"></div>
             <div class="top-block top-inner container">
                 <div class="top-block-content">
@@ -17,6 +17,18 @@
         </section>
 <section class="section-long">
     <div class="container">
+    <div class="section-pannel" style=" width: 400px">
+                    <div class="grid row">
+                        <div class="col-md-10">
+                            <h2 class="entity-title" ><b>Membership </b></h2>
+                            &nbsp;
+                            <h4 class="entity-title"><b style="color: #ff8a00;">{{member.name}}</b> 님</h4>
+                            &nbsp;
+                            <h6 class="entity-title"> 멤버쉽 등급 : <b>{{membership.rank}} </b> </h6>
+                            <h6 class="entity-title">현재 보유 포인트 : <b>  {{membership.point}}</b> POINT</h6>
+                        </div>
+                    </div>
+                </div>
         <div class="section-pannel" style=" width: 1000px">
                     <div class="grid row">
                         <div class="col-md-10">
@@ -63,6 +75,7 @@
                                         </div>
                                     {% endfor %}
                                 </div>
+                                &nbsp;
                                 <div class="entity-extra">
                                     <div class="entity-actions"><a class="btn-theme btn" href="{{ url_for('mypage.cancel', res_id= future_list[i][0].id) }}">
                                         <i class="fas fa-ticket-alt"></i>&nbsp;예매취소</a></div>
@@ -116,10 +129,6 @@
                                             <span class="info-text">&nbsp;{{ history_list[i][2].starttime}}</span><span class="info-rest"></span></div>
                                     </div>
                                     &nbsp;
-                                </div>
-                                <div class="entity-extra">
-                                    <div class="entity-actions"><a class="btn-theme btn" href="">
-                                        <i class="fas fa-ticket-alt"></i>&nbsp;리뷰 작성</a></div>
                                 </div>
                             </div>
                             </div>
