@@ -229,7 +229,7 @@ def last_commit(movie_id, res_date, theater_name, schedule_id, seats, coupon, po
                     seat.available = 0
                 pay = Pay(firstpay=total_seat_price,
                         coupon_code=-1,
-                        used_points=-1,
+                        used_points=0,
                         method="card",
                         reservation_id=reservation.id
                         )
@@ -238,6 +238,10 @@ def last_commit(movie_id, res_date, theater_name, schedule_id, seats, coupon, po
                 return redirect((url_for('reservation.ticket')))
             else:
                 return redirect((url_for('main.init404')))
+    return render_template('client_templates/pay-commit.html', theater=theater, schedule=schedule,
+                           coupon=coupon, point=point, seat_price=total_seat_price, seat_list=seat_list,
+                           movie=movie, bene=bene, form=form, seats_string=seats_string, isused=is_used, screen=screen)
+
 
 
 @bp.after_request

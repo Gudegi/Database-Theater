@@ -175,7 +175,7 @@
                           {% else %}           
                           <div class="showtime-item"> 
                           <!-- hover시 관/회차/잔여좌석수 표시 -->
-                            <a class="btn-time btn" href="#" onMouseOver="this.innerHTML='{{ screenschedule.screen.name }} {{ screenschedule.session }}회차<br>총 {{screenschedule.screen.tot_seat}}석'" onMouseOut="this.innerHTML='{{ screenschedule.starttime.strftime('%H:%M') }} ~ {{ screenschedule.endtime.strftime('%H:%M') }}<br>{{screenschedule.screen.seat}}석'">
+                            <a class="btn-time btn" href="{{ url_for('reservation.seat', movie_id=movie.id, res_date=screenschedule.starttime, theater_name=theaters.id, schedule_id=screenschedule.id ) }}" onMouseOver="this.innerHTML='{{ screenschedule.screen.name }} {{ screenschedule.session }}회차<br>총 {{screenschedule.screen.tot_seat}}석'" onMouseOut="this.innerHTML='{{ screenschedule.starttime.strftime('%H:%M') }} ~ {{ screenschedule.endtime.strftime('%H:%M')}}<br>{{screenschedule.screen.seat}}석'">
                             {{ screenschedule.starttime.strftime('%H:%M') }} ~ {{ screenschedule.endtime.strftime('%H:%M') }}<br>{{screenschedule.screen.seat}}석
                             </a>
                           </div>

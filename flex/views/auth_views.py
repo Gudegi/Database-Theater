@@ -1,11 +1,13 @@
 from flask import Blueprint, url_for, render_template, flash, request, session, g
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import redirect
+import datetime
 
 from flex import db
 from flex.forms import MemberCreateForm, MemberLoginForm, NonmemberLoginForm, NonmemberReservationForm
-from flex.models import Member, Nonmember, Reservation, Movie, Screenschedule, Theater, Seat
+from flex.models import Member, Nonmember, Reservation, Movie, Screenschedule, Theater, Seat, Screen, Pay, Cancel
 import functools
+from flex.forms import ReservationCancelForm
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -83,7 +85,7 @@ def guest_reservation():
         elif (guest.birth_date != form.birth_date.data) :
             error = "생년월일이 올바르지 않습니다."
         else:
-            reservations = Reservation.query.join(Screenschedule).filter(Reservation.nonmember_phone == guest.phone).all()
+            reservations = Reservation.query.filter(Reservation.nonmember_phone == guest.phone).all()
             reservation_list = []
             for reservation in reservations:
                 screenschedule_list = []
@@ -101,6 +103,32 @@ def guest_reservation():
             return render_template('client_templates/auth/guest_reservationlist.html', reservations=reservation_list)
         flash(error)
     return render_template('client_templates/auth/guest_reservation.html', form=form)
+
+@bp.route('/<int:res_id>', methods=('POST', 'GET'))
+def cancel(res_id):
+    reservation = Reservation.query.get(res_id)
+    schedule = Screenschedule.query.get(reservation.screen_schedule_id)
+    movie = Movie.query.get(schedule.movie_id)
+    screen = Screen.query.get(schedule.screen_number)
+    pay = Pay.query.filter(Pay.reservation_id == res_id).first()
+    seat_list = reservation.seats.split()
+    theater_name = Theater.query.get(schedule.theater_id)
+    query_seat_list = []
+    coupon_value = 0
+    form = ReservationCancelForm()
+    for j in range(len(seat_list)):
+        seat = Seat.query.get(seat_list[j])
+        query_seat_list.append(seat)
+    if request.method == 'POST' and form.validate_on_submit():
+        for seat in query_seat_list:
+            seat.available=1
+            db.session.add(seat)
+        db.session.delete(pay)
+        db.session.delete(reservation)
+        db.session.commit()
+        return redirect((url_for('auth.guest_reservation')))
+    return render_template('client_templates/cancel-reservation.html', reservation = reservation, schedule = schedule, movie = movie,
+                           pay = pay, query_seat_list = query_seat_list, theater_name=theater_name, screen=screen, coupon_value = coupon_value, form=form)
 
 @bp.route('/login/<int:movie_id>/movie', methods=('GET', 'POST'))  # 추가.
 def login_movie(movie_id):

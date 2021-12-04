@@ -7,6 +7,8 @@
     </div>
     <div class="container">
       <div class="grid row">
+      {% if reservations %}
+      <!-- 예매내역이 있는 경우 -->
         {% for reservation in reservations %} {% for screenschedule in
         reservation.screenschedules %} {% for movie in screenschedule.movies %}
         {% for theater in screenschedule.theaters %}
@@ -30,11 +32,17 @@
               <li class="list-group-item">예매일시 : {{ reservation.date }}</li>
             </ul>
             <div class="card-body" style="text-align: center">
-              <a href="#" class="btn btn-outline-theme">예매취소</a>
+              <a href="{{ url_for('auth.cancel', res_id=reservation.id )}}" class="btn btn-outline-theme">예매취소</a>
             </div>
           </div>
         </div>
-        {% endfor %} {% endfor %} {% endfor %} {% endfor %} 
+        {% endfor %} {% endfor %} {% endfor %} {% endfor %}
+        {% else %} 
+        <!-- 예매내역이 없는 경우 -->
+        <div class="col-sm-6 col-xl-4">
+          <h4>예매내역이 존재하지 않습니다.</h4>
+        </div>
+        {% endif %}
       </div>
     </div>
   </div>
