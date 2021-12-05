@@ -187,6 +187,14 @@
 <!-- Magnific Popup -->
 <script src="{{url_for('static', filename='client_static/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
 <script src="{{url_for('static', filename='client_static/js/script.js') }}"></script>
+    <!-- jQuery JS -->
+<script src="{{ url_for('static', filename='jquery-3.4.1.min.js') }}"></script>
+<!-- Bootstrap JS -->
+<script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <!-- 자바스크립트 Start -->
+{% block script %}
+{% endblock %}
+<!-- 자바스크립트 End -->
 <!-- Inits product scripts  구글 맵 api 사용 js 이거 쓰면 계속 refresh돼서 서버 터짐
 -->
 <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ4Qy67ZAILavdLyYV2ZwlShd0VAqzRXA&callback=initMap"></script> -->
