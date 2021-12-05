@@ -1,7 +1,7 @@
 {% extends 'client_base.html' %}
 {% block content %}
 <section class="after-head d-flex section-text-white position-relative">
-            <div class="d-background" data-image-src="http://via.placeholder.com/1920x1080" data-parallax="scroll"></div>
+            <div class="d-background" data-image-src="\static\img\serviceSelect.jpg" data-parallax="scroll"></div>
             <div class="d-background bg-black-80"></div>
             <div class="top-block top-inner container">
                 <div class="top-block-content">
@@ -21,23 +21,25 @@
         <tr class="text-center thead-dark">
             <th>번호</th>
             <th style="width:50%" >제목</th>
+            <th>글쓴이</th>
             <th>작성일시</th>
             <th>댓글 수</th>
         </tr>
         </thead>
         <tbody>
-        {% if question_list %}
-        {% for question in question_list.items %}
+        {% if inquiry_list %}
+        {% for inquiry in inquiry_list.items %}
         <tr class="text-center">
-            <td>{{ question_list.total - ((question_list.page-1) * question_list.per_page) - loop.index0 }}</td>
+            <td>{{ inquiry_list.total - ((inquiry_list.page-1) * inquiry_list.per_page) - loop.index0 }}</td>
             <td class="text-left">
-                <a href="{{ url_for('services.inquiryDetail', question_id=question.id) }}"}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    {{question.subject }}</a>
+                <a href="{{ url_for('services.inquiryDetail', inquiry_id=inquiry.number) }}"}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {{inquiry.title }}</a>
             </td>
-            <td>{{ question.create_date|datetime }}</td>
+            <td>{{ inquiry.member_id }}</td>
+            <td>{{ inquiry.date|datetime }}</td>
             <td>
-            {% if question.qsa|length > 0 %}
-                <span class="text-danger small ml-2">{{ question.qsa|length }}</span>
+            {% if inquiry.inquiry|length > 0 %}
+                <span class="text-danger small ml-2">{{ inquiry.inquiry|length }}</span>
                 {% endif %}
             </td>>
         </tr>
@@ -52,18 +54,18 @@
      <!-- 페이징처리 시작 -->
     <ul class="pagination justify-content-center">
         <!-- 이전페이지 -->
-        {% if question_list.has_prev %}
+        {% if inquiry_list.has_prev %}
         <li class="page-item">
-            <a class="page-link" href="?page={{ question_list.prev_num }}">이전</a>
+            <a class="page-link" href="?page={{ inquiry_list.prev_num }}">이전</a>
         </li>
         {% else %}
         <li class="page-item disabled">
             <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
         </li>
         {% endif %}
-        {% for page_num in question_list.iter_pages() %}
+        {% for page_num in inquiry_list.iter_pages() %}
             {% if page_num %}
-                {% if page_num != question_list.page %}
+                {% if page_num != inquiry_list.page %}
                 <li class="page-item">
                     <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
                 </li>
@@ -79,9 +81,9 @@
            {% endif %}
         {% endfor %}
         <!-- 다음페이지 -->
-        {% if question_list.has_next %}
+        {% if inquiry_list.has_next %}
         <li class="page-item">
-            <a class="page-link" href="?page={{ question_list.next_num }}">다음</a>
+            <a class="page-link" href="?page={{ inquiry_list.next_num }}">다음</a>
         </li>
         {% else %}
         <li class="page-item disabled">

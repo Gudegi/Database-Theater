@@ -1,40 +1,60 @@
-{% extends 'client_base.html' %}
-{% block content %}
+{% extends 'client_base.html' %} {% block content %}
 <section class="after-head d-flex section-text-white position-relative">
-            <div class="d-background" data-image-src="http://via.placeholder.com/1920x1080" data-parallax="scroll"></div>
-            <div class="d-background bg-black-80"></div>
-            <div class="top-block top-inner container">
-                <div class="top-block-content">
-                    <h1 class="section-title">고객센터</h1>
-                    <div class="page-breadcrumbs">
-                        <a class="content-link" href="#">고객센터</a>
-                    </div>
-                </div>
-            </div>
-</section>>
-
-
-
-
-<section class="section-long">
-            <div class="container" style = "background-color: #F6F3E4; border: 6px solid;WIDTH: 700pt;HEIGHT: 350pt">
-                <div class="status-entity" >
-                     <div class="section-head">
-                          <h2 class="section-title text-uppercase" style = "padding:0 +0px">고객센터 </h2>
-                          <p class="section-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                              공지사항 : 지점별 공지 사항들을 확인하세요</p>
-                         <p class="section-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                             문의하기 : 영화 예매,취소 등 고객님들의 문의를 받고있습니다</p>
-                    </div>
-                    <a class="btn btn-outline-secondary" href="{{ url_for('services._notice') }}"
-                       style="WIDTH: 200pt; HEIGHT: 200pt; font-size:3em;line-height:5.3;margin:0px 30px 70px 0px"
-                    >공지사항</a>
-                    <a href="{{ url_for('services._inquiry') }}" class="btn btn-outline-primary"
-                       style="WIDTH: 200pt; HEIGHT: 200pt; font-size:3em; line-height:5.3;margin:0px 0px 70px 30px" >문의하기</a>
-                </div>
-            </div>
+  <div
+    class="d-background"
+    data-image-src="\static\img\serviceSelect.jpg"
+    data-parallax="scroll"
+  ></div>
+  <div class="d-background bg-black-80"></div>
+  <div class="top-block top-inner container">
+    <div class="top-block-content">
+      <h1 class="section-title">고객센터</h1>
+      <div class="page-breadcrumbs">
+        <a class="content-link" href="#">고객센터</a>
+      </div>
+    </div>
+  </div>
 </section>
-
-
+<section class="section-long">
+  <div class="container">
+    <div class="section-head" style="margin-top: -3rem">
+      <h2 class="section-title text-uppercase">고객센터 홈</h2>
+      <p class="section-text">
+        DMN 고객센터입니다. 문의 사항이 있으시면 메뉴를 선택해주세요.
+      </p>
+    </div>
+    <div class="container my-5">
+      <div class="row justify-content-center mt-5">
+        <div class="col-lg-9">
+          <div class="row" style="text-align: center">
+            <div class="col">
+              <div class="card">
+                <div class="card-body pb-0">
+                  <div class="showtime-item" style="margin-bottom: 1rem">
+                    <a
+                      class="btn btn-time"
+                      href="{{ url_for('services._notice') }}"
+                      style="width: 350px; height: 100px"
+                      ><h3>공지사항</h3>
+                      <br />지점별 공지 사항들을 확인하세요</a
+                    >
+                    <a
+                      href="{{ url_for('services._inquiry') }}"
+                      class="btn btn-time"
+                      style="width: 350px; height: 100px"
+                      ><h3>문의하기</h3>
+                      <br />영화 예매, 취소 등 고객님들의 문의를 받고
+                      있습니다.</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 {% endblock %}
