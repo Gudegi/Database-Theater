@@ -180,7 +180,6 @@ class NoticeAnswer(db.Model):
     content = db.Column(db.Text(), nullable=False)
     create_date = db.Column(db.DateTime(), nullable=False)
 
-
 class Screen(db.Model):
     number = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(20), nullable=False)
@@ -285,6 +284,8 @@ class Question(db.Model):
     subject = db.Column(db.String(200), nullable=False)
     content = db.Column(db.Text(), nullable=False)
     create_date = db.Column(db.DateTime(), nullable=False)
+    member_id = db.Column(db.String, db.ForeignKey('member.id', ondelete='CASCADE'), nullable=True,server_default='test2')
+    member = db.relationship('Member', backref=db.backref('question_set'))
 
     def __str__(self):
         return self.content
