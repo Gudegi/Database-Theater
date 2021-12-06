@@ -124,12 +124,12 @@
         <article class="movie-line-entity">
           <div class="entity-content">
             <ul style="list-style: none">
+              {% for i in range(2) %}
               <li>
-                <a style="color: #666666" href="#">[공지] 아시아나클럽 서비스 개선작업에 따른 마일리지 사용 일시중지</a>
+                <a style="color: #666666" href="#">[{{theaters.name}}] {{notices[i].title}}</a>
+                <!--url_for('services.noticeDetail', notice_id=notices[i].id)-->
               </li>
-              <li>
-                <a style="color: #666666" href="#">[이터널스] 스피드 페이백 이벤트 오류 관련 공지</a>
-              </li>
+              {% endfor %}
             </ul>
           </div>
         </article>
