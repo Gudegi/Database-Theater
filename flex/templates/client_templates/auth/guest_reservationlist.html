@@ -7,8 +7,8 @@
     </div>
     <div class="container">
       <div class="grid row">
-      {% if reservations %}
-      <!-- 예매내역이 있는 경우 -->
+        {% if reservations %}
+        <!-- 예매내역이 있는 경우 -->
         {% for reservation in reservations %} {% for screenschedule in
         reservation.screenschedules %} {% for movie in screenschedule.movies %}
         {% for theater in screenschedule.theaters %}
@@ -19,25 +19,45 @@
               class="card-img-top"
             />
             <ul class="list-group list-group-flush">
-              <li class="list-group-item"><h5><b>{{ movie.title }}</b></h5></li>
               <li class="list-group-item">
-                <b>DMN {{ theater.name }}</b> / <b>{{ screenschedule.screen }}</b> {{
-                screenschedule.session }}회차
+                <h5><b>{{ movie.title }}</b></h5>
               </li>
               <li class="list-group-item">
-                <b>{{ screenschedule.endtime.strftime('%Y-%m-%d %H:%M')}}</b> 상영
+                <span class="text-theme info-icon"
+                  ><i class="fas fa-map-marker-alt"></i></span
+                >&nbsp;&nbsp;<b>DMN {{ theater.name }}</b> /
+                <b>{{ screenschedule.screen }}</b> {{ screenschedule.session
+                }}회차
               </li>
-              <li class="list-group-item">좌석 : <b>{% for seat in reservation.seat %}{{ seat.row }}{{ seat.col }}</b> {% endfor %}</li>
+              <li class="list-group-item">
+                <span class="text-theme info-icon"
+                  ><i class="fas fa-calendar"></i></span
+                >&nbsp;&nbsp;<b
+                  >{{ screenschedule.endtime.strftime('%Y-%m-%d %H:%M')}}</b
+                >
+                상영
+              </li>
+              <li class="list-group-item">
+                <span class="text-theme info-icon"
+                  ><i class="fas fa-ticket-alt"></i></span
+                >&nbsp;&nbsp;좌석 :
+                <b
+                  >{% for seat in reservation.seat %}{{ seat.row }}{{ seat.col
+                  }} {% endfor %}</b
+                >
               </li>
               <li class="list-group-item">예매일시 : {{ reservation.date }}</li>
             </ul>
             <div class="card-body" style="text-align: center">
-              <a href="{{ url_for('auth.cancel', res_id=reservation.id )}}" class="btn btn-outline-theme">예매취소</a>
+              <a
+                href="{{ url_for('auth.cancel', res_id=reservation.id )}}"
+                class="btn btn-outline-theme"
+                >예매취소</a
+              >
             </div>
           </div>
         </div>
-        {% endfor %} {% endfor %} {% endfor %} {% endfor %}
-        {% else %} 
+        {% endfor %} {% endfor %} {% endfor %} {% endfor %} {% else %}
         <!-- 예매내역이 없는 경우 -->
         <div class="col-sm-6 col-xl-6">
           <h4>예매내역이 존재하지 않습니다.</h4>
