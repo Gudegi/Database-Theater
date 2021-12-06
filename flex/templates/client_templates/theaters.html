@@ -117,8 +117,8 @@
     </section>
     <section class="section-middle">
       <div class="container">
-        <div class="section-head">
-          <h2 class="section-title text-uppercase">공지사항</h2>
+        <div class="section-head" style="margin-bottom: 2rem;">
+          <h2 class="section-title text-uppercase">공지사항  <a class="fas fa-plus-square" href="{{ url_for('services._notice') }}"></a></h2>
           <p class="section-text"></p>
         </div>
         <article class="movie-line-entity">
@@ -126,8 +126,7 @@
             <ul style="list-style: none">
               {% for i in range(2) %}
               <li>
-                <a style="color: #666666" href="#">[{{theaters.name}}] {{notices[i].title}}</a>
-                <!--url_for('services.noticeDetail', notice_id=notices[i].id)-->
+                <a style="color: #666666" href="{{ url_for('services.noticeDetail', notice_id=notices[i].id) }}">[{{theaters.name}}] {{notices[i].title}}</a>
               </li>
               {% endfor %}
             </ul>
@@ -135,9 +134,9 @@
         </article>
       </div>
     </section>
-    <section class="section-middle" style="margin-top: 0;">
+    <section class="section-middle">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head" style="margin-bottom: 2rem;">
           <h2 class="section-title text-uppercase">상영 시간표</h2>
           <p class="section-text"></p>
         </div>
