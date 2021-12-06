@@ -93,7 +93,8 @@ def guest_reservation():
                 for screenschedule in screenschedules :
                     movies = Movie.query.filter(Movie.id == screenschedule.movie_id).all()
                     theaters = Theater.query.filter(Theater.id == screenschedule.theater_id).all()
-                    screenschedule_list.append(dict(id=screenschedule.id, session=screenschedule.session, starttime=screenschedule.starttime, endtime=screenschedule.endtime, screen=screenschedule.screen_number, movies=movies, theaters=theaters))
+                    screens = Screen.query.filter(Screen.number == screenschedule.screen_number).first()
+                    screenschedule_list.append(dict(id=screenschedule.id, session=screenschedule.session, starttime=screenschedule.starttime, endtime=screenschedule.endtime, screen=screens, movies=movies, theaters=theaters))
                 seat_list = reservation.seats.split()
                 res_seat_list = []
                 for i in range(len(seat_list)):

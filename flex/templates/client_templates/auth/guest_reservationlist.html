@@ -21,13 +21,13 @@
             <ul class="list-group list-group-flush">
               <li class="list-group-item"><h5><b>{{ movie.title }}</b></h5></li>
               <li class="list-group-item">
-                DMN {{ theater.name }} / {{ screenschedule.screen }}관 {{
+                <b>DMN {{ theater.name }}</b> / <b>{{ screenschedule.screen }}</b> {{
                 screenschedule.session }}회차
               </li>
               <li class="list-group-item">
-                {{ screenschedule.endtime.strftime('%Y-%m-%d %H:%M')}} 상영
+                <b>{{ screenschedule.endtime.strftime('%Y-%m-%d %H:%M')}}</b> 상영
               </li>
-              <li class="list-group-item">좌석 : {% for seat in reservation.seat %}{{ seat.row }}{{ seat.col }} {% endfor %}</li>
+              <li class="list-group-item">좌석 : <b>{% for seat in reservation.seat %}{{ seat.row }}{{ seat.col }}</b> {% endfor %}</li>
               </li>
               <li class="list-group-item">예매일시 : {{ reservation.date }}</li>
             </ul>
@@ -39,7 +39,7 @@
         {% endfor %} {% endfor %} {% endfor %} {% endfor %}
         {% else %} 
         <!-- 예매내역이 없는 경우 -->
-        <div class="col-sm-6 col-xl-4">
+        <div class="col-sm-6 col-xl-6">
           <h4>예매내역이 존재하지 않습니다.</h4>
         </div>
         {% endif %}
