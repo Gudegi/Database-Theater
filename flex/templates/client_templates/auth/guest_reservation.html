@@ -6,11 +6,10 @@
         <div class="card-body pb-0">
           <div class="showtime-wrap" style="margin-bottom: 1rem;">
             <div class="showtime-item">
-              <span
-                class="btn-time btn"
-                style="width: 117px; background-color: coral"
-                >로그인</span
-              >
+              <a class="btn-time btn"
+                 style="width: 117px; color: white;"
+                 href="{{ url_for('auth.login') }}">로그인
+              </a>
             </div>
             <div class="showtime-item">
               <a
@@ -21,24 +20,33 @@
               >
             </div>
             <div class="showtime-item">
-              <a
+              <span
                 class="btn-time btn"
-                style="width: 140px; color: white;"
-                href="{{ url_for('auth.guest_reservation') }}"
+                style="width: 140px; background-color: coral;"
                 >비회원 예매확인
-            </a>
+            </span>
             </div>
           </div>
           <form method="post" class="post-form">
             {{ form.csrf_token }} {% include "form_errors.html" %}
             <div class="form-group">
-              <label for="id">아이디</label>
+              <label for="birth_date">생년월일(8자리)</label>
               <input
                 type="text"
                 class="form-control"
-                name="id"
-                id="id"
-                value="{{ form.id.data or '' }}"
+                name="birth_date"
+                id="birth_date"
+                value="{{ form.birth_date.data or '' }}"
+              />
+            </div>
+            <div class="form-group">
+              <label for="phone">휴대폰번호</label>
+              <input
+                type="text"
+                class="form-control"
+                name="phone"
+                id="phone"
+                value="{{ form.phone.data or '' }}"
               />
             </div>
             <div class="form-group">
@@ -55,8 +63,7 @@
               type="submit"
               class="form-control btn btn-outline-theme"
               style="margin-top:5px; margin-bottom: 20px"
-              value="로그인"
-            >
+              value="비회원 예매확인">
             </input>
           </form>
         </div>

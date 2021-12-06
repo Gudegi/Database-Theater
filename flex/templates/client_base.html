@@ -123,9 +123,6 @@
                 >
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="contact-us.html">Contact us</a>
-              </li>
-              <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('services._select') }}">고객센터</a>
               </li>
             </ul>
@@ -144,8 +141,9 @@
                     >로그아웃</a
                   >
                 </li>
-                {% else %}
-                <!-- 로그인 상태가 아니라면 로그인, 회원가입탭 노출 -->
+                  {% else %}
+                  <!-- 로그인 상태가 아니라면 로그인, 회원가입탭 노출 -->
+                </li>
                 <li class="nav-item">
                   <a class="nav-link" href="{{ url_for('auth.login') }}"
                     >로그인</a
@@ -158,11 +156,13 @@
                 </li>
                 {% endif %}
                 <li class="nav-item">
-                  <a class="btn-theme btn" href="{{ url_for('reservation.ticket') }}"
+                  <a
+                    class="btn-theme btn"
+                    href="{{ url_for('reservation.ticket') }}"
                     ><i class="fas fa-ticket-alt"></i>&nbsp;&nbsp;빠른예매</a
                   >
                 </li>
-              <li class="nav-item">
+                <li class="nav-item">
                   <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.ko" >
                   <img alt="Creative Commons License" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a>
                 </li>
@@ -200,11 +200,14 @@
 <!-- 자바스크립트 End -->
 <!-- Inits product scripts  구글 맵 api 사용 js 이거 쓰면 계속 refresh돼서 서버 터짐
 -->
-<!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ4Qy67ZAILavdLyYV2ZwlShd0VAqzRXA&callback=initMap"></script> -->
-<script async defer src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/js/rating.js"></script>
-
-</body>
-<footer class="section-text-white footer footer-links bg-darken">
+    <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ4Qy67ZAILavdLyYV2ZwlShd0VAqzRXA&callback=initMap"></script> -->
+    <script
+      async
+      defer
+      src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/js/rating.js"
+    ></script>
+  </body>
+  <footer class="section-text-white footer footer-links bg-darken">
     <div class="footer-body container">
       <div class="row">
         <div class="col-sm-6 col-lg-3">
@@ -242,21 +245,29 @@
           <h5 class="footer-title text-uppercase">Movies</h5>
           <ul class="list-unstyled list-wide footer-content">
             <li>
-              <a class="content-link" href="{{ url_for('movies.list') }}">영화목록</a>
+              <a class="content-link" href="{{ url_for('movies.list') }}"
+                >영화목록</a
+              >
             </li>
             <li>
-              <a class="content-link" href="{{ url_for('reservation.ticket') }}">빠른예매</a>
+              <a class="content-link" href="{{ url_for('reservation.ticket') }}"
+                >빠른예매</a
+              >
             </li>
             <li>
-              <a class="content-link" href="{{ url_for('theaters.index') }}">극장</a>
+              <a class="content-link" href="{{ url_for('theaters.index') }}"
+                >극장</a
+              >
             </li>
           </ul>
         </div>
         <div class="col-sm-6 col-lg-3">
           <h5 class="footer-title text-uppercase">Information</h5>
-            <ul class="list-unstyled list-wide footer-content">
+          <ul class="list-unstyled list-wide footer-content">
             <li>
-              <a class="content-link" href="{{ url_for('theaters.index') }}">극장</a>
+              <a class="content-link" href="{{ url_for('theaters.index') }}"
+                >극장</a
+              >
             </li>
           </ul>
         </div>

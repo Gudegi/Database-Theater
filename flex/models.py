@@ -120,8 +120,8 @@ class Cancel(db.Model):
 class Nonmember(db.Model):
     phone = db.Column(db.String(11), primary_key=True)
     name = db.Column(db.String(20), nullable=False)
-    pw = db.Column(db.String(200), nullable=False)
-    birth_date = db.Column(db.Date, nullable=False)  # 통일성을 위한 언더바 추가
+    pw = db.Column(db.String(200), nullable=False) # 암호화
+    birth_date = db.Column(db.String(8), nullable=False)  # 통일성을 위한 언더바 추가 +date타입에서 string으로 변경
 
 
 class Reservation(db.Model):
@@ -338,13 +338,13 @@ class User(db.Model, UserMixin):
     active = db.Column(db.Boolean())
     salary = db.Column(db.Integer, nullable=False)
     account = db.Column(db.String(20), nullable=False)
-    department_info = db.Column(db.String(20))  # 변경 예정 department_info > position
+    department_info = db.Column(db.String(20))   #변경 예정 department_info > position
     confirmed_at = db.Column(db.DateTime())
     theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))
     theater = db.relationship('Theater', backref=db.backref('theater2'))
-
     roles = db.relationship('Role', secondary=roles_users, backref=db.backref('roles', lazy='dynamic'))
 
+    
     def __str__(self):
         '''attrs = db.class_mapper(self.__class__).attrs
 

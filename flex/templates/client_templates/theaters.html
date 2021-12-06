@@ -117,27 +117,26 @@
     </section>
     <section class="section-middle">
       <div class="container">
-        <div class="section-head">
-          <h2 class="section-title text-uppercase">공지사항</h2>
+        <div class="section-head" style="margin-bottom: 2rem;">
+          <h2 class="section-title text-uppercase">공지사항  <a class="fas fa-plus-square" href="{{ url_for('services._notice') }}"></a></h2>
           <p class="section-text"></p>
         </div>
         <article class="movie-line-entity">
           <div class="entity-content">
             <ul style="list-style: none">
+              {% for i in range(2) %}
               <li>
-                <a style="color: #666666" href="#">[공지] 아시아나클럽 서비스 개선작업에 따른 마일리지 사용 일시중지</a>
+                <a style="color: #666666" href="{{ url_for('services.noticeDetail', notice_id=notices[i].id) }}">[{{theaters.name}}] {{notices[i].title}}</a>
               </li>
-              <li>
-                <a style="color: #666666" href="#">[이터널스] 스피드 페이백 이벤트 오류 관련 공지</a>
-              </li>
+              {% endfor %}
             </ul>
           </div>
         </article>
       </div>
     </section>
-    <section class="section-middle" style="margin-top: 0;">
+    <section class="section-middle">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head" style="margin-bottom: 2rem;">
           <h2 class="section-title text-uppercase">상영 시간표</h2>
           <p class="section-text"></p>
         </div>
@@ -169,14 +168,14 @@
                           <!-- 잔여좌석수 0일시 매진 표시 -->
                           <div class="showtime-item">
                             <a class="btn-time btn disabled" href="#" >
-                            {{ screenschedule.starttime.strftime('%H:%M') }} ~ {{ screenschedule.endtime.strftime('%H:%M') }} 매진
+                            {{ screenschedule.starttime.strftime('%H:%M') }} ~ {{ screenschedule.endtime.strftime('%H:%M') }}<br>매진
                             </a>
                           </div>
                           {% else %}           
                           <div class="showtime-item"> 
                           <!-- hover시 관/회차/잔여좌석수 표시 -->
-                            <a class="btn-time btn" href="#" onMouseOver="this.innerHTML='{{ screenschedule.screen.name }} {{ screenschedule.session }}회차 {{screenschedule.screen.seat}}석'" onMouseOut="this.innerHTML='{{ screenschedule.starttime.strftime('%H:%M') }} ~ {{ screenschedule.endtime.strftime('%H:%M') }}'">
-                            {{ screenschedule.starttime.strftime('%H:%M') }} ~ {{ screenschedule.endtime.strftime('%H:%M') }}
+                            <a class="btn-time btn" href="{{ url_for('reservation.seat', movie_id=movie.id, res_date=screenschedule.starttime, theater_name=theaters.id, schedule_id=screenschedule.id ) }}" onMouseOver="this.innerHTML='{{ screenschedule.screen.name }} {{ screenschedule.session }}회차<br>총 {{screenschedule.screen.tot_seat}}석'" onMouseOut="this.innerHTML='{{ screenschedule.starttime.strftime('%H:%M') }} ~ {{ screenschedule.endtime.strftime('%H:%M')}}<br>{{screenschedule.screen.seat}}석'">
+                            {{ screenschedule.starttime.strftime('%H:%M') }} ~ {{ screenschedule.endtime.strftime('%H:%M') }}<br>{{screenschedule.screen.seat}}석
                             </a>
                           </div>
                           {% endif %}
@@ -184,7 +183,7 @@
                         <!-- 상영시간이 현재 시간보다 이전일 경우, 예매 마감 표시 -->
                         <div class="showtime-item">
                           <a class="btn-time btn disabled" href="#">
-                          {{ screenschedule.starttime.strftime('%H:%M') }} ~ {{ screenschedule.endtime.strftime('%H:%M') }} 예매 마감
+                          {{ screenschedule.starttime.strftime('%H:%M') }} ~ {{ screenschedule.endtime.strftime('%H:%M') }} <br>마감
                           </a>
                         </div>
                         {% endif %}

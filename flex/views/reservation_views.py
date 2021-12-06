@@ -119,18 +119,30 @@ def pay(movie_id, res_date, theater_name, schedule_id, seats):
             code = Coupon.query.get(item.coupon_code)
             if code.expiredate > datetime.datetime.now():
                 membership_coupon[item.coupon_code] = code.expiredate
-    if isinstance(x, list):
-        for seat in x:
-            seat_list.append(Seat.query.get(seat))
-    else:
-        seat_list.append(Seat.query.get(seats))
-    if request.method == 'POST' and form.validate_on_submit():
-        if membership_point >= form.point.data:
+        if isinstance(x, list):
+            for seat in x:
+                seat_list.append(Seat.query.get(seat))
+        else:
+            seat_list.append(Seat.query.get(seats))
+        if request.method == 'POST' and form.validate_on_submit():
+            if membership_point >= form.point.data:
+                return redirect(
+                    (url_for('reservation.last_commit', movie_id=movie_id, res_date=res_date, theater_name=theater_name,
+                            schedule_id=schedule_id, seats=seats, coupon=form.coupon.data, point=form.point.data)))
+            else:
+                flash("멤버쉽 포인트 : 보유 포인트 내로 작성해주세요")
+        
+    elif g.guest:
+        if isinstance(x, list):
+            for seat in x:
+                seat_list.append(Seat.query.get(seat))
+        else:
+            seat_list.append(Seat.query.get(seats))
+
+        if request.method == 'POST' :
             return redirect(
                 (url_for('reservation.last_commit', movie_id=movie_id, res_date=res_date, theater_name=theater_name,
-                         schedule_id=schedule_id, seats=seats, coupon=form.coupon.data, point=form.point.data)))
-        else:
-            flash("멤버쉽 포인트 : 보유 포인트 내로 작성해주세요")
+                            schedule_id=schedule_id, seats=seats, coupon=0, point=0)))                
     return render_template('client_templates/payment.html', schedule=schedule, movie=movie, theater=theater,
                            test=seat_list,
                            point=membership_point, coupon=membership_coupon, bene=bene, form=form, screen=screen)
@@ -146,7 +158,6 @@ def last_commit(movie_id, res_date, theater_name, schedule_id, seats, coupon, po
     schedule = Screenschedule.query.get(schedule_id)
     screen = Screen.query.get(schedule.screen_number)
     date = schedule.starttime
-    membership = Membership.query.get(g.member.membership_id)
     bene = Benefit.query.all()
     x = ast.literal_eval(seats)
     total_seat_price = 0
@@ -155,7 +166,12 @@ def last_commit(movie_id, res_date, theater_name, schedule_id, seats, coupon, po
     seats_string = ""
     is_used = -1
     if g.member:
+        membership = Membership.query.get(g.member.membership_id)
         member_id = g.member.id
+    
+    elif g.guest:
+        guest_phone = g.guest.phone
+
     if isinstance(x, list):
         for seat in x:
             seat_list.append(Seat.query.get(seat))
@@ -170,37 +186,62 @@ def last_commit(movie_id, res_date, theater_name, schedule_id, seats, coupon, po
         for seat in seat_list:
             if Seat.query.get(seat.id).available == 0:
                 already_reserved = True
-        if already_reserved == False:
-            reservation = Reservation(date=datetime.datetime.now(),
-                                      screen_schedule_id=schedule_id,
-                                      member_id=member_id,
-                                      seats=seats_string,
-                                      seat_screen_number=schedule.screen_number
-                                      )
-            db.session.add(reservation)
-            db.session.commit()  # reservation id를 만들어주기 위함
-            for seat in seat_list:
-                seat.available = 0
-            pay = Pay(firstpay=total_seat_price,
-                      coupon_code=coupon,
-                      used_points=point,
-                      method="card",
-                      reservation_id=reservation.id
-                      )
-            membership.point -= point
-            if coupon != "-1":
-                is_used = IsUsed.query.filter(IsUsed.membership_id == membership.id, IsUsed.coupon_code == coupon).all()
-                is_used[0].issued = 1
-            db.session.add(pay)
-            db.session.add(membership)
-            db.session.commit()
-            return redirect((url_for('reservation.ticket')))
-        else:
-            return redirect((url_for('main.init404')))
-
+        if g.member:
+            if already_reserved == False:
+                reservation = Reservation(date=datetime.datetime.now(),
+                                        screen_schedule_id=schedule_id,
+                                        member_id=member_id,
+                                        seats=seats_string,
+                                        seat_screen_number=schedule.screen_number
+                                        )
+                db.session.add(reservation)
+                db.session.commit()  # reservation id를 만들어주기 위함
+                for seat in seat_list:
+                    seat.available = 0
+                pay = Pay(firstpay=total_seat_price,
+                        coupon_code=coupon,
+                        used_points=point,
+                        method="card",
+                        reservation_id=reservation.id
+                        )
+                membership.point -= point
+                if coupon != "-1":
+                    is_used = IsUsed.query.filter(IsUsed.membership_id == membership.id, IsUsed.coupon_code == coupon).all()
+                    is_used[0].issued = 1
+                db.session.add(pay)
+                db.session.add(membership)
+                db.session.commit()
+                return redirect((url_for('reservation.ticket')))
+            else:
+                return redirect((url_for('main.init404')))
+        # 비회원 예매의 경우, 멤버쉽 쿠폰 사용불가
+        elif g.guest:
+            if already_reserved == False:
+                reservation = Reservation(date=datetime.datetime.now(),
+                                        screen_schedule_id=schedule_id,
+                                        nonmember_phone=guest_phone,
+                                        seats=seats_string,
+                                        seat_screen_number=schedule.screen_number
+                                        )
+                db.session.add(reservation)
+                db.session.commit()
+                for seat in seat_list:
+                    seat.available = 0
+                pay = Pay(firstpay=total_seat_price,
+                        coupon_code=-1,
+                        used_points=0,
+                        method="card",
+                        reservation_id=reservation.id
+                        )
+                db.session.add(pay)
+                db.session.commit()
+                return redirect((url_for('reservation.ticket')))
+            else:
+                return redirect((url_for('main.init404')))
     return render_template('client_templates/pay-commit.html', theater=theater, schedule=schedule,
                            coupon=coupon, point=point, seat_price=total_seat_price, seat_list=seat_list,
                            movie=movie, bene=bene, form=form, seats_string=seats_string, isused=is_used, screen=screen)
+
 
 
 @bp.after_request
