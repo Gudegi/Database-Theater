@@ -4,10 +4,9 @@ from werkzeug.utils import redirect
 import datetime
 
 from flex import db
-from flex.forms import MemberCreateForm, MemberLoginForm, NonmemberLoginForm, NonmemberReservationForm
-from flex.models import Member, Nonmember, Reservation, Movie, Screenschedule, Theater, Seat, Screen, Pay, Cancel
+from flex.forms import MemberCreateForm, MemberLoginForm, NonmemberLoginForm, NonmemberReservationForm, ReservationCancelForm
+from flex.models import Member, Nonmember, Reservation, Movie, Screenschedule, Theater, Seat, Screen, Pay, Cancel, Membership
 import functools
-from flex.forms import ReservationCancelForm
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -25,7 +24,13 @@ def signup():
                             phone=form.phone.data,
                             email=form.email.data,
                             nickname=form.nickname.data)
+            membership = Membership(rank='브론즈',
+                                    point=500,
+                                    member_id=form.id.data)
+            db.session.add(membership)
             db.session.add(member)
+            db.session.commit()
+            member.membership_id=membership.id
             db.session.commit()
             return redirect(url_for('main.init'))
         else:

@@ -1,0 +1,99 @@
+{% extends 'client_base.html' %}
+{% block content %}
+<section class="after-head d-flex section-text-white position-relative">
+            <div class="d-background" data-image-src="\static\img\serviceSelect.jpg" data-parallax="scroll"></div>
+            <div class="d-background bg-black-80"></div>
+            <div class="top-block top-inner container">
+                <div class="top-block-content">
+                    <h1 class="section-title">고객센터</h1>
+                    <div class="page-breadcrumbs">
+                        <a class="content-link" href="#">고객센터</a>
+                        <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
+                        <span>문의사항</span>
+                    </div>
+                </div>
+            </div>
+</section>
+
+<div class="container my-3">
+    <table class="table">
+        <thead>
+        <tr class="text-center thead-dark">
+            <th>번호</th>
+            <th style="width:50%" >제목</th>
+            <th>글쓴이</th>
+            <th>작성일시</th>
+            <th>댓글 수</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if inquiry_list %}
+        {% for inquiry in inquiry_list.items %}
+        <tr class="text-center">
+            <td>{{ inquiry_list.total - ((inquiry_list.page-1) * inquiry_list.per_page) - loop.index0 }}</td>
+            <td class="text-left">
+                <a href="{{ url_for('services.inquiryDetail', inquiry_id=inquiry.number) }}"}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {{inquiry.title }}</a>
+            </td>
+            <td>{{ inquiry.member_id }}</td>
+            <td>{{ inquiry.date|datetime }}</td>
+            <td>
+            {% if inquiry.inquiry|length > 0 %}
+                <span class="text-danger small ml-2">{{ inquiry.inquiry|length }}</span>
+                {% endif %}
+            </td>>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="3">질문이 없습니다.</td>
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+     <!-- 페이징처리 시작 -->
+    <ul class="pagination justify-content-center">
+        <!-- 이전페이지 -->
+        {% if inquiry_list.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ inquiry_list.prev_num }}">이전</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+        </li>
+        {% endif %}
+        {% for page_num in inquiry_list.iter_pages() %}
+            {% if page_num %}
+                {% if page_num != inquiry_list.page %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                </li>
+                {% else %}
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" href="#">{{ page_num }}</a>
+                </li>
+                {% endif %}
+           {% else %}
+                <li class="disabled">
+                    <a class="page-link" href="#">...</a>
+                </li>
+           {% endif %}
+        {% endfor %}
+        <!-- 다음페이지 -->
+        {% if inquiry_list.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ inquiry_list.next_num }}">다음</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+        </li>
+        {% endif %}
+    </ul>
+    <!-- 페이징처리 끝 -->
+    <a href="{{ url_for('services.inquiryCreate') }}" class="btn btn-primary">질문 등록하기</a>
+</div>
+
+
+{% endblock %}

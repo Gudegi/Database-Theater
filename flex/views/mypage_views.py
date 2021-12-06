@@ -4,18 +4,22 @@ from werkzeug.utils import redirect
 import datetime
 
 from flex import db
-from flex.models import Movie, Screenschedule, Theater, Actor, Seat, Membership, Coupon, Benefit, IsUsed, Reservation, Pay, IsUsed, Screen, Cancel
+from flex.models import Movie, Screenschedule, Theater,  Seat, Membership,  Benefit,  Reservation, \
+    Pay, IsUsed, Screen, Cancel, Member
 from flex.forms import ReservationCancelForm
 
 bp = Blueprint('mypage', __name__, url_prefix='/mypage')
+
 
 @bp.route('/')
 def mypage():
     member_id = -1
     if g.member:
         member_id = g.member.id
-    else :
-        return redirect(url_for('main.init')) #로그인 안한상태면 메인화면으로 보냄.
+    else:
+        return redirect(url_for('main.init'))  # 로그인 안한상태면 메인화면으로 보냄.
+    member = Member.query.get(member_id)
+    membership = Membership.query.filter(Membership.member_id == member_id).first()
     res_list = Reservation.query.filter(Reservation.member_id == member_id).all()
     history_list = []
     future_list = []
@@ -23,7 +27,7 @@ def mypage():
     for i in range(len(res_list)):
         this_list = []
         this_schedule = Screenschedule.query.get(res_list[i].screen_schedule_id)
-        if len(Cancel.query.filter(Cancel.res_id == res_list[i].id).all()) == 0: # 취소가 안된 영화만
+        if len(Cancel.query.filter(Cancel.res_id == res_list[i].id).all()) == 0:  # 취소가 안된 영화만
             this_list.append(res_list[i])  # list[][0] Reservation
             this_list.append(Movie.query.get(this_schedule.movie_id))  # list[][1] Movie
             this_list.append(this_schedule)  # list[0][2] Schedule
@@ -35,14 +39,16 @@ def mypage():
             this_list.append(query_seat_list)
             this_list.append(Theater.query.get(this_schedule.theater_id))
             this_list.append(Screen.query.get(this_schedule.screen_number))
+            date_diff = datetime.datetime.now() - this_schedule.starttime
             if this_schedule.starttime > datetime.datetime.now():
                 future_list.append(this_list)
-            else:
+            elif date_diff < datetime.timedelta(days=32):
                 history_list.append(this_list)
     history_num = len(history_list)
     future_num = len(future_list)
-    return render_template('client_templates/reservation-check.html', future_list=future_list, history_list=history_list,
-                           history_num=history_num, future_num=future_num)
+    return render_template('client_templates/reservation-check.html', future_list=future_list,
+                           history_list=history_list,
+                           history_num=history_num, future_num=future_num, member=member, membership=membership)
 
 
 @bp.route('/<int:res_id>', methods=('POST', 'GET'))

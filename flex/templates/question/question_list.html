@@ -10,14 +10,14 @@
         </tr>
         </thead>
         <tbody>
-        {% if question_list %}
-        {% for question in question_list %}
+        {% if inquiry_list %}
+        {% for inquiry in inquiry_list %}
         <tr>
             <td>{{ loop.index }}</td>
             <td>
-                <a href="{{ url_for('question.detail', question_id=question.id) }}">{{ question.subject }}</a>
+                <a href="{{ url_for('inquiry.detail', inquiry_id=inquiry.id) }}">{{ inquiry.title }}</a>
             </td>
-            <td>{{ question.create_date }}</td>
+            <td>{{ inquiry.date }}</td>
         </tr>
         {% endfor %}
         {% else %}
@@ -27,6 +27,6 @@
         {% endif %}
         </tbody>
     </table> 
-    <a href="{{ url_for('question.create') }}" class="btn btn-primary">질문 등록하기</a>
+    <a href="{{ url_for('services.inquiryCreate') }}" class="btn btn-primary">질문 등록하기</a>
 </div>
 {% endblock %}
