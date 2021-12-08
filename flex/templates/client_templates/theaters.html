@@ -84,7 +84,7 @@
     <section class="section-middle">
       <div class="container">
         <div class="section-head">
-          <h2 class="section-title text-uppercase">DMN {{ theaters.name }}</h2>
+          <h2 class="section-title text-uppercase"><b>DMN {{ theaters.name }}</b></h2>
           {%if theaters.id == 1 %}
           <p class="section-text">로맨틱 멀티플렉스! 젊은 도시 강남이 한 눈에 보이는 최상의 View를 제공</p>
           {% endif %}
@@ -118,7 +118,7 @@
     <section class="section-middle">
       <div class="container">
         <div class="section-head" style="margin-bottom: 2rem;">
-          <h2 class="section-title text-uppercase">공지사항  <a class="fas fa-plus-square" href="{{ url_for('services._notice') }}"></a></h2>
+          <h4 class="section-title"><b>공지사항 </b><a class="fas fa-plus-square" href="{{ url_for('services._notice') }}"></a></h4>
           <p class="section-text"></p>
         </div>
         <article class="movie-line-entity">
@@ -137,7 +137,7 @@
     <section class="section-middle">
       <div class="container">
         <div class="section-head" style="margin-bottom: 2rem;">
-          <h2 class="section-title text-uppercase">상영 시간표</h2>
+          <h4 class="section-title"><b>상영 시간표</b></h4>
           <p class="section-text"></p>
         </div>
       <div class="container">
