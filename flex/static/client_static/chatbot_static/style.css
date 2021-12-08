@@ -110,8 +110,8 @@ body {
     background: var(--primaryGradient);
     display: flex;
     flex-direction: row;
-    align-items: center;
-    justify-content: center;
+    align-items: left;
+    justify-content: left;
     padding: 15px 20px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;

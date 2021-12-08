@@ -18,6 +18,9 @@ class Inquiry(db.Model):
     date = db.Column(db.DateTime, nullable=False)
     member_id = db.Column(db.String(20), db.ForeignKey('member.id'))
 
+    def __str__(self):
+        return self.title
+
 
 class InquiryAnswer(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -25,6 +28,19 @@ class InquiryAnswer(db.Model):
     inquiry = db.relationship('Inquiry', backref=db.backref('inquiry'))
     content = db.Column(db.Text(), nullable=False)
     create_date = db.Column(db.DateTime(), nullable=False)
+
+    @property
+    def inquiryTitle(self):
+        return self.inquiry.title
+
+    @property
+    def inquiryContent(self):
+        return self.inquiry.content
+
+    @property
+    def inquiryMember(self):
+        return self.inquiry.member_id
+
 
 
 class Movie(db.Model):
@@ -212,6 +228,7 @@ class Facility(db.Model):
     installdate = db.Column(db.DateTime, nullable=False)  # _추가
     inspectiondate = db.Column(db.DateTime, nullable=False)  # _추가
     theater_id = db.Column(db.Integer, db.ForeignKey('theater.id'))
+    theater = db.relationship('Theater', backref=db.backref('theater_name3'))
 
 
 class Equipment(db.Model):
@@ -268,6 +285,10 @@ class Commute(db.Model):
     def work_time(self):
         # 일한 시간
         return self.endtime - self.starttime
+
+    @property
+    def userTheater(self):
+        return self.user.theater
 
 
 class Schedulemanage(db.Model):

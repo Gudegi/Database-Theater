@@ -1,0 +1,23 @@
+// Learn stuff about our users.
+
+! array 웃음 = ㅋ ㅋㅋ ㅋㅋㅋ ㅋㅋㅋㅋ ㅋㅋㅋㅋㅋ ㅋㅋㅋㅋㅋㅋ
+
++ 안녕*
+- 안녕하세요. DMN 챗봇입니다. 무엇을 도와드릴까요?
+
++ 안녕
+- 안녕하세요. DMN 챗봇입니다. 무엇을 도와드릴까요?
+
++ @웃음
+- 기쁜일이 있으신가요?
+
++ 내 이름은 *이야
+- <set name=<formal>> 안녕 <get name>?
+- <set name=<formal>><get name>, 안녕!
+
++ 안녕? 나는 *야
+- 안녕~~~ <set name=<formal>><get name> 
+
++ *
+- 무슨 말씀 하시는지 잘 모르겠어요.
+

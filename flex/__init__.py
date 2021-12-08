@@ -14,25 +14,23 @@ migrate = Migrate(compare_type=True)
 
 
 # Create admin
-from .views.admin_views import MyHomeView, CommuteView, ManageUserView, MyModelView, NoticeView, ScheduleView, UserView, CustomView, MovieView, QuestionView, AnswerView, FacilityView, TestView, EvaluationView
+from .views.admin_views import InquiryView, MyHomeView, CommuteView, ManageUserView, MyModelView, NoticeView, ScheduleView, UserView, MovieView, FacilityView, EvaluationView, InquiryAnswerView
 admin = Admin(index_view=MyHomeView(), name='DMN Manage', base_template='admin_base.html', template_mode='bootstrap4')
-from .models import Evaluation, Facility, User, Role, Movie, Screenschedule, Question, Answer, Commute, Notice
+from .models import Evaluation, Facility, User, Role, Movie, Screenschedule, Commute, Notice, Inquiry, InquiryAnswer
 # Add model views
-admin.add_view(MyModelView(Role, db.session, menu_icon_type='fa', menu_icon_value='fa-server', name="Roles"))
+#admin.add_view(MyModelView(Role, db.session, menu_icon_type='fa', menu_icon_value='fa-server', name="권한 확인"))
 admin.add_view(UserView(User, db.session, menu_icon_type='fa', menu_icon_value='fa-users', name='전체 직원 조회', endpoint='users'))
 admin.add_view(MovieView(Movie, db.session, menu_icon_type='fa', menu_icon_value='fa-film', name='영화 목록', endpoint='moives'))
 admin.add_view(ScheduleView(Screenschedule,  db.session, menu_icon_type='fa', menu_icon_value='fa-calendar-check-o', name='상영 일정 관리', endpoint='screenschedules'))
 admin.add_view(CommuteView(Commute, db.session, menu_icon_type='fa', menu_icon_value='fa-clock-o', name='출근부', endpoint='commute' ))
-admin.add_view(FacilityView(Facility, db.session, menu_icon_type='fa', menu_icon_value='fa-wrench', name='시설물 조회', endpoint='facilitys'))
+admin.add_view(FacilityView(Facility, db.session, menu_icon_type='fa', menu_icon_value='fa-wrench', name='내 지점 시설물 조회', endpoint='facilitys'))
 admin.add_view(ManageUserView(User, db.session, menu_icon_type='fa', menu_icon_value='fa-user-plus', name='내 지점 직원 관리', endpoint='manageUsers' ))
 admin.add_view(EvaluationView(Evaluation, db.session, menu_icon_type='fa', menu_icon_value='fa-pencil-square-o', name='내 지점 인사 평가', endpoint='evaluation' ))
-admin.add_view(NoticeView(Notice, db.session, menu_icon_type='fa', menu_icon_value='fa-exclamation', name='지점 별 공지', endpoint='notice'  ))
+admin.add_view(NoticeView(Notice, db.session, menu_icon_type='fa', menu_icon_value='fa-exclamation', name='공지사항 관리', endpoint='notice'  ))
+admin.add_view(InquiryView(Inquiry, db.session, menu_icon_type='fa', menu_icon_value='fa-question', name='문의 확인', endpoint='inquiry'))
+admin.add_view(InquiryAnswerView(InquiryAnswer, db.session, menu_icon_type='fa', menu_icon_value='fa-comment', name='문의 답변', endpoint='inquiryAnswer'))
 
-admin.add_view(TestView(User,db.session,endpoint='asdf', name='test'))
-admin.add_view(QuestionView(Question,  db.session, menu_icon_type='fa', menu_icon_value='fa-calendar-check-o', name='Question', endpoint='questions',category="model"))
-admin.add_view(AnswerView(Answer,  db.session, menu_icon_type='fa', menu_icon_value='fa-calendar-check-o', name='Answer', endpoint='answers',category="model"))
-
-admin.add_view(CustomView(name="Custom view", endpoint='custom', menu_icon_type='fa', menu_icon_value='fa-connectdevelop',))
+#admin.add_view(CustomView(name="Custom view", endpoint='custom', menu_icon_type='fa', menu_icon_value='fa-connectdevelop',))
 
 
 # Form Extentions

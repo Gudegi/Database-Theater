@@ -1,7 +1,6 @@
 {% extends 'admin/master.html' %}
 {% block body %}
 {{ super() }}
-
 {% if current_user.is_authenticated %}
 
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
@@ -13,10 +12,10 @@
 <section class="content-header">
   <h1>
     인사이트
-    <small>Control panel</small>
+    <small>통계</small>
   </h1>
   <ol class="breadcrumb">
-    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li><a href="#"><i class="fa fa-dashboard"></i> 인사이트</a></li>
     <li class="active">Dashboard</li>
   </ol>
 </section>
@@ -70,7 +69,7 @@
       <!-- small box -->
       <div class="small-box bg-red">
         <div class="inner">
-          <h3>{{ best_movie[0] }}, {{best_movie[1]}}<sup style="font-size: 20px">원</sup></h3>
+          <h3>{{ best_movie[0] }} &nbsp; : &nbsp;{{best_movie[1]}}<sup style="font-size: 20px">원</sup></h3>
           <p>최고 매출 영화</p>
         </div>
         <div class="icon">
@@ -90,33 +89,59 @@
       <div class="nav-tabs-custom">
         <!-- Tabs within a box -->
         <ul class="nav nav-tabs pull-right">
-          <li class="active"><a href="#bar-chart" data-toggle="tab">막대차트</a></li>
-          <li class="pull-left header"><i class="fa fa-inbox"></i> 영화별 매출추이</li>
+          <li class="active"><a href="#bar-chart" data-toggle="tab">단위 : 원</a></li>
+          <li class="pull-left header"><i class="fa fa-bar-chart"></i> 영화별 매출추이</li>
         </ul>
         <div class="tab-content no-padding">
           <!-- Morris chart - Sales -->
           <div class="chart tab-pane active" id="bar-chart"  style="position: relative; height: 300px;"></div>
-          <div class="chart tab-pane " id="sales-chart2" style="position: relative; height: 300px;"></div>
           <script>
             //custom BAR Chart
-              var bar = new Morris.Bar({
+            var data = JSON.parse('{{movie_sales_month_data|tojson}}');
+            var data_list = []
+            var data_dict = {}
+            console.log(data);
+            for( i=0; i<data.movies.length; i++ ){
+              if (!(data.movies[i].month in data_dict)) {
+                data_dict[data.movies[i].month] = {"y":data.movies[i].month};
+              }
+            }
+            Object.keys(data_dict).forEach(key => data_dict[key] === undefined ? delete data_dict[key] : {});
+            console.log(data_dict);
+            //data_dict = { 9: { "y":9, "엑시트":164000, "남산의 부장들":164000 }, 10: {...}, 11:{...}}
+            for( i=0; i<data.movies.length; i++ ){
+              var title = data.movies[i].title;
+              var sales = data.movies[i].sales;
+              data_dict[data.movies[i].month][title] = sales ;
+            }
+            for (var key in data_dict){
+              data_list.push(data_dict[key]);
+            }
+            var ykeys = Object.keys(data_list[0]);
+            var index = ykeys.indexOf("y");
+            if (index !== -1) {
+              ykeys.splice(index, 1);
+            }
+            const monthNames = ["", "1월", "2월", "3월", "4월", "5월", "6월",
+                "7월", "8월", "9월", "10월", "11월", "12월"
+            ];
+            var bar = new Morris.Bar({
               element: 'bar-chart',
               resize:true,
-              data: [
-                { y: '2006', a: 100, b: 90 },
-                { y: '2007', a: 75, b: 65 },
-                { y: '2008', a: 50, b: 40 },
-                { y: '2009', a: 75, b: 65 },
-                { y: '2010', a: 50, b: 40 },
-                { y: '2011', a: 75, b: 65 },
-                { y: '2012', a: 100, b: 90 }
-            ],
-            xkey: 'y',
-            ykeys: ['a', 'b'],
-            labels: ['Series A', 'Series B']
+              data: data_list,
+              barColors: ["#3c8dbc", "#f56954", "#00a65a", "#FF9933", "#6600CC", "#1431CC", "#33CCDD"],
+              xkey: 'y',
+              gridTextSize: '18',
+              gridTextColor: '#444444',
+              xLabelFormat: function (x) {
+                    var index = parseInt(x.src.y);
+                    return monthNames[index];
+              },
+              ykeys: ykeys,
+              labels: ykeys,
+              //hideHover: 'always',
             });
           </script>
-  
         </div>
       </div>
       <!-- /.nav-tabs-custom -->
@@ -125,248 +150,108 @@
       <div class="nav-tabs-custom">
         <!-- Tabs within a box -->
         <ul class="nav nav-tabs pull-right">
-          <li class="active"><a href="#revenue-chart" data-toggle="tab">영역차트</a></li>
-          <li class="pull-left header"><i class="fa fa-inbox"></i> 지점별 매출추이 </li>
+          <li class="active"><a href="#revenue-chart2" data-toggle="tab">단위 : 원</a></li>
+          <li class="pull-left header"><i class="fa fa-area-chart"></i> 지점별 매출추이 </li>
         </ul>
         <div class="tab-content no-padding">
           <!-- Morris chart - Sales -->
-          <div class="chart tab-pane active" id="revenue-chart"  style="position: relative; height: 300px;"></div>
-  
+          <div class="chart tab-pane active" id="revenue-chart2"  style="position: relative; height: 300px;"></div>
+          <script>
+            var data2 = JSON.parse('{{theater_sales_month_data|tojson}}');
+            var data_list2 = []
+            var data_dict2 = {}
+            for( i=0; i<data2.movies.length; i++ ){
+              if (!(data2.movies[i].month in data_dict2)) {
+                  data_dict2[data2.movies[i].month] = {"y":data2.movies[i].month};
+                }
+            } 
+            for( i=0; i<data2.movies.length; i++ ){
+              var title = data2.movies[i].theater;
+              var sales = data2.movies[i].sales;
+              data_dict2[data2.movies[i].month][title] = sales ;
+            }
+            for (var key in data_dict2){
+              data_list2.push(data_dict2[key]);
+            }
+            var ykeys = Object.keys(data_list2[0]);
+            var index = ykeys.indexOf("y");
+            if (index !== -1) {
+              ykeys.splice(index, 1);
+            }
+            const monthNames2 = ["", "1월", "2월", "3월", "4월", "5월", "6월",
+                "7월", "8월", "9월", "10월", "11월", "12월"
+            ];
+            var area = new Morris.Area({
+                element: 'revenue-chart2',
+                resize: true,
+                data: data_list2,
+                xkey: 'y',
+                parseTime: false,
+                xLabels: "month",
+                xLabelFormat: function (x) {
+                    var index = parseInt(x.src.y);
+                    return monthNames2[index];
+                },
+                ykeys: ykeys,
+                gridTextColor: '#444444',
+                gridTextSize: '18',
+                labels: ykeys,
+                lineColors: ["#4f8dbc", "#ff6954", "#00a65a", "#FF9933", "#f600CC", "#1431CC", "#33CCDD"],
+                hideHover: 'auto'
+              });
+          </script> 
         </div>
       </div>
       <!-- /.nav-tabs-custom -->
 
-      <!-- Chat box -->
-      <div class="box box-success">
-        <div class="box-header">
-          <i class="fa fa-comments-o"></i>
-
-          <h3 class="box-title">Chat</h3>
-
-          <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
-            <div class="btn-group" data-toggle="btn-toggle">
-              <button type="button" class="btn btn-default btn-sm active"><i class="fa fa-square text-green"></i>
-              </button>
-              <button type="button" class="btn btn-default btn-sm"><i class="fa fa-square text-red"></i></button>
-            </div>
-          </div>
-        </div>
-        <div class="box-body chat" id="chat-box">
-          <!-- chat item -->
-          <div class="item">
-            <img src="../static/img/user4-128x128.jpg" alt="user image" class="online">
-
-            <p class="message">
-              <a href="#" class="name">
-                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
-                Mike Doe
-              </a>
-              I would like to meet you to discuss the latest news about
-              the arrival of the new theme. They say it is going to be one the
-              best themes on the market
-            </p>
-            <div class="attachment">
-              <h4>Attachments:</h4>
-
-              <p class="filename">
-                Theme-thumbnail-image.jpg
-              </p>
-
-              <div class="pull-right">
-                <button type="button" class="btn btn-primary btn-sm btn-flat">Open</button>
-              </div>
-            </div>
-            <!-- /.attachment -->
-          </div>
-          <!-- /.item -->
-          <!-- chat item -->
-          <div class="item">
-            <img src="../static/img/user3-128x128.jpg" alt="user image" class="offline">
-
-            <p class="message">
-              <a href="#" class="name">
-                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
-                Alexander Pierce
-              </a>
-              I would like to meet you to discuss the latest news about
-              the arrival of the new theme. They say it is going to be one the
-              best themes on the market
-            </p>
-          </div>
-          <!-- /.item -->
-          <!-- chat item -->
-          <div class="item">
-            <img src="../static/img/user2-160x160.jpg" alt="user image" class="offline">
-
-            <p class="message">
-              <a href="#" class="name">
-                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                Susan Doe
-              </a>
-              I would like to meet you to discuss the latest news about
-              the arrival of the new theme. They say it is going to be one the
-              best themes on the market
-            </p>
-          </div>
-          <!-- /.item -->
-        </div>
-        <!-- /.chat -->
-        <div class="box-footer">
-          <div class="input-group">
-            <input class="form-control" placeholder="Type message...">
-
-            <div class="input-group-btn">
-              <button type="button" class="btn btn-success"><i class="fa fa-plus"></i></button>
-            </div>
-          </div>
+      <!-- Custom tabs (Charts with tabs)-->
+      <div class="nav-tabs-custom">
+        <!-- Tabs within a box -->
+        <ul class="nav nav-tabs pull-right">
+          <li class="active"><a href="#membership-bar-chart" data-toggle="tab">단위 : 명</a></li>
+          <li class="pull-left header"><i class="fa fa-bar-chart"></i> 멤버쉽 분포 </li>
+        </ul>
+          <div class="tab-content no-padding">
+          <div class="chart tab-pane active" id="membership-bar-chart"  style="position: relative; height: 300px;"></div>
+            <script>
+              //custom BAR Chart
+                var data = JSON.parse('{{membership_data|tojson}}');
+                var data_list = [] 
+                for( i=0; i<data.membership.length; i++ ){
+                  data_list.push( {"rank": data.membership[i].rank, "count": data.membership[i].count} );
+                }
+                var bar = new Morris.Bar({
+                element: 'membership-bar-chart',
+                resize:true,
+                data: data_list,
+                xkey: 'rank',
+                ykeys: ['count'],
+                //hideHover: 'always',
+                barColors: ["#f56954"],
+                labels: ['인원'],
+                gridTextColor: '#444444',
+                gridTextSize: '18',
+                barColors: function(row, series, type) {
+                  if(row.label == "브론즈"){
+                    return "#964b00";
+                  }
+                  else if (row.label == "실버"){
+                    return "#c0c0c0";
+                  }
+                  else if (row.label == "골드"){
+                    return "#ffd700";
+                  }
+                  else if (row.label == "챌린저"){
+                    return "#0f52ba";
+                  }
+                }
+            });
+            </script>
         </div>
       </div>
-      <!-- /.box (chat box) -->
+      <!-- /.nav-tabs-custom -->
 
-      <!-- TO DO List -->
-      <div class="box box-primary">
-        <div class="box-header">
-          <i class="ion ion-clipboard"></i>
-
-          <h3 class="box-title">To Do List</h3>
-
-          <div class="box-tools pull-right">
-            <ul class="pagination pagination-sm inline">
-              <li><a href="#">&laquo;</a></li>
-              <li><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">&raquo;</a></li>
-            </ul>
-          </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body">
-          <ul class="todo-list">
-            <li>
-              <!-- drag handle -->
-              <span class="handle">
-                <i class="fa fa-ellipsis-v"></i>
-                <i class="fa fa-ellipsis-v"></i>
-              </span>
-              <!-- checkbox -->
-              <input type="checkbox" value="">
-              <!-- todo text -->
-              <span class="text">Design a nice theme</span>
-              <!-- Emphasis label -->
-              <small class="label label-danger"><i class="fa fa-clock-o"></i> 2 mins</small>
-              <!-- General tools such as edit or delete-->
-              <div class="tools">
-                <i class="fa fa-edit"></i>
-                <i class="fa fa-trash-o"></i>
-              </div>
-            </li>
-            <li>
-              <span class="handle">
-                <i class="fa fa-ellipsis-v"></i>
-                <i class="fa fa-ellipsis-v"></i>
-              </span>
-              <input type="checkbox" value="">
-              <span class="text">Make the theme responsive</span>
-              <small class="label label-info"><i class="fa fa-clock-o"></i> 4 hours</small>
-              <div class="tools">
-                <i class="fa fa-edit"></i>
-                <i class="fa fa-trash-o"></i>
-              </div>
-            </li>
-            <li>
-              <span class="handle">
-                <i class="fa fa-ellipsis-v"></i>
-                <i class="fa fa-ellipsis-v"></i>
-              </span>
-              <input type="checkbox" value="">
-              <span class="text">Let theme shine like a star</span>
-              <small class="label label-warning"><i class="fa fa-clock-o"></i> 1 day</small>
-              <div class="tools">
-                <i class="fa fa-edit"></i>
-                <i class="fa fa-trash-o"></i>
-              </div>
-            </li>
-            <li>
-              <span class="handle">
-                <i class="fa fa-ellipsis-v"></i>
-                <i class="fa fa-ellipsis-v"></i>
-              </span>
-              <input type="checkbox" value="">
-              <span class="text">Let theme shine like a star</span>
-              <small class="label label-success"><i class="fa fa-clock-o"></i> 3 days</small>
-              <div class="tools">
-                <i class="fa fa-edit"></i>
-                <i class="fa fa-trash-o"></i>
-              </div>
-            </li>
-            <li>
-              <span class="handle">
-                <i class="fa fa-ellipsis-v"></i>
-                <i class="fa fa-ellipsis-v"></i>
-              </span>
-              <input type="checkbox" value="">
-              <span class="text">Check your messages and notifications</span>
-              <small class="label label-primary"><i class="fa fa-clock-o"></i> 1 week</small>
-              <div class="tools">
-                <i class="fa fa-edit"></i>
-                <i class="fa fa-trash-o"></i>
-              </div>
-            </li>
-            <li>
-              <span class="handle">
-                <i class="fa fa-ellipsis-v"></i>
-                <i class="fa fa-ellipsis-v"></i>
-              </span>
-              <input type="checkbox" value="">
-              <span class="text">Let theme shine like a star</span>
-              <small class="label label-default"><i class="fa fa-clock-o"></i> 1 month</small>
-              <div class="tools">
-                <i class="fa fa-edit"></i>
-                <i class="fa fa-trash-o"></i>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer clearfix no-border">
-          <button type="button" class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button>
-        </div>
-      </div>
-      <!-- /.box -->
-
-      <!-- quick email widget -->
-      <div class="box box-info">
-        <div class="box-header">
-          <i class="fa fa-envelope"></i>
-
-          <h3 class="box-title">Quick Email</h3>
-          <!-- tools box -->
-          <div class="pull-right box-tools">
-            <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove">
-              <i class="fa fa-times"></i></button>
-          </div>
-          <!-- /. tools -->
-        </div>
-        <div class="box-body">
-          <form action="#" method="post">
-            <div class="form-group">
-              <input type="email" class="form-control" name="emailto" placeholder="Email to:">
-            </div>
-            <div class="form-group">
-              <input type="text" class="form-control" name="subject" placeholder="Subject">
-            </div>
-            <div>
-              <textarea class="textarea" placeholder="Message" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-            </div>
-          </form>
-        </div>
-        <div class="box-footer clearfix">
-          <button type="button" class="pull-right btn btn-default" id="sendEmail">Send
-            <i class="fa fa-arrow-circle-right"></i></button>
-        </div>
-      </div>
-
+    
     </section>
     <!-- /.Left col -->
     <!-- right col (We are only adding the ID to make the widgets sortable)-->
@@ -376,11 +261,8 @@
       <!-- CUSTOM PIE box -->
       <div class="box box-solid box-solid box-primary ">
         <div class="box-header">
-          <i class="fa fa-th"></i>
-
-
+          <i class="fa fa-pie-chart"></i>
           <h3 class="box-title">영화 매출 점유율 </h3>
-
           <div class="box-tools pull-right">
             <button type="button" class="btn bg-light-blue btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
             </button>
@@ -394,16 +276,19 @@
           <script>
             //Donut Char
             var data = JSON.parse('{{movie_sales_data|tojson}}');
-            var data_list = [] 
+            var data_list = []
+            var total = 0
             for( i=0; i<data.movies.length; i++ ){
+              total += data.movies[i].sales
               data_list.push( {"label": data.movies[i].title, "value": data.movies[i].sales} );
             }
             var donut = new Morris.Donut({
             element: 'sales-chart3',
             resize: true,
-            colors: ["#3c8dbc", "#f56954", "#00a65a", "#FF9933", "#6600CC"],
+            colors: ["#3c8dbc", "#f56954", "#00a65a", "#FF9933", "#6600CC", "#1431CC", "#33CCDD"],
             data: data_list,
-            hideHover: 'auto'
+            hideHover: 'auto',
+            formatter: function (y, data) { return  '\n'+ y.toLocaleString('ko-KR') +'원, '+ Math.ceil(y / total *100) + '%'; }
             });
             </script> 
         </div>
@@ -411,7 +296,7 @@
       <!-- solid sales graph -->
       <div class="box box-solid bg-blue-gradient">
         <div class="box-header">
-          <i class="fa fa-th"></i>
+          <i class="fa fa-bar-chart"></i>
 
           <h3 class="box-title">직원 연봉 분포</h3>
 
@@ -448,22 +333,24 @@
         <!-- /.box-body -->
         <div class="box-footer no-border">
           <div class="row">
-            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-              <input type="text" class="knob" data-readonly="true" value="20" data-width="60" data-height="60" data-fgColor="#39DCCC">
-
-              <div class="knob-label">Mail-Orders</div>
+            <div class="col-xs-3 text-center" style="border-right: 1px solid #f4f4f4">
+              <input type="text" class="knob" data-readonly="true" value="{{ ((position_dict['매니저']/position_dict['합계'])*100)|round(1, 'floor') }}" data-width="47" data-height="47" data-fgColor="rgb(245, 105, 84)">
+              <div class="knob-label">매니저(%)</div>
             </div>
             <!-- ./col -->
-            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-              <input type="text" class="knob" data-readonly="true" value="50" data-width="60" data-height="60" data-fgColor="#39CCCC">
-
-              <div class="knob-label">Online</div>
+            <div class="col-xs-3 text-center" style="border-right: 1px solid #f4f4f4">
+              <input type="text" class="knob" data-readonly="true" value="{{ ((position_dict['부점장']/position_dict['합계'])*100)|round(1, 'floor') }}" data-width="47" data-height="47" data-fgColor="rgb(245, 105, 84)">
+              <div class="knob-label">부점장(%)</div>
             </div>
             <!-- ./col -->
-            <div class="col-xs-4 text-center">
-              <input type="text" class="knob" data-readonly="true" value="30" data-width="60" data-height="60" data-fgColor="#39CCCC">
-
-              <div class="knob-label">In-Store</div>
+            <div class="col-xs-3 text-center">
+              <input type="text" class="knob" data-readonly="true" value="{{ ((position_dict['점장']/position_dict['합계'])*100)|round(1, 'floor') }}" data-width="47" data-height="47" data-fgColor="rgb(245, 105, 84)">
+              <div class="knob-label">점장(%)</div>
+            </div>
+             <!-- ./col -->
+             <div class="col-xs-3 text-center">
+              <input type="text" class="knob" data-readonly="true" value="{{ ((position_dict['관리자']/position_dict['합계'])*100)|round(1, 'floor') }}" data-width="47" data-height="47" data-fgColor="rgb(245, 105, 84)">
+              <div class="knob-label">관리자(%)</div>
             </div>
             <!-- ./col -->
           </div>
@@ -478,10 +365,11 @@
         <div class="box-header">
           <i class="fa fa-calendar"></i>
 
-          <h3 class="box-title">Calendar</h3>
+          <h3 class="box-title">달력</h3>
           <!-- tools box -->
           <div class="pull-right box-tools">
             <!-- button with a dropdown -->
+            <!--
             <div class="btn-group">
               <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">
                 <i class="fa fa-bars"></i></button>
@@ -492,6 +380,7 @@
                 <li><a href="#">View calendar</a></li>
               </ul>
             </div>
+            -->
             <button type="button" class="btn btn-success btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
             </button>
             <button type="button" class="btn btn-success btn-sm" data-widget="remove"><i class="fa fa-times"></i>
@@ -505,50 +394,6 @@
           <div id="calendar" style="width: 100%"></div>
         </div>
         <!-- /.box-body -->
-        <div class="box-footer text-black">
-          <div class="row">
-            <div class="col-sm-6">
-              <!-- Progress bars -->
-              <div class="clearfix">
-                <span class="pull-left">Task #1</span>
-                <small class="pull-right">90%</small>
-              </div>
-              <div class="progress xs">
-                <div class="progress-bar progress-bar-green" style="width: 90%;"></div>
-              </div>
-
-              <div class="clearfix">
-                <span class="pull-left">Task #2</span>
-                <small class="pull-right">70%</small>
-              </div>
-              <div class="progress xs">
-                <div class="progress-bar progress-bar-green" style="width: 70%;"></div>
-              </div>
-            </div>
-            <!-- /.col -->
-            <div class="col-sm-6">
-              <div class="clearfix">
-                <span class="pull-left">Task #3</span>
-                <small class="pull-right">60%</small>
-              </div>
-              <div class="progress xs">
-                <div class="progress-bar progress-bar-green" style="width: 60%;"></div>
-              </div>
-
-              <div class="clearfix">
-                <span class="pull-left">Task #4</span>
-                <small class="pull-right">40%</small>
-              </div>
-              <div class="progress xs">
-                <div class="progress-bar progress-bar-green" style="width: 40%;"></div>
-              </div>
-            </div>
-            <!-- /.col -->
-          </div>
-          <!-- /.row -->
-        </div>
-      </div>
-      <!-- /.box -->
 
     </section>
     <!-- right col -->
@@ -559,12 +404,14 @@
 <!-- /.content -->
 {% else %}
 
-<center>
+<div style = "text-align:center;">
   <section class="content" style="color: white">
     <div class="col-sm-12">
-      <h1>Flask-Admin example</h1>
+      <br><br><br><br><br><br><br><br><br><br>
+      <br><br><br><br><br><br><br><br><br>
+      <h1>DMN Management</h1>
       <p class="lead">
-        Authentication
+        팀  도미노
       </p>
       <p>
         This example shows how you can use Flask-Admin in an admin template, <br> here I used AdminLTE and <a href="https://pythonhosted.org/Flask-Security/index.html" target="_blank">Flask-Security</a> for authentication.
@@ -575,17 +422,20 @@
         email: <b>admin</b> <br>
         password: <b>admin</b> <br>
         <br>
-      <p>
-        <a class="btn btn-primary" href="{{ url_for('security.login') }}">Login</a> <a class="btn btn-default" href="{{ url_for('security.register') }}">Register</a>
-      </p>
-      {% endif %}
-      <br>
-      <p>
-        <a class="btn btn-primary" href="/"><i class="glyphicon glyphicon-chevron-left"></i> Back</a>
-      </p>
-    </div>
-  </section>
-</center>
+        <p>
+          <a class="btn btn-primary" href="{{ url_for('security.login') }}">Login</a> 
+          <!--<a class="btn btn-default" href="{{ url_for('security.register') }}">Register</a>-->
+        </p>
+        {% endif %}
+        <br>
+        <p>
+          <a class="btn btn-primary" href="/"><i class="glyphicon glyphicon-chevron-left"></i> DMN 멀티플렉스</a>
+        </p>
+        <br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br>
+      </div>
+    </section>
+  </div>
 
 {% endif %}
 
