@@ -262,6 +262,7 @@ class Evaluation(db.Model):
     comment = db.Column(db.String(45), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref=db.backref('user_name2'))
 
     @property
     def userName(self):
@@ -270,6 +271,11 @@ class Evaluation(db.Model):
     @property
     def userTheater(self):
         return self.user.theater
+    
+    @property
+    def userPosition(self):
+        return self.user.department_info
+
 
 
 class Commute(db.Model):

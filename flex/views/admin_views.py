@@ -4,7 +4,7 @@ from flask_security import current_user
 from flask_admin import BaseView, expose    
 from flask_admin.contrib.sqla import ModelView
 
-from ..models import Facility, User, Member, Evaluation, Theater, Notice
+from ..models import Facility, User, Member, Evaluation, Theater, Notice, Commute, Screenschedule
  
 from .. import db
 #홈 화면 커스텀
@@ -185,12 +185,6 @@ class MovieView(MyModelView):
 #영화 상영 일정 관리
 class ScheduleView(MyModelView):
 
-    column_list = ('session','screen', 'title', 'theater', 'starttime','endtime') #역참조를 이용하여 영화 title 가져옴(이렇게 하면 여기서 추가 가능)
-    column_labels = dict(session='회차', screen_number='상영관(ID)', screen='상영관', movie_id = '영화(ID)', title='타이틀', \
-        theater_id = '극장(ID)', theater='지점', starttime='시작시간', endtime='종료시간')
-    column_searchable_list = ['session','screen_number', 'movie_id', 'theater_id', 'starttime','endtime']
-    column_filters = ['session','screen_number', 'movie_id', 'theater_id', 'starttime','endtime']
-
     def is_accessible(self):
         if not current_user.is_active or not current_user.is_authenticated:
             return False
@@ -199,9 +193,28 @@ class ScheduleView(MyModelView):
             return True
 
         return False
+
+    def get_query(self):
+        if current_user.has_role('관리자'):
+            return super(ScheduleView, self).get_query().filter()
+        else:
+            return super(ScheduleView, self).get_query().filter(Screenschedule.theater_id == current_user.theater_id )
+
+    column_list = ('theater', 'session', 'screen', 'title', 'starttime','endtime') #역참조를 이용하여 영화 title 가져옴(이렇게 하면 여기서 추가 가능)
+    column_labels = dict( screen_number='상영관(ID)', screen='상영관', movie_id = '영화(ID)', title='타이틀', \
+        theater_id = '극장(ID)', theater='지점', starttime='시작시간', endtime='종료시간', session='회차')
+    column_searchable_list = ['session','screen_number', 'movie_id', 'theater_id', 'starttime','endtime']
+    column_filters = ['session','screen_number', 'movie_id', 'theater_id', 'starttime','endtime']
    
 #출근부
 class CommuteView(MyModelView):
+
+    def get_query(self):
+        if current_user.has_role('관리자'):
+            return super(CommuteView, self).get_query().filter()
+        else:
+            return super(CommuteView, self).get_query().filter(Commute.user_id == User.id).filter(User.theater_id == current_user.theater_id )
+
     column_list = [ 'userTheater', 'user', 'type', 'date', 'starttime', 'endtime', 'work_time']
     column_labels = dict(userTheater='지점', user='이름', type='근무형태', date='날짜', starttime='시작시간', endtime='마감시간', work_time='작업시간'  )
     #column_editable_list = column_list
@@ -252,8 +265,8 @@ class ManageUserView(MyModelView):
 #인사 평가
 class EvaluationView(MyModelView):
 
-    column_list = ('userTheater', 'userName', 'department_info', 'score', 'comment', 'date'  )
-    column_labels = dict(userTheater='지점', userName='이름', department_info='직책', score='평가(1~5)', comment='평가내용', date='작성일자')
+    column_list = ('userTheater', 'user_id', 'user', 'userPosition', 'score', 'comment', 'date'  )
+    column_labels = dict(userTheater='지점', user_id='직원번호', user='이름', userPosition='직책', score='평가(1~5)', comment='평가내용', date='작성일자')
      
     def is_accessible(self):
         if not current_user.is_active or not current_user.is_authenticated:
@@ -264,12 +277,13 @@ class EvaluationView(MyModelView):
 
         return False
 
-    def get_query(self):
+    '''def get_query(self):
         #인사관리 권한을 가진 부점장, 점장은 지점 직원들을 평가 할 수 있다.
 
         if current_user.has_role('인사관리'):
             return self.session.query(Evaluation.id, 
-            Theater.name.label('userTheater'), 
+            Theater.name.label('userTheater'),
+            Evaluation.user_id, 
             (User.last_name + User.first_name).label('userName'),
             User.department_info.label('department_info'),
             Evaluation.score,
@@ -280,14 +294,20 @@ class EvaluationView(MyModelView):
         
         #관리자는 모든 직원을 평가할 수 있다.
         else:
-            return self.session.query(Evaluation.id, 
+            return self.session.query(Evaluation.id,
+            Evaluation.user_id, 
             (User.last_name + User.first_name).label('userName'),
             User.department_info.label('department_info'),
             Theater.name.label('userTheater'), 
             Evaluation.score,
             Evaluation.comment, 
             Evaluation.date).filter(User.theater_id == Theater.id).\
-                filter(Evaluation.user_id == User.id)  
+                filter(Evaluation.user_id == User.id)''' 
+    def get_query(self):
+        if current_user.has_role('관리자'):
+            return super(EvaluationView, self).get_query().filter()
+        else:
+            return super(EvaluationView, self).get_query().filter(Evaluation.user_id == User.id).filter( User.theater_id == current_user.theater_id ) 
 
 #공지 관리
 class NoticeView(MyModelView):
