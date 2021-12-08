@@ -9,7 +9,7 @@ bp = Blueprint('theaters', __name__, url_prefix='/theaters')
 @bp.route('/', methods=['GET'])
 def index():
     theaters = Theater.query.get(1)
-    notices = Notice.query.filter(Notice.theater_id == 1).all() # 지점 공지
+    notices = Notice.query.filter(Notice.theater_id == 1).order_by(Notice.date.desc()) # 지점 공지 등록 날짜순으로 내림차순 정렬
     week = {0:'월요일', 1:'화요일', 2:'수요일', 3:'목요일', 4:'금요일', 5:'토요일', 6:'일요일'}
     week_list = []
     now = datetime.now()
@@ -50,7 +50,7 @@ def index():
 @bp.route('/<int:theater_id>')
 def other(theater_id):
     theaters = Theater.query.get(theater_id)
-    notices = Notice.query.filter(Notice.theater_id == theater_id).all()
+    notices = Notice.query.filter(Notice.theater_id == theater_id).order_by(Notice.date.desc())
     week = {0:'월요일', 1:'화요일', 2:'수요일', 3:'목요일', 4:'금요일', 5:'토요일', 6:'일요일'}
     week_list = []
     now = datetime.now()
