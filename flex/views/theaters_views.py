@@ -32,7 +32,7 @@ def index():
     for movie in movies:
         screenschedule_list = []
         screenschedules = Screenschedule.query.filter(Screenschedule.movie_id == movie.id).\
-                filter(Screenschedule.theater_id == selected_theater_id).all()
+                filter(Screenschedule.theater_id == selected_theater_id).order_by(Screenschedule.starttime.asc())
         for screenschedule in screenschedules:
             # 잔여 좌석수 계산
             seat_cnt = Seat.query.filter(Seat.screen_number == screenschedule.screen_number).\
@@ -73,7 +73,7 @@ def other(theater_id):
     for movie in movies:
         screenschedule_list = []
         screenschedules = Screenschedule.query.filter(Screenschedule.movie_id == movie.id).\
-                filter(Screenschedule.theater_id == selected_theater_id).all()
+                filter(Screenschedule.theater_id == selected_theater_id).order_by(Screenschedule.starttime.asc())
         for screenschedule in screenschedules:
             # 잔여 좌석수 계산
             seat_cnt = Seat.query.filter(Seat.screen_number == screenschedule.screen_number).\
