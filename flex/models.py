@@ -64,17 +64,16 @@ class Actor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
     name = db.Column(db.String(255), nullable=False)
-    # backref를 이용
-    # movie = db.relationship('Movie', backref=db.backref('answer_set'))
+
 
 
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(45), nullable=False)
     content = db.Column(db.String(255), nullable=False)
-    rate = db.Column(db.Integer, nullable=False)  # float에서 int로 변경
+    rate = db.Column(db.Integer, nullable=False)  
     date = db.Column(db.DateTime, nullable=False)
-    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))  # ondelete='CASCADE' 필요 없지 않나?
+    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id')) 
     member_id = db.Column(db.String(20), db.ForeignKey('member.id'))
     modify_date = db.Column(db.DateTime)
     sentiment = db.Column(db.Integer)

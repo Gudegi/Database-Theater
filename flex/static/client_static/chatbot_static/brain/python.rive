@@ -61,7 +61,7 @@
     theater_tel_query = "SELECT tel FROM theater WHERE name='" + theater + "'"
     cur.execute(theater_tel_query)
     theater_tel_result = cur.fetchall()
-    result = theater_tel_result[0][0
+    result = theater_tel_result[0][0]
     return result
 < object
 
@@ -70,8 +70,8 @@
     import pymysql
     theater = args[0]
     conn = pymysql.connect(host="database-eritip.cvgx9v3ektbw.ap-northeast-2.rds.amazonaws.com",user="admin",password='eritip18!',db='TheaterDB', charset='utf8')
-    cur = conn.cursor(
-    theater_tel_query = "SELECT address FROM theater WHERE name='" + theater + "'
+    cur = conn.cursor()
+    theater_tel_query = "SELECT address FROM theater WHERE name='" + theater + "'"
     cur.execute(theater_tel_query)
     theater_tel_result = cur.fetchall()
     result = theater_tel_result[0][0]
