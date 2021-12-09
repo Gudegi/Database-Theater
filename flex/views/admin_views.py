@@ -265,8 +265,8 @@ class ManageUserView(MyModelView):
 #인사 평가
 class EvaluationView(MyModelView):
 
-    column_list = ('userTheater', 'user_id', 'user', 'userPosition', 'score', 'comment', 'date'  )
-    column_labels = dict(userTheater='지점', user_id='직원번호', user='이름', userPosition='직책', score='평가(1~5)', comment='평가내용', date='작성일자')
+    column_list = ('userTheater', 'userName', 'user', 'userPosition', 'score', 'comment', 'date'  )
+    column_labels = dict(userTheater='지점', userName='이름', user='직원번호', userPosition='직책', score='평가(1~5)', comment='평가내용', date='작성일자')
      
     def is_accessible(self):
         if not current_user.is_active or not current_user.is_authenticated:
