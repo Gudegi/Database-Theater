@@ -1,0 +1,86 @@
+{% extends 'client_base.html' %}
+{% block content %}
+{#    뒤로가기 방지#}
+<script type="text/javascript">
+    window.history.forward();
+    function noBack() {
+        window.history.forward();
+    }
+</script>
+<!DOCTYPE html>
+<html>
+    <body class="body">
+        <section class="after-head d-flex section-text-white position-relative">
+            <div class="d-background" data-image-src="{{ url_for('static', filename="../../static/client_static/images/" + movie.eng_title + "_logo.jpg") }}" data-parallax="scroll"></div>
+            <div class="d-background bg-black-80"></div>
+            <div class="top-block top-inner container">
+                <div class="top-block-content">
+                    <h1 class="section-title">예매 취소</h1>
+                    <div class="page-breadcrumbs">
+                        <a class="content-link" href="#">마이페이지</a>
+                        <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
+                        <span>예매 취소</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+<section class="section-long">
+        <div class="col-md-6 col-lg-4 col-xl-3" style="margin-left: 700px; width: 400px">
+            <article class="movie-block-entity">
+                <div class="entity-poster" data-role="hover-wrap">
+                    <div class="embed-responsive embed-responsive-poster"><img class="embed-responsive-item" src="{{ url_for('static', filename="../../static/client_static/images/" + movie.eng_title + "_logo.jpg") }}" alt=""></div><div class="d-over bg-theme-lighted collapse animated faster" data-show-class="fadeIn show" data-hide-class="fadeOut show"></div>
+                </div>
+                <div class="entity-content">
+                    <h4 class="entity-title"><a class="content-link" href="movie-info-sidebar-right.html">{{ movie.title }}</a></h4>
+                    <div class="entity-category"><a class="content-link" href="movies-blocks.html"></a>
+                        <div class="entity-info">
+                        <div class="info-lines">
+                            <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-map-marker-alt"></i></span>
+                                <span class="info-text">{{ theater_name }} <b>{{screen}}</b></span><span class="info-rest"></span></div>
+                        </div>
+                        &nbsp;
+                        <div class="info-lines">
+                            <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-ticket-alt"></i></span>
+                                <span class="info-text">좌석 : </span>
+                                {% for seat in query_seat_list %}
+                                    <span class="info-rest">{{ seat.row }}{{ seat.col }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        &nbsp;
+                        {% if pay.coupon_code == "-1" %}
+                            <div class="info-lines">
+                                <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-money-bill-alt"></i></span>
+                                    <span class="info-text">쿠폰 : <b>사용안함</b></span><span class="info-rest"></span></div>
+                            </div>
+                        {% else %}
+                            <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-money-bill-alt"></i></span>
+                            <span class="info-text">쿠폰 : <b>{{pay.coupon_code}}</b></span><span class="info-rest"></span></div>
+                        {% endif %}
+                        <div class="info-lines">
+                            <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-user-plus"></i></span>
+                                <span class="info-text">포인트 사용: {{pay.used_points}} point</span><span class="info-rest"></span></div>
+                        </div>
+                        &nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="entity-extra">
+                    <h4 class="entity-title"><p href="movie-info-sidebar-right.html">환불 가격</p></h4>
+                    {% if pay.coupon_code != "-1" %}
+                        <span class="info-text" style="color:#ff680d; font-size: 20px">&#8361;{{ pay.firstpay - pay.used_points - coupon_value }}</span><span class="info-rest"></span>
+                    {% else %}
+                        <span class="info-text" style="color:#ff680d; font-size: 20px">&#8361;{{ pay.firstpay}}</span><span class="info-rest"></span>
+                    {% endif %}
+                    &nbsp;&nbsp;&nbsp;
+                    <form method="post" class="post-form" >
+                    {{ form.csrf_token }}
+                    {% include "form_errors.html" %}
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" class="btn-theme btn" style="width: 200px" value="예매 취소 ▶">&nbsp</input>
+                    </form>
+            </article>
+    </div>
+</section>
+</body>
+</html>
+{% endblock %}

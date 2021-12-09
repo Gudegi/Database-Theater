@@ -1,0 +1,299 @@
+/*! Memico - Cinema Bootstrap HTML5 Template v.0.1.0 - 2019-03-14 */
+/*******************************************************************
+
+Dot-like css icons
+
+*******************************************************************/
+.th-dots {
+  position: relative;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  line-height: 0;
+  vertical-align: top;
+}
+.th-dots span {
+  position: absolute;
+  width: 0;
+  height: 0;
+  display: block;
+}
+.th-dots span:before {
+  content: "";
+  border-radius: 0.3em;
+  -webkit-box-shadow: 0 0 0 1em inset;
+  box-shadow: 0 0 0 1em inset;
+  position: absolute;
+  left: -0.15em;
+  top: -0.15em;
+  width: 0.3em;
+  height: 0.3em;
+  display: block;
+  overflow: hidden;
+}
+.th-dots-animated,
+.th-dots-active-close,
+.th-dots-animated span,
+.th-dots-active-close span,
+.th-dots-animated span:before,
+.th-dots-active-close span:before {
+  -webkit-transition: all 0.3s linear 0s, color 0s linear 0s;
+  -moz-transition: all 0.3s linear 0s, color 0s linear 0s;
+  -o-transition: all 0.3s linear 0s, color 0s linear 0s;
+  -ms-transition: all 0.3s linear 0s, color 0s linear 0s;
+  transition: all 0.3s linear 0s, color 0s linear 0s;
+}
+.th-bars span {
+  left: 50%;
+}
+.th-bars span:nth-child(1) {
+  top: 0.15em;
+}
+.th-bars span:nth-child(2) {
+  top: 50%;
+}
+.th-bars span:nth-child(3) {
+  bottom: 0.15em;
+}
+a:hover .th-bars.th-dots-animated span,
+a:hover .th-bars.th-dots-active-close span,
+.th-bars.th-dots-animated:hover span,
+.th-bars.th-dots-active-close:hover span {
+  left: 0.15em;
+}
+a:hover .th-bars.th-dots-animated span:before,
+a:hover .th-bars.th-dots-active-close span:before,
+.th-bars.th-dots-animated:hover span:before,
+.th-bars.th-dots-active-close:hover span:before {
+  width: 1em;
+}
+.active > .th-bars.th-dots-active-close span:nth-child(1),
+.th-bars.th-dots-active-close.active span:nth-child(1) {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.active > .th-bars.th-dots-active-close span:nth-child(3),
+.th-bars.th-dots-active-close.active span:nth-child(3) {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+.active > .th-bars.th-dots-active-close span:nth-child(2),
+.th-bars.th-dots-active-close.active span:nth-child(2) {
+  left: 50% !important;
+}
+.active > .th-bars.th-dots-active-close span:nth-child(2):before,
+.th-bars.th-dots-active-close.active span:nth-child(2):before {
+  width: 0.3em !important;
+}
+.active > .th-bars.th-dots-active-close span:nth-child(1),
+.th-bars.th-dots-active-close.active span:nth-child(1),
+.active > .th-bars.th-dots-active-close span:nth-child(3),
+.th-bars.th-dots-active-close.active span:nth-child(3) {
+  left: 0.15em;
+}
+.active > .th-bars.th-dots-active-close span:nth-child(1):before,
+.th-bars.th-dots-active-close.active span:nth-child(1):before,
+.active > .th-bars.th-dots-active-close span:nth-child(3):before,
+.th-bars.th-dots-active-close.active span:nth-child(3):before {
+  width: 1.289em;
+}
+.th-arrow-left span:nth-child(1) {
+  right: 0.275em;
+  top: 0.15em;
+}
+.th-arrow-left span:nth-child(2) {
+  left: 0.275em;
+  top: 50%;
+}
+.th-arrow-left span:nth-child(3) {
+  right: 0.275em;
+  bottom: 0.15em;
+}
+.th-arrow-left.th-dots-animated span:nth-child(1) {
+  -webkit-transform: rotate(143deg);
+  -moz-transform: rotate(143deg);
+  -o-transform: rotate(143deg);
+  -ms-transform: rotate(143deg);
+  transform: rotate(143deg);
+}
+.th-arrow-left.th-dots-animated span:nth-child(3) {
+  -webkit-transform: rotate(-143deg);
+  -moz-transform: rotate(-143deg);
+  -o-transform: rotate(-143deg);
+  -ms-transform: rotate(-143deg);
+  transform: rotate(-143deg);
+}
+.th-arrow-right span:nth-child(1) {
+  left: 0.275em;
+  top: 0.15em;
+}
+.th-arrow-right span:nth-child(2) {
+  right: 0.275em;
+  top: 50%;
+}
+.th-arrow-right span:nth-child(3) {
+  left: 0.275em;
+  bottom: 0.15em;
+}
+.th-arrow-right.th-dots-animated span:nth-child(1) {
+  -webkit-transform: rotate(37deg);
+  -moz-transform: rotate(37deg);
+  -o-transform: rotate(37deg);
+  -ms-transform: rotate(37deg);
+  transform: rotate(37deg);
+}
+.th-arrow-right.th-dots-animated span:nth-child(3) {
+  -webkit-transform: rotate(-37deg);
+  -moz-transform: rotate(-37deg);
+  -o-transform: rotate(-37deg);
+  -ms-transform: rotate(-37deg);
+  transform: rotate(-37deg);
+}
+.th-arrow-top span:nth-child(1) {
+  bottom: 0.275em;
+  left: 0.15em;
+}
+.th-arrow-top span:nth-child(2) {
+  top: 0.275em;
+  left: 50%;
+}
+.th-arrow-top span:nth-child(3) {
+  bottom: 0.275em;
+  right: 0.15em;
+}
+.th-arrow-top.th-dots-animated span:nth-child(1) {
+  -webkit-transform: rotate(-53deg);
+  -moz-transform: rotate(-53deg);
+  -o-transform: rotate(-53deg);
+  -ms-transform: rotate(-53deg);
+  transform: rotate(-53deg);
+}
+.th-arrow-top.th-dots-animated span:nth-child(3) {
+  -webkit-transform: rotate(-127deg);
+  -moz-transform: rotate(-127deg);
+  -o-transform: rotate(-127deg);
+  -ms-transform: rotate(-127deg);
+  transform: rotate(-127deg);
+}
+.th-arrow-bottom span:nth-child(1) {
+  top: 0.275em;
+  left: 0.15em;
+}
+.th-arrow-bottom span:nth-child(2) {
+  bottom: 0.275em;
+  left: 50%;
+}
+.th-arrow-bottom span:nth-child(3) {
+  top: 0.275em;
+  right: 0.15em;
+}
+.th-arrow-bottom.th-dots-animated span:nth-child(1) {
+  -webkit-transform: rotate(53deg);
+  -moz-transform: rotate(53deg);
+  -o-transform: rotate(53deg);
+  -ms-transform: rotate(53deg);
+  transform: rotate(53deg);
+}
+.th-arrow-bottom.th-dots-animated span:nth-child(3) {
+  -webkit-transform: rotate(127deg);
+  -moz-transform: rotate(127deg);
+  -o-transform: rotate(127deg);
+  -ms-transform: rotate(127deg);
+  transform: rotate(127deg);
+}
+.th-arrow-left.th-dots-animated span:nth-child(2):before,
+.th-arrow-right.th-dots-animated span:nth-child(2):before,
+.th-arrow-top.th-dots-animated span:nth-child(2):before,
+.th-arrow-bottom.th-dots-animated span:nth-child(2):before {
+  width: 0.3em !important;
+}
+a:hover .th-arrow-right.th-dots-animated span:before,
+.th-arrow-right.th-dots-animated:hover span:before,
+a:hover .th-arrow-left.th-dots-animated span:before,
+.th-arrow-left.th-dots-animated:hover span:before,
+a:hover .th-arrow-top.th-dots-animated span:before,
+.th-arrow-top.th-dots-animated:hover span:before,
+a:hover .th-arrow-bottom.th-dots-animated span:before,
+.th-arrow-bottom.th-dots-animated:hover span:before {
+  width: 0.8em;
+}
+.th-plus span:nth-child(1),
+.th-plus span:nth-child(3),
+.th-plus span:nth-child(5) {
+  left: 50%;
+}
+.th-plus span:nth-child(2),
+.th-plus span:nth-child(4),
+.th-plus span:nth-child(5) {
+  top: 50%;
+}
+.th-plus span:nth-child(1) {
+  top: 0.15em;
+}
+.th-plus span:nth-child(2) {
+  right: 0.15em;
+}
+.th-plus span:nth-child(3) {
+  bottom: 0.15em;
+}
+.th-plus span:nth-child(4) {
+  left: 0.15em;
+}
+.th-plus span:nth-child(5):before {
+  width: 0.3em !important;
+}
+.th-plus.th-dots-animated span:nth-child(1),
+.th-plus.th-dots-active-close span:nth-child(1) {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+.th-plus.th-dots-animated span:nth-child(2),
+.th-plus.th-dots-active-close span:nth-child(2) {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.th-plus.th-dots-animated span:nth-child(3),
+.th-plus.th-dots-active-close span:nth-child(3) {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+.th-plus.th-dots-active-close {
+  -webkit-transform: rotate(0);
+  -moz-transform: rotate(0);
+  -o-transform: rotate(0);
+  -ms-transform: rotate(0);
+  transform: rotate(0);
+}
+a:hover .th-plus.th-dots-animated span:before,
+a:hover .th-plus.th-dots-active-close span:before,
+.th-plus.th-dots-animated:hover span:before,
+.th-plus.th-dots-active-close:hover span:before {
+  width: 0.8em;
+}
+.active > .th-plus.th-dots-active-close,
+.th-plus.th-dots-active-close.active {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.active > .th-plus.th-dots-active-close span:before,
+.th-plus.th-dots-active-close.active span:before {
+  width: 0.8em;
+}

@@ -1,0 +1,104 @@
+{% extends 'client_base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+    <body class="body">
+        <section class="after-head d-flex section-text-white position-relative">
+            <div class="d-background" data-image-src="../../static/client_static/images/Theater_background.jpg" data-parallax="scroll"></div>
+            <div class="d-background bg-black-80"></div>
+            <div class="top-block top-inner container">
+                <div class="top-block-content">
+                    <h1 class="section-title">영화 목록</h1>
+                    <div class="page-breadcrumbs">
+                        <a class="content-link" href="#">Home</a>
+                        <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
+                        <span>Movies</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section-long">
+            <div class="container">
+                <div class="section-pannel">
+                    <div class="grid row">
+                        <div class="col-md-2 my-md-auto d-flex" style="padding-top: 5px">
+                            <span class="info-title mr-3">Select view </span>
+                            <ul class="ml-md-auto h5 list-inline">
+                                <li class="list-inline-item">
+                                    <a class="content-link transparent-link" href="{{ url_for('reservation.ticket')}}"><i class="fas fa-th"></i></a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a class="content-link transparent-link active" href="javascript:location.reload()"><i class="fas fa-th-list"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% if rate_list %}
+                    {% for movie in rate_list %}
+                        <article class="movie-line-entity">
+                            <div class="entity-poster" data-role="hover-wrap">
+                                <div class="embed-responsive embed-responsive-poster">
+                                    <img class="embed-responsive-item" src="../../static/client_static/images/{{ movie[0].eng_title }}_logo.jpg" alt="http://via.placeholder.com/340x510" />
+                                </div>
+                                <div class="d-over bg-theme-lighted collapse animated faster" data-show-class="fadeIn show" data-hide-class="fadeOut show">
+                                    <div class="entity-play">
+                                        <a class="action-icon-theme action-icon-bordered rounded-circle" href="https://www.youtube.com/watch?v=d96cjJhvlMA" data-magnific-popup="iframe">
+                                            <span class="icon-content"><i class="fas fa-play"></i></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="entity-content">
+                                <h4 class="entity-title">
+                                    <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie[0].id) }}">{{ movie[0].title }}</a>
+{#                                    Blueprint 이름으로 연결#}
+                                </h4>
+                                <div class="entity-category">
+                                    <a class="content-link" href="{{ url_for('movies.detail', movie_id = movie[0].id) }}">{{ movie[0].genre }}</a>
+                                </div>
+                                <div class="entity-info">
+                                    <div class="info-lines">
+                                        <div class="info info-short">
+                                            <span class="text-theme info-icon"><i class="fas fa-star"></i></span>
+{#                                            <span class="info-text">29 mar 2018</span>#}
+                                            <span class="info-text">{{ movie[1] }}</span>
+                                            <span class="info-rest">/ 10</span>
+                                        </div>
+                                        <div class="info info-short">
+                                            <span class="text-theme info-icon"><i class="fas fa-clock"></i></span>
+                                            <span class="info-text">{{ movie[0].running_time }}</span>
+                                            <span class="info-rest">&nbsp;min</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-short entity-text">{{ movie[0].information }}
+                                </p>
+                            </div>
+                                <div class="entity-extra">
+                                    <div class="entity-actions"><a class="btn-theme btn" href="{{url_for('reservation.res_step1', movie_id=movie[0].id)}}">
+                                        <i class="fas fa-ticket-alt"></i>&nbsp;예매하기</a></div>
+                                </div>
+{#                            <div class="entity-extra">#}
+{#                                <div class="text-uppercase entity-extra-title">Comming soon</div>#}
+{#                                <div></div>#}
+{#                            </div>#}
+                        </article>
+                    {% endfor %}
+                {% endif %}
+                <div class="section-bottom">
+                    <div class="paginator">
+                        <a class="paginator-item" href="#"><i class="fas fa-chevron-left"></i></a>
+                        <span class="active paginator-item">1</span>
+                        <a class="paginator-item" href="#">2</a>
+                        <a class="paginator-item" href="#">3</a>
+                        <span class="paginator-item">...</span>
+                        <a class="paginator-item" href="#">10</a>
+                        <a class="paginator-item" href="#"><i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
+{% endblock %}

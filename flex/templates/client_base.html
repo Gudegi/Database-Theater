@@ -1,0 +1,349 @@
+<!--클라이언트(손님) 페이지의 base.html, 모든 손님 페이지에 공통적으로 들어가는 memico css-->
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>도미노 멀티플렉스</title>
+    <!-- 챗봇 -->
+    <link
+      href="{{ url_for('static', filename='client_static/chatbot_static/style.css') }}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- Bootstrap -->
+    <link
+      href="{{ url_for('static', filename='client_static/bootstrap/css/bootstrap.css') }}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- 이 주러한 주석은 본래 memico꺼, 참고용으로 넣어둠 <link href="./bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />  -->
+    <!-- Animate.css -->
+    <link
+      href="{{ url_for('static', filename='client_static/animate.css/animate.css') }}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- <link href="./animate.css/animate.css" rel="stylesheet" type="text/css" /> -->
+    <!-- Font Awesome iconic font -->
+    <link
+      href="{{ url_for('static', filename='client_static/fontawesome/css/fontawesome-all.css') }}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- <link href="./fontawesome/css/fontawesome-all.css" rel="stylesheet" type="text/css" /> -->
+    <!-- Magnific Popup -->
+    <link
+      href="{{ url_for('static', filename='client_static/magnific-popup/magnific-popup.css') }}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- <link href="./magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css" /> -->
+    <!-- Slick carousel -->
+    <link
+      href="{{ url_for('static', filename='client_static/slick/slick.css') }}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- <link href="./slick/slick.css" rel="stylesheet" type="text/css" /> -->
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Oswald:300,400,500,700"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- Theme styles -->
+    <link
+      href="{{ url_for('static', filename='client_static/css/dot-icons.css') }}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="{{ url_for('static', filename='client_static/css/theme.css') }}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!--
+        <link href="./css/dot-icons.css" rel="stylesheet" type="text/css">
+        <link href="./css/theme.css" rel="stylesheet" type="text/css">-->
+  </head>
+  <body class="body">
+    <!-- header는 상단바-->
+    <header class="header header-horizontal header-view-pannel">
+      <div class="container">
+        <nav class="navbar">
+          <!-- 메인 아이콘-->
+          <a class="navbar-brand" href="{{ url_for('main.init')  }}">
+            <span class="logo-element">
+              <span class="logo-tape">
+                <span class="svg-content svg-fill-theme" , data-svg="">
+                  <svg
+                    viewBox="0 0 55 43"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    style="height: 1.2em; width: 1.5349em"
+                  >
+                    <path
+                      class="fill-path"
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8 0H47V3H51V0H55V43H51V40H47V43H8V40H4V43H0V0H4V3H8V0ZM8 7H4V11H8V7ZM4 15H8V19H4V15ZM8 23H4V27H8V23ZM4 32H8V36H4V32ZM51 7H47V11H51V7ZM47 15H51V19H47V15ZM51 23H47V27H51V23ZM47 32H51V36H47V32Z"
+                      fill="#FF8A00"
+                    />
+                  </svg>
+                </span>
+              </span>
+              <span class="logo-text text-uppercase"> <span>D</span>MN</span>
+            </span>
+          </a>
+          <button class="navbar-toggler" type="button">
+            <span class="th-dots-active-close th-dots th-bars">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </button>
+          <div class="navbar-collapse">
+            <ul class="navbar-nav">
+              <li class="nav-item nav-item-arrow-down nav-hover-show-sub">
+                <a class="nav-link" href="{{ url_for('movies.list') }}">영화</a>
+              </li>
+              <li class="nav-item nav-item-arrow-down nav-hover-show-sub">
+                <a class="nav-link" href="{{ url_for('theaters.index') }}"
+                  >극장</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('services._select') }}">고객센터</a>
+              </li>
+            </ul>
+            <div class="navbar-extra">
+              <ul class="navbar-nav">
+                <!-- navbar에 로그인, 회원가입 / 로그아웃 탭 추가 -->
+                {% if g.member %}
+                <!-- 로그인 상태라면 로그아웃 + 마이페이지 탭 노출 -->
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('mypage.mypage') }}"
+                    >마이페이지</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('auth.logout') }}"
+                    >로그아웃</a
+                  >
+                </li>
+                  {% else %}
+                  <!-- 로그인 상태가 아니라면 로그인, 회원가입탭 노출 -->
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('auth.login') }}"
+                    >로그인</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('auth.signup') }}"
+                    >회원가입</a
+                  >
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                  <a
+                    class="btn-theme btn"
+                    href="{{ url_for('reservation.ticket') }}"
+                    ><i class="fas fa-ticket-alt"></i>&nbsp;&nbsp;빠른예매</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.ko" >
+                  <img alt="Creative Commons License" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+<!-- 여기부터 페이지 별 내용 Start -->
+{% block content %}
+{% endblock %}
+<!-- 여기까지 페이지 별 내용 End -->
+<a class="scroll-top disabled" href="#"><i class="fas fa-angle-up" aria-hidden="true"></i></a>
+<!-- jQuery library -->
+<script src="{{ url_for('static', filename='client_static/js/jquery-3.3.1.js') }}"></script>
+<!-- Bootstrap -->
+<script src="{{url_for('static', filename='client_static/bootstrap/js/bootstrap.js') }}"></script>
+<!-- Paralax.js -->
+<script src="{{url_for('static', filename='client_static/parallax.js/parallax.js') }}"></script>
+<!-- Waypoints -->
+<script src="{{url_for('static', filename='client_static/waypoints/jquery.waypoints.min.js') }}"></script>
+<!-- Slick carousel -->
+<script src="{{url_for('static', filename='client_static/slick/slick.min.js') }}"></script>
+<!-- Magnific Popup -->
+<script src="{{url_for('static', filename='client_static/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
+<script src="{{url_for('static', filename='client_static/js/script.js') }}"></script>
+    <!-- jQuery JS -->
+<script src="{{ url_for('static', filename='jquery-3.4.1.min.js') }}"></script>
+<!-- Bootstrap JS -->
+<script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <!-- 자바스크립트 Start -->
+{% block script %}
+{% endblock %}
+<!-- 자바스크립트 End -->
+<!-- Inits product scripts  구글 맵 api 사용 js 이거 쓰면 계속 refresh돼서 서버 터짐
+-->
+    <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ4Qy67ZAILavdLyYV2ZwlShd0VAqzRXA&callback=initMap"></script> -->
+    <script
+      async
+      defer
+      src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/js/rating.js"
+    ></script>
+  </body>
+  <footer class="section-text-white footer footer-links bg-darken">
+    <div class="footer-body container">
+      <div class="row">
+        <div class="col-sm-6 col-lg-3">
+          <a class="footer-logo" href="./">
+            <span class="logo-element">
+              <span class="logo-tape">
+                <span class="svg-content svg-fill-theme" data-svg="">
+                  <svg
+                    viewBox="0 0 55 43"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    style="height: 1.2em; width: 1.5349em"
+                  >
+                    <path
+                      class="fill-path"
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8 0H47V3H51V0H55V43H51V40H47V43H8V40H4V43H0V0H4V3H8V0ZM8 7H4V11H8V7ZM4 15H8V19H4V15ZM8 23H4V27H8V23ZM4 32H8V36H4V32ZM51 7H47V11H51V7ZM47 15H51V19H47V15ZM51 23H47V27H51V23ZM47 32H51V36H47V32Z"
+                      fill="#FF8A00"
+                    />
+                  </svg>
+                </span>
+              </span>
+              <span class="logo-text text-uppercase"> <span> D</span>MN</span>
+            </span>
+          </a>
+          <div class="footer-content">
+            <p class="footer-text">
+              College of Software, <br />Hanyang Univ ERICA
+            </p>
+            <p class="footer-text">Call us:&nbsp;&nbsp;(555) 555-0312</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <h5 class="footer-title text-uppercase">Movies</h5>
+          <ul class="list-unstyled list-wide footer-content">
+            <li>
+              <a class="content-link" href="{{ url_for('movies.list') }}"
+                >영화목록</a
+              >
+            </li>
+            <li>
+              <a class="content-link" href="{{ url_for('reservation.ticket') }}"
+                >빠른예매</a
+              >
+            </li>
+            <li>
+              <a class="content-link" href="{{ url_for('theaters.index') }}"
+                >극장</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <h5 class="footer-title text-uppercase">Information</h5>
+          <ul class="list-unstyled list-wide footer-content">
+            <li>
+              <a class="content-link" href="{{ url_for('theaters.index') }}"
+                >극장</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <h5 class="footer-title text-uppercase">Follow</h5>
+          <ul class="list-wide footer-content list-inline">
+            <li class="list-inline-item">
+              <a class="content-link" href="https://github.com/Gudegi/Database-Theater"
+                ><i class="fab fa-github-square"></i
+              ></a>
+            </li>
+          </ul>
+          <h5 class="footer-title text-uppercase">Subscribe</h5>
+          <div class="footer-content">
+            <p class="footer-text">
+              Get latest movie news right away with our subscription
+            </p>
+            <form class="footer-form" autocomplete="off">
+              <div class="input-group">
+                <input
+                  class="form-control"
+                  name="email"
+                  type="email"
+                  placeholder="Your email"
+                />
+                <div class="input-group-append">
+                  <button class="btn btn-theme" type="submit">
+                    <i class="fas fa-angle-right"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copy">
+      <div class="container">
+        Copyright 2019 &copy; AmigosThemes. All rights reserved.
+          <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />This work is licensed under a
+          <a rel="license" href="https://github.com/amigosthemes/memico">Creative Commons Attribution 4.0 International License</a>.
+      </div>
+
+    </div>
+    <div id = "sidebox">
+      <div class="chatbox">
+          <div class="chatbox__support">
+               <div class="chatbox__header">
+                  <div class="chatbox__image--header">
+                      <img src="https://img.icons8.com/color/48/000000/circled-user-female-skin-type-5--v1.png" alt="image">
+                  </div>
+                  <div class="chatbox__content--header">
+                      <h4 class="chatbox__heading--header">DMN 챗봇</h4>
+                      <p class="chatbox__description--header">안녕하세요. 무엇을 도와드릴까요? </p>
+                  </div>
+              </div>
+              <div class="chatbox__messages">
+                  <div></div>
+              </div>
+              <div class="chatbox__footer">
+                  <input type="text" placeholder="   메세지를 입력하세요..">
+                  <button class="chatbox__send--footer send__button">전송</button>
+              </div>
+          </div>
+          <div class="chatbox__button">
+              <button><img src="{{ url_for('static', filename='client_static/chatbot_static/images/chatbox-icon.svg') }}" /></button>
+          </div>
+      </div>
+      <script src="{{ url_for('static', filename='client_static/chatbot_static/app.js') }}"></script>
+      <script>
+        var currentPosition = parseInt($("#sidebox").css("top")); 
+        $(window).scroll(function() { 
+          var position = $(window).scrollTop(); 
+          $("#sidebox").stop().animate({"top":position+currentPosition+"px"},1000); 
+        });
+      </script>
+    </div>
+  </footer>
+</html>

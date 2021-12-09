@@ -1,0 +1,202 @@
+{% extends 'client_base.html' %} 
+{% block content %}
+<!DOCTYPE html>
+<html>
+  <body class="body">
+    <section class="after-head d-flex section-text-white position-relative">
+      <div class="d-background"
+      data-image-src="../../static/client_static/images/Theater_background.jpg"
+      data-parallax="scroll"></div>
+      <div class="d-background bg-black-80"></div>
+      <div class="top-block top-inner container">
+        <div class="top-block-content">
+          <h1 class="section-title">극장</h1>
+          <div class="page-breadcrumbs">
+            <a class="content-link" href="#">Home</a>
+            <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
+            <span>Theater</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section-divbar">
+      <div class="container">
+        <div class="section-pannel" style="border-radius: 15px;">
+        <div class="showtime-wrap" style="margin-top: 0.1rem;">
+          <div class="col">
+            {%if theaters.id == 1 %}
+            <span class="btn-time btn"
+            aria-disabled="true"
+            style="background-color: coral;">강남점</span>
+            {% else %}
+            <a class="btn-time btn"
+            aria-disabled="false"
+            href="{{ url_for('theaters.index') }}">강남점</a>
+            {% endif %}
+          </div>
+          <div class="col">
+            {%if theaters.id == 2 %}
+            <span class="btn-time btn"
+            aria-disabled="true"
+            style="background-color: coral;">이태원점</span>
+            {% else %}
+            <a class="btn-time btn"
+            aria-disabled="false"
+            href="{{ url_for('theaters.other', theater_id = 2) }}">이태원점</a>
+            {% endif %}
+          </div>
+          <div class="col">
+            {%if theaters.id == 3 %}
+            <span class="btn-time btn"
+            aria-disabled="true"
+            style="background-color: coral;">금호점</span>
+            {% else %}
+            <a class="btn-time btn"
+            aria-disabled="false"
+            href="{{ url_for('theaters.other', theater_id = 3) }}">금호점</a>
+            {% endif %}
+          </div>
+          <div class="col">
+            {%if theaters.id == 4 %}
+            <span class="btn-time btn"
+            aria-disabled="true"
+            style="background-color: coral;">한양대점</span>
+            {% else %}
+            <a class="btn-time btn"
+            aria-disabled="false"
+            href="{{ url_for('theaters.other', theater_id = 4) }}">한양대점</a>
+            {% endif %}
+          </div>
+          <div class="col">
+            {%if theaters.id == 5 %}
+            <span class="btn-time btn"
+            aria-disabled="true"
+            style="background-color: coral;">홍대점</span>
+            {% else %}
+            <a class="btn-time btn"
+            aria-disabled="false"
+            href="{{ url_for('theaters.other', theater_id = 5) }}">홍대점</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section-middle">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title text-uppercase"><b>DMN {{ theaters.name }}</b></h2>
+          {%if theaters.id == 1 %}
+          <p class="section-text">로맨틱 멀티플렉스! 젊은 도시 강남이 한 눈에 보이는 최상의 View를 제공</p>
+          {% endif %}
+          {%if theaters.id == 2 %}
+          <p class="section-text">이태원에서 가장 큰 상영관에서 압도되는 영상을 경험하세요.</p>
+          {% endif %}
+          {%if theaters.id == 3 %}
+          <p class="section-text">금호역 도보 5분 거리에 위치!
+            {{theaters.screen}}개관 총 {{theaters.seat}}석 규모! 250석의 대형 상영관에서 생생한 관람을!</p>
+          {% endif %}
+          {%if theaters.id == 4 %}
+          <p class="section-text">한대앞역 도보 5분 거리에 위치! 쾌적한 관람을 위한 전관 가죽시트 도입!</p>
+          {% endif %}
+          {%if theaters.id == 5 %}
+          <p class="section-text">글로벌 핵인싸들의 놀이터! 홍대입구역 도보 5분 거리에 위치!</p>
+          {% endif %}
+        </div>
+        <article class="movie-line-entity">
+          <div class="entity-theater" data-role="hover-wrap">
+            <div class="embed-responsive embed-responsive-poster" style="width: 1088px; height: 420px;">
+                <img class="embed-responsive-item" src="../../static/client_static/images/Theater_{{ theaters.name }}.jpg" alt="http://via.placeholder.com/340x510" />
+            </div>
+          </div>
+          <div class="entity-content">
+            주소 : {{ theaters.address }}
+            <br>전화번호 : {{ theaters.tel }}<br>대표 : {{ theaters.representive }}<br>{{ theaters.screen }}관 / {{ theaters.seat }}석
+          </div>
+        </article>
+      </div>
+    </section>
+    <section class="section-middle">
+      <div class="container">
+        <div class="section-head" style="margin-bottom: 2rem;">
+          <h4 class="section-title"><b>공지사항 </b><a class="fas fa-plus-square" href="{{ url_for('services._notice') }}"></a></h4>
+          <p class="section-text"></p>
+        </div>
+        <article class="movie-line-entity">
+          <div class="entity-content">
+            <ul style="list-style: none">
+              {% for i in range(2) %}
+              <li>
+                <a style="color: #666666" href="{{ url_for('services.noticeDetail', notice_id=notices[i].id) }}">[{{theaters.name}}] {{notices[i].title}}</a>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section class="section-middle">
+      <div class="container">
+        <div class="section-head" style="margin-bottom: 2rem;">
+          <h4 class="section-title"><b>상영시간표</b></h4>
+          <p class="section-text"></p>
+        </div>
+      <div class="container">
+        <ul class="nav nav-tabs">
+          {% for week in week_list %}
+          <li class="nav-item">
+            {% if week['date'] == date %}
+            <a class="nav-link active" data-toggle="tab" href="#{{ week['weekday'] }}">{{ week['weekday'] }}</a>
+            {% else %}
+            <a class="nav-link" data-toggle="tab" href="#{{ week['weekday'] }}">{{ week['weekday'] }}</a>
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+        <div class="tab-content">
+          {% for week in week_list %}
+            <div class="tab-pane fade {% if week['date'] == date %}show active{% endif %}" id="{{ week['weekday'] }}">
+              <ul class="list-group list-group-flush">
+                {% for movie in movies %}
+                  <li class="list-group-item" style="padding-left: 0.5em;">
+                    <b>{{ movie.title }}</b> / {{ movie.genre }} / {{ movie.running_time }} 분 / {{ movie.age }} 이상 관람가 
+                  </li>
+                  <div class="showtime-wrap" style="margin-top:0.1rem; margin-bottom: 0.5rem;">
+                    {% for screenschedule in movie.screenschedules %}
+                      {% if screenschedule.starttime.strftime('%Y-%m-%d') == week['date'] %}
+                        {% if now < screenschedule.starttime %}
+                          {% if screenschedule.screen.seat < 1 %}
+                          <!-- 잔여좌석수 0일시 매진 표시 -->
+                          <div class="showtime-item">
+                            <a class="btn-time btn disabled" href="#" >
+                            {{ screenschedule.starttime.strftime('%H:%M') }} ~ {{ screenschedule.endtime.strftime('%H:%M') }}<br>매진
+                            </a>
+                          </div>
+                          {% else %}           
+                          <div class="showtime-item"> 
+                          <!-- hover시 관/회차/잔여좌석수 표시 -->
+                            <a class="btn-time btn" href="{{ url_for('reservation.seat', movie_id=movie.id, res_date=screenschedule.starttime, theater_name=theaters.id, schedule_id=screenschedule.id ) }}" onMouseOver="this.innerHTML='{{ screenschedule.screen.name }} {{ screenschedule.session }}회차<br>총 {{screenschedule.screen.tot_seat}}석'" onMouseOut="this.innerHTML='{{ screenschedule.starttime.strftime('%H:%M') }} ~ {{ screenschedule.endtime.strftime('%H:%M')}}<br>{{screenschedule.screen.seat}}석'">
+                            {{ screenschedule.starttime.strftime('%H:%M') }} ~ {{ screenschedule.endtime.strftime('%H:%M') }}<br>{{screenschedule.screen.seat}}석
+                            </a>
+                          </div>
+                          {% endif %}
+                        {% else %}
+                        <!-- 상영시간이 현재 시간보다 이전일 경우, 예매 마감 표시 -->
+                        <div class="showtime-item">
+                          <a class="btn-time btn disabled" href="#">
+                          {{ screenschedule.starttime.strftime('%H:%M') }} ~ {{ screenschedule.endtime.strftime('%H:%M') }} <br>마감
+                          </a>
+                        </div>
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
+{% endblock %}

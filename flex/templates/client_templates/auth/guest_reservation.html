@@ -1,0 +1,74 @@
+{% extends "client_base.html" %} {% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center mt-5">
+    <div class="col-lg-5">
+      <div class="card">
+        <div class="card-body pb-0">
+          <div class="showtime-wrap" style="margin-bottom: 1rem;">
+            <div class="showtime-item">
+              <a class="btn-time btn"
+                 style="width: 117px; color: white;"
+                 href="{{ url_for('auth.login') }}">로그인
+              </a>
+            </div>
+            <div class="showtime-item">
+              <a
+                class="btn-time btn"
+                style="width: 117px; color: white"
+                href="{{ url_for('auth.guest_login') }}"
+                >비회원 예매</a
+              >
+            </div>
+            <div class="showtime-item">
+              <span
+                class="btn-time btn"
+                style="width: 140px; background-color: coral;"
+                >비회원 예매확인
+            </span>
+            </div>
+          </div>
+          <form method="post" class="post-form">
+            {{ form.csrf_token }} {% include "form_errors.html" %}
+            <div class="form-group">
+              <label for="birth_date">생년월일(8자리)</label>
+              <input
+                type="text"
+                class="form-control"
+                name="birth_date"
+                id="birth_date"
+                value="{{ form.birth_date.data or '' }}"
+              />
+            </div>
+            <div class="form-group">
+              <label for="phone">휴대폰번호</label>
+              <input
+                type="text"
+                class="form-control"
+                name="phone"
+                id="phone"
+                value="{{ form.phone.data or '' }}"
+              />
+            </div>
+            <div class="form-group">
+              <label for="password">비밀번호</label>
+              <input
+                type="password"
+                class="form-control"
+                name="password"
+                id="password"
+                value="{{ form.password.data or '' }}"
+              />
+            </div>
+            <input
+              type="submit"
+              class="form-control btn btn-outline-theme"
+              style="margin-top:5px; margin-bottom: 20px"
+              value="비회원 예매확인">
+            </input>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

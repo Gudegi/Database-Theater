@@ -1,0 +1,302 @@
+{% extends 'client_base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.col-25 {
+  -ms-flex: 10%; /* IE10 */
+  flex: 10%;
+}
+
+.col-50 {
+  -ms-flex: 50%; /* IE10 */
+  flex: 50%;
+}
+
+.col-75 {
+  -ms-flex: 75%; /* IE10 */
+  flex: 75%;
+}
+
+.col-25,
+.col-50,
+.col-75 {
+  padding: 0 16px;
+}
+
+input[type=text] {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+label {
+  margin-bottom: 10px;
+  display: block;
+}
+
+.icon-container {
+  margin-bottom: 20px;
+  padding: 7px 0;
+  font-size: 24px;
+}
+{##}
+{#.btn {#}
+{#  background-color: #04AA6D;#}
+{#  color: white;#}
+{#  padding: 12px;#}
+{#  margin: 10px 0;#}
+{#  border: none;#}
+{#  width: 100%;#}
+{#  border-radius: 3px;#}
+{#  cursor: pointer;#}
+{#  font-size: 17px;#}
+{#}#}
+{##}
+{#.btn:hover {#}
+{#  background-color: #45a049;#}
+{#}#}
+
+a {
+  color: #2196F3;
+}
+
+hr {
+  border: 1px solid lightgrey;
+}
+
+span.price {
+  float: right;
+  color: grey;
+}
+
+/* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other (also change the direction - make the "cart" column go on top) */
+@media (max-width: 800px) {
+  .row {
+    flex-direction: column-reverse;
+  }
+  .col-25 {
+    margin-bottom: 20px;
+  }
+}
+</style>
+</head>
+<body class="body">
+<section class="after-head d-flex section-text-white position-relative" style="margin-bottom: 100px">
+            <div class="d-background" data-image-src="{{ url_for('static', filename="../../static/client_static/images/" + movie.eng_title + "_logo.jpg") }}" data-parallax="scroll"></div>
+            <div class="d-background bg-black-80"></div>
+            <div class="top-block top-inner container">
+                <div class="top-block-content">
+                    <h1 class="section-title">결제</h1>
+                    <div class="page-breadcrumbs">
+                        <a class="content-link" href="#">{{ movie.title }}</a>
+                        <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
+                        <span>{{ theater.name }}</span>
+                        <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
+                        <span>{{ schedule.starttime.strftime('%Y-%m-%d %H:%M')}}</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+{% if g.member %}
+<!-- 회원예매의 경우 -->
+<div class="grid row">
+  <div class="col-75" style="padding-top: 150px">
+    <div class="container">
+      <form method="post" class="post-form" >
+        {{ form.csrf_token }}
+        {% include "form_errors.html" %}
+        <div class="grid row">
+          <div class="col-50">
+            <h3>멤버쉽</h3>
+            &nbsp;
+              <h6 style="margin-bottom: 115px; color: #ff8a00;"><i class="fas fa-users"> {{ g.member.name }} 님</i></h6>
+            <label for="city"><i class="fas fa-money-bill-alt"></i> 쿠폰</label>
+            <div class="input-view-flat input-group">
+            <select class="form-control" name="coupon">
+{#                왜 view에서는 benefit 검색이 안될까.#}
+                    <option selected="true" value=-1 name="coupon">선택 안함</option>
+                {% for i in bene %}
+                    {% if i.coupon_code in coupon %}
+                        <option value="{{i.coupon_code}}" name="coupon">{{ i.coupon_code }} : {{i.benefit}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            </div>
+              &nbsp;
+                {% if point %}
+              <label for="point"><i class="fa fa-user-plus"></i> {{ g.member.name }}님의 잔여 멤버쉽 포인트 : {{ point }} </label>
+              <input type="text" id="point" name="point" placeholder="{{point}} 이하로 입력하세요 ">
+                {% endif %}
+          </div>
+          <div class="col-50">
+            <h3>결제수단</h3>
+            <label for="fname">신용카드</label>
+            <div class="icon-container">
+              <i class="fa fa-cc-visa" style="color:navy;"></i>
+              <i class="fa fa-cc-amex" style="color:blue;"></i>
+              <i class="fa fa-cc-mastercard" style="color:red;"></i>
+              <i class="fa fa-cc-discover" style="color:orange;"></i>
+            </div>
+            <label for="cname">명의자</label>
+            <input type="text" id="cname" name="cardname" placeholder="홍길동">
+            <label for="ccnum">카드번호</label>
+            <input type="text" id="ccnum" name="cardnumber" placeholder="1234-2222-3213-4444">
+            <div class="grid row">
+              <div class="col-50">
+                <label for="vaildthru">만료기한</label>
+                <input type="month" id="vaildthru" name="vaildthru" placeholder="2018" style="width: 200px; height: 50px">
+              </div>
+              <div class="col-50">
+                <label for="cvv">CVV 번호</label>
+                <input type="text" id="cvv" name="cvv" placeholder="352">
+              </div>
+            </div>
+          </div>
+        </div>
+        <input class="btn-theme btn" type="submit" formmethod="post" value="다음 ▶" class="btn" style="width: 400px">
+      </form>
+    </div>
+  </div>
+<div class="col-md-6 col-lg-4 col-xl-3" style="padding-right: 100px; padding-bottom: 175px; padding-left: 100px">
+    <article class="movie-block-entity">
+        <div class="entity-poster" data-role="hover-wrap" style="height: 420px">
+            <div class="embed-responsive embed-responsive-poster"><img class="embed-responsive-item" src="{{ url_for('static', filename="../../static/client_static/images/" + movie.eng_title + "_logo.jpg") }}" alt=""></div>
+        </div>
+        <div class="entity-content">
+            <h4 class="entity-title"><a class="content-link" href="movie-info-sidebar-right.html">{{ movie.title }}</a></h4>
+            <div class="entity-category"><a class="content-link" href="movies-blocks.html">{{ movie.genre}}</a>
+            <div class="entity-info">&nbsp;
+                <div class="info-lines">
+                    <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-calendar"></i></span>
+                        <span class="info-text">&nbsp;{{ schedule.starttime.strftime('%Y-%m-%d')}}</span><span class="info-rest"></span></div>
+                </div>
+                &nbsp;
+                <div class="info-lines">
+                    <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-clock"></i></span>
+                        <span class="info-text">&nbsp;{{ schedule.starttime.strftime('%H:%M')}}</span><span class="info-rest"></span></div>
+                </div>
+                &nbsp;
+                <div class="info-lines">
+                    <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-map-marker-alt"></i></span>
+                        <span class="info-text">&nbsp;{{ theater.name}} {{ screen }}</span><span class="info-rest"></span></div>
+                </div>
+                &nbsp;
+            </div>
+            <div class="entity-extra">
+                {% if test %}
+                    {% for item in test %}
+                    <div class="info-lines" style="margin-left: 30px">
+                        <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-ticket-alt"></i></span>
+                            <span class="info-text" style="color:black">{{ item.row }}{{ item.col }}석 | {{ item.price }}원</span><span class="info-rest"></span></div>
+                        </div>
+                        &nbsp;
+                    {% endfor %}
+                {%  endif %}
+{#                        <div class="entity-extra">#}
+{#                <div class="entity-actions"><a class="btn-theme btn" href="{{url_for('reservation.res_step1', movie_id=movie.id)}}">#}
+{#                    <i class="fas fa-ticket-alt"></i>&nbsp;예매하기</a></div>#}
+{#            </div>#}
+            </div>
+        </div>
+        </div>
+    </article>
+</div>
+</div>
+{% elif g.guest %}
+<!-- 비회원예매의 경우 -->
+<section class="section-middle">
+  <div class="container">
+  <div class="grid row">
+    <div class="col-md-9 col-lg-5 col-xl-7">
+        <form method="post" class="post-form" >
+          {{ form.csrf_token }}
+          {% include "form_errors.html" %}
+          <div class="grid row">
+            <div class="col-50">
+              <h6 style="margin-bottom: 50px; color: #ff8a00;"><i class="fas fa-users"> 비회원 {{ g.guest.name }} 님</i></h6>
+              <h3>결제수단</h3>
+              <label for="fname">신용카드</label>
+              <div class="icon-container">
+                <i class="fa fa-cc-visa" style="color:navy;"></i>
+                <i class="fa fa-cc-amex" style="color:blue;"></i>
+                <i class="fa fa-cc-mastercard" style="color:red;"></i>
+                <i class="fa fa-cc-discover" style="color:orange;"></i>
+              </div>
+              <label for="cname">명의자</label>
+              <input type="text" id="cname" name="cardname" placeholder="홍길동">
+              <label for="ccnum">카드번호</label>
+              <input type="text" id="ccnum" name="cardnumber" placeholder="1234-2222-3213-4444">
+              <div class="grid row">
+                <div class="col-50">
+                  <label for="vaildthru">만료기한</label>
+                  <input type="month" id="vaildthru" name="vaildthru" placeholder="2018" style="width: 200px; height: 50px">
+                </div>
+                <div class="col-50">
+                  <label for="cvv">CVV 번호</label>
+                  <input type="text" id="cvv" name="cvv" placeholder="352">
+                </div>
+              </div>
+            </div>
+          </div>
+          <input class="btn-theme btn" type="submit" formmethod="post" value="다음 ▶" class="btn" style="width: 400px">
+        </form>
+      </div>
+      <div class="col-md-6 col-lg-4 col-xl-5" style="padding-right: 100px; padding-bottom: 175px; padding-left: 100px">
+        <article class="movie-block-entity">
+            <div class="entity-poster" data-role="hover-wrap" style="height: 420px">
+                <div class="embed-responsive embed-responsive-poster"><img class="embed-responsive-item" src="{{ url_for('static', filename="../../static/client_static/images/" + movie.eng_title + "_logo.jpg") }}" alt=""></div>
+            </div>
+            <div class="entity-content">
+                <h4 class="entity-title"><a class="content-link" href="movie-info-sidebar-right.html">{{ movie.title }}</a></h4>
+                <div class="entity-category"><a class="content-link" href="movies-blocks.html">{{ movie.genre}}</a>
+                <div class="entity-info">&nbsp;
+                    <div class="info-lines">
+                        <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-calendar"></i></span>
+                            <span class="info-text">&nbsp;{{ schedule.starttime.strftime('%Y-%m-%d')}}</span><span class="info-rest"></span></div>
+                    </div>
+                    &nbsp;
+                    <div class="info-lines">
+                        <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-clock"></i></span>
+                            <span class="info-text">&nbsp;{{ schedule.starttime.strftime('%H:%M')}}</span><span class="info-rest"></span></div>
+                    </div>
+                    &nbsp;
+                    <div class="info-lines">
+                        <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-map-marker-alt"></i></span>
+                            <span class="info-text">&nbsp;{{ theater.name}} 제{{ schedule.screen_number }}관</span><span class="info-rest"></span></div>
+                    </div>
+                    &nbsp;
+                </div>
+                <div class="entity-extra">
+                    {% if test %}
+                        {% for item in test %}
+                        <div class="info-lines" style="margin-left: 30px">
+                            <div class="info info-short"><span class="text-theme info-icon"><i class="fas fa-ticket-alt"></i></span>
+                                <span class="info-text" style="color:black">{{ item.row }}{{ item.col }}석 | {{ item.price }}원</span><span class="info-rest"></span></div>
+                            </div>
+                            &nbsp;
+                        {% endfor %}
+                    {%  endif %}
+    {#                        <div class="entity-extra">#}
+    {#                <div class="entity-actions"><a class="btn-theme btn" href="{{url_for('reservation.res_step1', movie_id=movie.id)}}">#}
+    {#                    <i class="fas fa-ticket-alt"></i>&nbsp;예매하기</a></div>#}
+    {#            </div>#}
+                </div>
+              </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+{% endif %}
+</body>
+</html>
+
+{% endblock %}
+

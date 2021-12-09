@@ -1,0 +1,187 @@
+{% extends 'client_base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+    <body class="body">
+        <section class="after-head d-flex section-text-white position-relative">
+            <div class="d-background" data-image-src="../../static/client_static/images/{{ movie.eng_title }}_logo.jpg" data-parallax="scroll"></div>
+            <div class="d-background bg-black-80"></div>
+            <div class="top-block top-inner container">
+                <div class="top-block-content">
+                    <h1 class="section-title">{{ movie.title }}</h1>
+                    <div class="page-breadcrumbs">
+                        <a class="content-link" href="#">Home</a>
+                        <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
+                        <a class="content-link" href="movies-blocks.html">Movies</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="container">
+            <div class="sidebar-container">
+                <div class="content">
+                    <section class="section-long">
+                        <div class="section-line">
+                            <div class="movie-info-entity">
+                                <div class="entity-poster" data-role="hover-wrap">
+                                    <div class="embed-responsive embed-responsive-poster">
+                                        <img class="embed-responsive-item" src="../../static/client_static/images/{{ movie.eng_title }}_logo.jpg" alt="" />
+                                    </div>
+                                    <div class="d-over bg-theme-lighted collapse animated faster" data-show-class="fadeIn show" data-hide-class="fadeOut show">
+                                        <div class="entity-play">
+                                            <a class="action-icon-theme action-icon-bordered rounded-circle" href="https://www.youtube.com/watch?v=d96cjJhvlMA" data-magnific-popup="iframe">
+                                                <span class="icon-content"><i class="fas fa-play"></i></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="entity-content">
+                                    <h2 class="entity-title">{{ movie.title }}</h2>
+                                    <div class="entity-category">
+                                        <a class="content-link" href="movies-blocks.html">{{ movie.genre }}</a>
+                                    </div>
+                                    <div class="entity-info">
+                                        <div class="info-lines">
+                                            <div class="info info-short">
+                                                <span class="text-theme info-icon"><i class="fas fa-star"></i></span>
+                                                <span class="info-text">{{ rate }}</span>
+                                                <span class="info-rest">/10</span>
+                                            </div>
+                                            <div class="info info-short">
+                                                <span class="text-theme info-icon"><i class="fas fa-clock"></i></span>
+                                                <span class="info-text">{{ movie.running_time }}</span>
+                                                <span class="info-rest">&nbsp;min</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ul class="entity-list">
+                                        <li>
+                                            <span class="entity-list-title">Release:</span>{{ movie.release }}</li>
+                                        <li>
+                                            <span class="entity-list-title">Directed:</span>
+                                            <a class="content-link" href="#">{{ movie.director }}</a>
+                                        </li>
+                                        {% if actor_list %}
+                                            <li>
+                                            <span class="entity-list-title">Actor:</span>
+                                            {% for actor in actor_list %}
+                                                    <a class="content-link" href="#">{{ actor.name }}</a>,
+                                            {% endfor %}
+                                            </li>
+                                        {%  endif %}
+                                        <li>
+                                            <span class="entity-list-title">Country:</span>
+                                            <a class="content-link" href="#">{{ movie.country }}</a>
+                                        </li>
+                                        <li>
+                                            <span class="entity-list-title">Language:</span>{{ movie.language }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="section-line">
+                            <div class="section-head">
+                                <h2 class="section-title text-uppercase">Synopsis</h2>
+                            </div>
+                            <div class="section-description">
+                                <h6 class="text-dark">줄거리</h6>
+                                <p>{{ movie.information }}</p>
+                            </div>
+                            <div class="section-bottom">
+                                <div class="row">
+                                    <div class="mr-auto col-auto">
+                                        <div class="entity-links">
+                                            <div class="entity-list-title">Share:</div>
+                                            <a class="content-link entity-share-link" href="#"><i class="fab fa-facebook-f"></i></a>
+                                            <a class="content-link entity-share-link" href="#"><i class="fab fa-twitter"></i></a>
+                                            <a class="content-link entity-share-link" href="#"><i class="fab fa-google-plus-g"></i></a>
+                                            <a class="content-link entity-share-link" href="#"><i class="fab fa-pinterest-p"></i></a>
+                                            <a class="content-link entity-share-link" href="#"><i class="fab fa-instagram"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="entity-links">
+                                            <div class="entity-list-title">Tags:</div>
+                                            <a class="content-link" href="#">{{ movie.genre }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="section-line">
+                            <div class="section-head">
+                                <h2 class="section-title text-uppercase">영상평</h2>
+                            </div>
+                            <article class="movie-line-entity">
+                                {% for review in review_list %}
+                                <div class="comment-entity">
+                                    <div class="col-12">
+                                        <div class="entity-content">
+                                            <h4 class="entity-title">{{ review.title }}</h4>
+                                            {% if review.modify_date %}
+                                            <p class="entity-subtext">수정:{{ review.modify_date }}</p>
+                                            {% else %}
+                                            <p class="entity-subtext">{{ review.date }}</p>
+                                            {% endif %}
+                                            <p class="entity-subtext">작성자:{{ review.member_id }}</p>
+                                            <p class="entity-text">{{ review.content }}</p>
+                                        </div>
+                                        <div class="entity-extra">
+                                            <div class="grid-md row">
+                                                <div class="col-12 col-sm-auto">
+                                                    <div class="entity-rating">
+                                                        {% for rate in range(review.rate) %}
+                                                        <span class="entity-rating-icon text-theme"><i class="fas fa-star"></i></span>
+                                                        {% endfor %}
+                                                        {% for rate in range(10-review.rate) %}
+                                                        <span class="entity-rating-icon"><i class="fas fa-star"></i></span>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                {% if g.member.id == review.member_id %}
+                                                <div class="ml-sm-auto col-auto">
+                                                    <a class="content-link" href="{{ url_for('movies.modify_review',movie_id=review.movie_id, review_id=review.id) }}"><i class="fas fa-reply"></i>&nbsp;&nbsp;수정</a>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <a class="content-link" href="{{ url_for('movies.delete_review',movie_id=review.movie_id, review_id=review.id) }}"><i class="fas fa-quote-left"></i>&nbsp;&nbsp;삭제</a>
+                                                </div>
+                                                {% elif g.member.id == null %}
+                                                <div class="ml-sm-auto col-auto">
+                                                    <a class="content-link activate" href="{{ url_for('auth.login_movie', movie_id=movie.id) }}" title="로그인시 수정 및 삭제 가능"><i class="fas fa-reply"></i>&nbsp;&nbsp;로그인 하기</a>
+                                                </div>
+                                                {% else %}
+                                                <div class="ml-sm-auto col-auto">
+                                                    <div class="entity-text"><i class="fas"></i>수정불가</div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <div class="entity-text"><i class="fas"></i>삭제불가</div>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </article>
+                        </div>
+                        <div class="section-line">
+                            <div class="section-head">
+                                <h2 class="section-title text-uppercase">평가 작성</h2>
+                            </div>
+                            {% if g.member.id %}
+                            <div class="col-12">
+                                <a class="px-5 btn btn-theme" href="{{ url_for('movies.create_review', movie_id=movie.id) }}" type="submit" name="submit">평가 작성하러 가기</a>
+                            </div>
+                            {% else %}
+                            <div class="col-12">
+                                <a class="px-5 btn btn-theme" href="{{ url_for('auth.login_movie', movie_id=movie.id) }}" type="submit">로그인 필요합니다</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+{% endblock %}

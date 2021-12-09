@@ -1,0 +1,144 @@
+// Example of a Python object macro.
+
+! version = 2.0
+
+> object base64 python
+    import base64 as b64
+    mess = " ".join(args)
+
+    # Make this function work in Python3 as well.
+    import sys
+    if sys.version_info[0] == 3:
+        # Python3's Base64 requires bytes, not a str,
+        # so encode the str into bytes.
+        mess = mess.encode()
+        base = b64.b64encode(mess)
+
+        # Return the base64 result, decoded back into a str.
+        return base.decode()
+    else:
+        # Python2 is simple.
+        return b64.b64encode(mess)
+< object
+
+> object add python
+    # This function returns an int, and shows that the results
+    # from python object macros are always casted to str.
+    a, b = args
+    return int(a) + int(b)
+< object
+
+> object setvar python
+    # This function demonstrates using rs.current_user() to get
+    # the current user ID, to set a variable for them.
+    uid   = rs.current_user()
+    var   = args[0]
+    value = " ".join(args[1:])
+    rs.set_uservar(uid, var, value)
+< object
+
+> object movieList python
+    import pymysql
+
+    data = []
+
+    conn = pymysql.connect(host="database-eritip.cvgx9v3ektbw.ap-northeast-2.rds.amazonaws.com",user="admin",password='eritip18!',db='TheaterDB', charset='utf8')
+    cur = conn.cursor()
+    movie_list_query = "SELECT title FROM movie"
+    cur.execute(movie_list_query)
+    movie_list_result = cur.fetchall()
+    for movie in movie_list_result:
+        data.append(movie[0])
+    result = (','.join(data))
+    return result
+< object
+
+> object theaterTel python
+    import pymysql
+    theater = args[0]
+    conn = pymysql.connect(host="database-eritip.cvgx9v3ektbw.ap-northeast-2.rds.amazonaws.com",user="admin",password='eritip18!',db='TheaterDB', charset='utf8')
+    cur = conn.cursor()
+    theater_tel_query = "SELECT tel FROM theater WHERE name='" + theater + "'"
+    cur.execute(theater_tel_query)
+    theater_tel_result = cur.fetchall()
+    result = theater_tel_result[0][0
+    return result
+< object
+
+
+> object theaterAddress python
+    import pymysql
+    theater = args[0]
+    conn = pymysql.connect(host="database-eritip.cvgx9v3ektbw.ap-northeast-2.rds.amazonaws.com",user="admin",password='eritip18!',db='TheaterDB', charset='utf8')
+    cur = conn.cursor(
+    theater_tel_query = "SELECT address FROM theater WHERE name='" + theater + "'
+    cur.execute(theater_tel_query)
+    theater_tel_result = cur.fetchall()
+    result = theater_tel_result[0][0]
+    return result
+< object
+
++ encode * in base64
+- OK: <call>base64 <star></call>
+
++ what is # plus #
+- <star1> + <star2> = <call>add <star1> <star2></call>
+
++ python set * to *
+- Setting user variable <star1> to <star2>.<call>setvar <star1> <star2></call>
+
++ 영화목록
+- <call>movieList</call> 이 상영중입니다.
+
++ 강남점 전화번호
+- DMN 강남점의 전화번호는 <call>theaterTel 강남점</call> 입니다.
++ 강남점 전화번호*
+- DMN 강남점의 전화번호는 <call>theaterTel 강남점</call> 입니다.
+
++ 이태원점 전화번호
+- DMN 이태원점의 전화번호는 <call>theaterTel 이태원점</call> 입니다.
++ 이태원점 전화번호*
+- DMN 이태원점의 전화번호는 <call>theaterTel 이태원점</call> 입니다.
+
++ # 전화번호
+- <call>theaterTel <star></call> 입니다.
+
++ 한양대점 전화번호
+- DMN 한양대점의 전화번호는 <call>theaterTel 한양대점</call> 입니다.
++ 한양대점 전화번호*
+- DMN 한양대점의 전화번호는<call>theaterTel 한양대점</call> 입니다.
+
++ 홍대점 전화번호
+- DMN 홍대점의 전화번호는 <call>theaterTel 홍대점</call> 입니다.
++ 홍대점 전화번호*
+- DMN 홍대점의 전화번호는 <call>theaterTel 홍대점</call> 입니다.
+
++ 금호점 전화번호
+- DMN 금호점의 전화번호는 <call>theaterTel 금호점</call> 입니다.
++ 금호점 전화번호*
+- DMN 금호점의 전화번호는 <call>theaterTel 금호점</call> 입니다.
+
++ 강남점 주소
+- DMN 강남점의 주소는 <call>theaterAddress 강남점</call> 입니다.
++ 강남점 주소*
+- DMN 강남점의 주소는 <call>theaterAddress 강남점</call> 입니다.
+
++ 이태원점 주소
+- DMN 이태원점 주소는 <call>theaterAddress 강남점</call> 입니다.
++ 이태원점 주소*
+- DMN 이태원점 주소는 <call>theaterAddress 강남점</call> 입니다.
+
++ 한양대점 주소
+- DMN 한양대점 주소는 <call>theaterAddress 강남점</call> 입니다.
++ 한양대점 주소*
+- DMN 한양대점 주소는 <call>theaterAddress 강남점</call> 입니다.
+
++ 홍대점 주소
+- DMN 홍대점 주소는 <call>theaterAddress 강남점</call> 입니다.
++ 홍대점 주소*
+- DMN 홍대점 주소는 <call>theaterAddress 강남점</call> 입니다.
+
++ 금호점 주소
+- DMN 금호점 주소는 <call>theaterAddress 강남점</call> 입니다.
++ 금호점 주소*
+- DMN 금호점 주소는 <call>theaterAddress 강남점</call> 입니다.
