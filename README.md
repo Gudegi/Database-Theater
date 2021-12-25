@@ -4,7 +4,7 @@
 
 ## Result
 
-![Untitled](readme%20md%204309222cf0b24d5c94bcf8003c3aa9df/Untitled.png)
+![Untitled](readmeScreenshot/Untitled.png)
 
 ---
 
