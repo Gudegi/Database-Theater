@@ -2,13 +2,18 @@ import os
 
 BASE_DIR = os.path.dirname(__file__)
 
-SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://admin:eritip18!@database-eritip.cvgx9v3ektbw.ap-northeast-2.rds.amazonaws.com:3306/TheaterDB?charset=utf8'
+#github public 배포 과정에 보안상 RDS 비밀번호를 교체하였습니다. 첨부한 sqlite와 sql을 이용해주세요.
+SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://admin:970925as!@database-eritip.cvgx9v3ektbw.ap-northeast-2.rds.amazonaws.com:3306/TheaterDB?charset=utf8'
+#MariaDB > sqlite 과정에 코드 호환이 안되는 부분이 있습니다. 맞게 고쳐주셔야 실행됩니다.
+DATABASE_FILE = 'TheaterDB_2021-12-25.sqlite'
+#SQLALCHEMY_DATABASE_URI = 'sqlite:///{}'.format(os.path.join(BASE_DIR, DATABASE_FILE))
+SQLALCHEMY_ECHO = True
+
 
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 ALLOWED_HOSTS = ['web']
 
-#이건 나중에 변경해야함 https://wikidocs.net/81052
 SECRET_KEY = "dev"
 
 
