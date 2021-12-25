@@ -18,13 +18,13 @@
 
 ## 개발환경 및 툴
 
-![Untitled](readme%20md%204309222cf0b24d5c94bcf8003c3aa9df/Untitled%201.png)
+![Untitled](readmeScreenshot/Untitled%201.png)
 
 ---
 
 ## 협업
 
-![Untitled](readme%20md%204309222cf0b24d5c94bcf8003c3aa9df/Untitled%202.png)
+![Untitled](readmeScreenshot/Untitled%202.png)
 
 ---
 
@@ -53,13 +53,13 @@
 
 ## **업무 분담**
 
-![Untitled](readme%20md%204309222cf0b24d5c94bcf8003c3aa9df/Untitled%203.png)
+![Untitled](readmeScreenshot/Untitled%203.png)
 
 ---
 
 ## E-R 다이어그램
 
-![ERD.png](readme%20md%204309222cf0b24d5c94bcf8003c3aa9df/PBL1%E1%84%8D%E1%85%B5%E1%86%AB%E1%84%86%E1%85%A1%E1%86%A8.drawio.png)
+![ERD.png](readmeScreenshot/ERD.png)
 
 ---
 
